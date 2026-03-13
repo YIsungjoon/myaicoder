@@ -1,0 +1,170 @@
+{
+  "timestamp": "2026-03-13T07:23:57.468Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-03-13T06:35:21.328Z",
+    "activeFeatures": [
+      "ai-coder-cli",
+      "mcp-server",
+      "myaicoder"
+    ],
+    "primaryFeature": "mcp-server",
+    "features": {
+      "ai-coder-cli": {
+        "phase": "completed",
+        "status": "report_generated",
+        "matchRate": 95,
+        "iterationCount": 1,
+        "planPath": "docs/pdca/01-plan/features/ai-coder-cli.plan.md",
+        "designPath": "docs/pdca/02-design/features/ai-coder-cli.design.md",
+        "analysisPath": "docs/pdca/03-analysis/ai-coder-cli.analysis.md",
+        "reportPath": "docs/pdca/06-report/features/ai-coder-cli.report.md",
+        "startedAt": "2026-03-13T04:30:00.000Z",
+        "completedAt": "2026-03-13T10:00:00.000Z",
+        "description": "Claude Code 대안 AI 코딩 어시스턴트 (Qwen3.5-27B, MCP 호환)"
+      },
+      "mcp-server": {
+        "phase": "plan",
+        "status": "plan_created",
+        "matchRate": null,
+        "iterationCount": 0,
+        "planPath": "docs/pdca/01-plan/features/mcp-server.plan.md",
+        "startedAt": "2026-03-13T10:30:00.000Z",
+        "description": "MCP Server - 내장 도구를 MCP 프로토콜로 노출 (Phase 4)"
+      },
+      "myaicoder": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-03-13T06:33:18.360Z",
+          "lastUpdated": "2026-03-13T06:35:21.328Z"
+        },
+        "lastFile": "/home/laon/Desktop/myAiCoder/services/myaicoder/tests/test_core/test_approval.py"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 2,
+      "level": "Enterprise",
+      "phaseHistory": [
+        {
+          "phase": 1,
+          "action": "plan_completed",
+          "timestamp": "2026-03-13T04:45:00.000Z"
+        },
+        {
+          "phase": 2,
+          "action": "design_completed",
+          "timestamp": "2026-03-13T05:00:00.000Z"
+        }
+      ]
+    },
+    "session": {
+      "startedAt": "2026-03-13T04:00:21.057Z",
+      "onboardingCompleted": true,
+      "lastActivity": "2026-03-13T06:35:21.328Z"
+    },
+    "history": [
+      {
+        "action": "plan_created",
+        "feature": "ai-coder-cli",
+        "timestamp": "2026-03-13T04:30:00.000Z"
+      },
+      {
+        "action": "design_created",
+        "feature": "ai-coder-cli",
+        "timestamp": "2026-03-13T05:00:00.000Z"
+      },
+      {
+        "action": "do_phase1_completed",
+        "feature": "ai-coder-cli",
+        "timestamp": "2026-03-13T06:00:00.000Z"
+      },
+      {
+        "action": "do_phase2_completed",
+        "feature": "ai-coder-cli",
+        "timestamp": "2026-03-13T07:30:00.000Z"
+      },
+      {
+        "action": "do_phase3_completed",
+        "feature": "ai-coder-cli",
+        "timestamp": "2026-03-13T08:30:00.000Z"
+      },
+      {
+        "action": "check_analyzed",
+        "feature": "ai-coder-cli",
+        "matchRate": 88,
+        "timestamp": "2026-03-13T09:00:00.000Z"
+      },
+      {
+        "timestamp": "2026-03-13T06:33:18.360Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T06:33:29.551Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T06:33:43.789Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T06:34:10.027Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T06:34:24.315Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T06:34:48.167Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T06:34:56.230Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T06:35:21.328Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "action": "act_iteration_1",
+        "feature": "ai-coder-cli",
+        "matchRate": 95,
+        "timestamp": "2026-03-13T09:30:00.000Z"
+      },
+      {
+        "action": "report_generated",
+        "feature": "ai-coder-cli",
+        "matchRate": 95,
+        "timestamp": "2026-03-13T10:00:00.000Z"
+      },
+      {
+        "action": "plan_created",
+        "feature": "mcp-server",
+        "timestamp": "2026-03-13T10:30:00.000Z"
+      }
+    ]
+  }
+}

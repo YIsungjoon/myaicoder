@@ -1,0 +1,113 @@
+{
+  "name": "myaicoder",
+  "displayName": "myAiCoder",
+  "description": "AI coding assistant powered by local LLM via MCP",
+  "version": "0.1.0",
+  "publisher": "myaicoder",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Chat"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "myaicoder",
+          "title": "myAiCoder",
+          "icon": "media/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "myaicoder": [
+        {
+          "type": "webview",
+          "id": "myaicoder.chatPanel",
+          "name": "Chat"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "myaicoder.newChat",
+        "title": "myAiCoder: New Chat"
+      },
+      {
+        "command": "myaicoder.reconnect",
+        "title": "myAiCoder: Reconnect MCP Server"
+      },
+      {
+        "command": "myaicoder.sendSelection",
+        "title": "myAiCoder: Send Selection to Chat"
+      }
+    ],
+    "configuration": {
+      "title": "myAiCoder",
+      "properties": {
+        "myaicoder.executablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to myaicoder executable (auto-detected if empty)"
+        },
+        "myaicoder.llmUrl": {
+          "type": "string",
+          "default": "http://localhost:8080",
+          "description": "LLM server URL"
+        },
+        "myaicoder.modelName": {
+          "type": "string",
+          "default": "qwen3.5-27b",
+          "description": "Model name to display in status bar"
+        },
+        "myaicoder.allowBash": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow Bash tool execution (security risk)"
+        },
+        "myaicoder.maxConcurrent": {
+          "type": "number",
+          "default": 1,
+          "description": "Max concurrent MCP requests"
+        },
+        "myaicoder.enableAgentic": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable agentic_task tool for multi-step execution"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "myaicoder.sendSelection",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l",
+        "when": "editorHasSelection"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "package": "vsce package",
+    "test": "vitest run",
+    "lint": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.3.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.3.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "highlight.js": "^11.9.0",
+    "marked": "^12.0.0"
+  }
+}

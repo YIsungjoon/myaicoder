@@ -1,0 +1,16 @@
+node_modules/
+.next/
+dist/
+.env
+.env.local
+.env.*.local
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+Qwen3.5-27B-Q4_0.gguf

@@ -1,0 +1,250 @@
+{
+  "timestamp": "2026-03-13T05:59:10.585Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-03-13T05:58:49.183Z",
+    "activeFeatures": [
+      "ai-coder-cli",
+      "myaicoder"
+    ],
+    "primaryFeature": "ai-coder-cli",
+    "features": {
+      "ai-coder-cli": {
+        "phase": "design",
+        "status": "complete",
+        "planPath": "docs/pdca/01-plan/features/ai-coder-cli.plan.md",
+        "designPath": "docs/pdca/02-design/features/ai-coder-cli.design.md",
+        "startedAt": "2026-03-13T04:30:00.000Z",
+        "description": "Claude Code 대안 AI 코딩 어시스턴트 (Qwen3.5-27B, MCP 호환)"
+      },
+      "myaicoder": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-03-13T05:05:43.692Z",
+          "lastUpdated": "2026-03-13T05:58:49.183Z"
+        },
+        "lastFile": "/home/laon/Desktop/myAiCoder/services/myaicoder/src/myaicoder/llm/vllm_provider.py"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 2,
+      "level": "Enterprise",
+      "phaseHistory": [
+        {
+          "phase": 1,
+          "action": "plan_completed",
+          "timestamp": "2026-03-13T04:45:00.000Z"
+        }
+      ]
+    },
+    "session": {
+      "startedAt": "2026-03-13T04:00:21.057Z",
+      "onboardingCompleted": true,
+      "lastActivity": "2026-03-13T05:58:49.183Z"
+    },
+    "history": [
+      {
+        "action": "plan_created",
+        "feature": "ai-coder-cli",
+        "timestamp": "2026-03-13T04:30:00.000Z"
+      },
+      {
+        "action": "design_created",
+        "feature": "ai-coder-cli",
+        "timestamp": "2026-03-13T05:00:00.000Z"
+      },
+      {
+        "timestamp": "2026-03-13T05:05:43.692Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:05:47.043Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:05:50.319Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:05:54.057Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:05:57.268Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:00.342Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:03.452Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:06.294Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:09.082Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:20.847Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:32.447Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:42.840Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:06:50.700Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:07:12.525Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:07:23.642Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:07:34.797Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:07:57.117Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:01.388Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:09.443Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:12.643Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:20.575Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:26.226Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:29.981Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:39.438Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:08:46.359Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:09:38.580Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:28:35.741Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:47:02.110Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:57:52.781Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:58:36.169Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-03-13T05:58:49.183Z",
+        "feature": "myaicoder",
+        "phase": "do",
+        "action": "updated"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "sessionCount": 9,
+  "lastSession": {
+    "startedAt": "2026-03-13T08:33:38.666Z",
+    "platform": "claude",
+    "level": "Enterprise"
+  },
+  "project": {
+    "name": "myAiCoder",
+    "level": "Enterprise",
+    "language": "ko",
+    "architecture": "microservices-monorepo"
+  }
+}

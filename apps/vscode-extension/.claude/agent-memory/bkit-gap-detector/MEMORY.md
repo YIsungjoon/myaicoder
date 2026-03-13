@@ -1,0 +1,1 @@
+- [project_vscode_ext_analysis.md](project_vscode_ext_analysis.md) - Gap analysis results (2026-03-13, 93% match) for vscode-extension feature
