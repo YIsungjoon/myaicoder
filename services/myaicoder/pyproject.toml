@@ -13,6 +13,7 @@ dependencies = [
     "aiofiles>=23.0",
     "httpx>=0.27",
     "mcp[cli]>=1.0",
+    "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]

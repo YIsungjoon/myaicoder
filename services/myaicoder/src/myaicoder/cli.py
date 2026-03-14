@@ -311,5 +311,124 @@ def mcp_list():
         click.echo()
 
 
+@main.group()
+def model():
+    """Model management commands."""
+    pass
+
+
+@model.command("list")
+def model_list():
+    """List available models and their status."""
+    from myaicoder.models.config import ModelsConfig
+    from myaicoder.models.manager import ModelManager, ModelStatus
+    from myaicoder.models.process import VLLMProcessManager
+    from myaicoder.models.scanner import ModelScanner
+
+    config = ModelsConfig.load()
+    pm = VLLMProcessManager()
+    scanner = ModelScanner(config.models_dir, config)
+    mgr = ModelManager(config, pm, scanner)
+
+    models = mgr.list_models()
+    env_info = "DGX Spark, 128GB" if config.is_prod() else "Desktop"
+    click.echo(f"  ENV: {config.environment} ({env_info})\n")
+
+    if config.is_prod():
+        click.echo(f"  {'NAME':<20} {'SIZE':<8} {'PORT':<6} {'STATUS':<12} DESCRIPTION")
+        for m in models:
+            status_str = "loaded ●" if m.status == ModelStatus.LOADED else m.status.value
+            port_str = str(m.port) if m.port else "-"
+            click.echo(
+                f"  {m.name:<20} {m.size_human:<8} {port_str:<6} {status_str:<12} {m.description}"
+            )
+    else:
+        click.echo(f"  {'NAME':<20} {'SIZE':<8} {'STATUS':<12} DESCRIPTION")
+        for m in models:
+            status_str = "loaded ●" if m.status == ModelStatus.LOADED else m.status.value
+            click.echo(
+                f"  {m.name:<20} {m.size_human:<8} {status_str:<12} {m.description}"
+            )
+
+
+@model.command("switch")
+@click.argument("name")
+def model_switch(name):
+    """Switch to a different model (dev environment only)."""
+    from myaicoder.models.config import ModelsConfig
+    from myaicoder.models.manager import ModelManager
+    from myaicoder.models.process import VLLMProcessManager
+    from myaicoder.models.scanner import ModelScanner
+
+    config = ModelsConfig.load()
+    pm = VLLMProcessManager()
+    scanner = ModelScanner(config.models_dir, config)
+    mgr = ModelManager(config, pm, scanner)
+
+    def on_status(msg: str) -> None:
+        click.echo(f"  ⏳ {msg}")
+
+    try:
+        result = asyncio.run(mgr.switch_model(name, on_status=on_status))
+        click.echo(f"  ✓ Model switched to {result.name}")
+    except (RuntimeError, ValueError, FileNotFoundError) as e:
+        click.echo(f"  ✗ {e}", err=True)
+        raise SystemExit(1)
+
+
+@model.command("status")
+def model_status():
+    """Show current model and environment status."""
+    from myaicoder.models.config import ModelsConfig
+    from myaicoder.models.manager import ModelManager
+    from myaicoder.models.process import VLLMProcessManager
+    from myaicoder.models.scanner import ModelScanner
+
+    config = ModelsConfig.load()
+    pm = VLLMProcessManager()
+    scanner = ModelScanner(config.models_dir, config)
+    mgr = ModelManager(config, pm, scanner)
+
+    status = mgr.get_status()
+    click.echo(f"  Environment: {status['environment']}")
+    click.echo(f"  Models dir:  {status['models_dir']}")
+    click.echo(f"  Loaded:      {status['loaded_models']}/{status['total_models']}")
+    for m in status["models"]:
+        click.echo(f"    {m['name']} (:{m['port']}) — {m['state']}")
+
+
+@model.command("launch")
+@click.option(
+    "--env",
+    type=click.Choice(["prod", "dev"]),
+    default=None,
+    help="Environment override",
+)
+def model_launch(env):
+    """Launch vLLM processes for the current environment."""
+    from myaicoder.models.config import ModelsConfig
+    from myaicoder.models.manager import ModelManager
+    from myaicoder.models.process import VLLMProcessManager
+    from myaicoder.models.scanner import ModelScanner
+
+    config = ModelsConfig.load()
+    if env:
+        config.environment = env
+
+    pm = VLLMProcessManager()
+    scanner = ModelScanner(config.models_dir, config)
+    mgr = ModelManager(config, pm, scanner)
+
+    def on_status(msg: str) -> None:
+        click.echo(f"  ⏳ {msg}")
+
+    try:
+        instances = asyncio.run(mgr.launch(on_status=on_status))
+        click.echo(f"\n  ✓ {len(instances)} model(s) launched")
+    except (RuntimeError, FileNotFoundError) as e:
+        click.echo(f"  ✗ Launch failed: {e}", err=True)
+        raise SystemExit(1)
+
+
 if __name__ == "__main__":
     main()

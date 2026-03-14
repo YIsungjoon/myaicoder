@@ -1,0 +1,43 @@
+# ─── Dev Desktop (24GB VRAM) ───
+# Copy to ./models.yaml or ~/.config/myaicoder/models.yaml
+# For prod (DGX Spark), set environment: prod and add port/always_on per instance.
+
+environment: dev
+models_dir: "~/models"
+default_model: "qwen3.5-9b"
+port: 8001
+
+# Gateway notification (optional — for dev switch)
+# gateway_url: "http://localhost:8080"
+# internal_token: "your-internal-secret"
+
+instances:
+  - name: "qwen3.5-27b"
+    file: "Qwen3.5-27B-Q4_K_M.gguf"
+    description: "Qwen 3.5 27B — high quality general purpose"
+    vllm_args:
+      gpu_memory_utilization: 0.9
+      max_model_len: 32768
+    defaults:
+      temperature: 0.0
+      max_tokens: 8192
+
+  - name: "qwen3.5-9b"
+    file: "Qwen3.5-9B-Q4_K_M.gguf"
+    description: "Qwen 3.5 9B — fast response"
+    vllm_args:
+      gpu_memory_utilization: 0.5
+      max_model_len: 32768
+    defaults:
+      temperature: 0.0
+      max_tokens: 8192
+
+  - name: "qwen3-coder-30b"
+    file: "Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf"
+    description: "Qwen 3 Coder 30B — coding specialized"
+    vllm_args:
+      gpu_memory_utilization: 0.95
+      max_model_len: 16384
+    defaults:
+      temperature: 0.0
+      max_tokens: 8192

@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-13T17:02:47.858Z",
+  "lastUpdated": "2026-03-14T01:23:32.278Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -52,8 +52,8 @@
       "description": "MCP Server - 내장 도구를 MCP 프로토콜로 노출 (Phase 4)"
     },
     "myaicoder": {
-      "phase": "completed",
-      "phaseNumber": 6,
+      "phase": "do",
+      "phaseNumber": 3,
       "matchRate": 99,
       "iterationCount": 1,
       "requirements": [],
@@ -67,10 +67,10 @@
       },
       "timestamps": {
         "started": "2026-03-13T06:33:18.360Z",
-        "lastUpdated": "2026-03-13T09:25:00.000Z",
+        "lastUpdated": "2026-03-14T01:23:32.278Z",
         "completedAt": "2026-03-13T09:25:00.000Z"
       },
-      "lastFile": "/home/laon/Desktop/myAiCoder/services/myaicoder/src/myaicoder/mcp/server.py"
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/tests/test_models/test_process.py"
     },
     "integration-and-ci": {
       "phase": "completed",
@@ -137,7 +137,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-13T17:02:47.858Z"
+    "lastActivity": "2026-03-14T01:23:32.278Z"
   },
   "history": [
     {
@@ -664,6 +664,108 @@
     {
       "timestamp": "2026-03-13T17:02:47.858Z",
       "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:11:11.355Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:11:31.236Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:11:45.160Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:12:23.160Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:12:58.703Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:13:22.085Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:13:42.782Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:14:00.605Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:14:15.122Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:14:35.989Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:07.502Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:22.179Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:26.536Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:44.155Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:23:12.234Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:23:20.049Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:23:32.278Z",
+      "feature": "myaicoder",
       "phase": "do",
       "action": "updated"
     }
