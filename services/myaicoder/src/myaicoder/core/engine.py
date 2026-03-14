@@ -30,10 +30,15 @@ class AgentEngine:
         tool_registry: ToolRegistry | None = None,
         approval_callback: Callable[[str, dict], bool] | None = None,
         require_approval: list[str] | None = None,
+        max_context_tokens: int = 32768,
+        compression_threshold: float = 0.8,
     ):
         self.llm = llm
         self.context = context_manager or ContextManager()
-        self.conversation = ConversationManager()
+        self.conversation = ConversationManager(
+            max_tokens=max_context_tokens,
+            compression_threshold=compression_threshold,
+        )
         self.tools = tool_registry
         self._approval_callback = approval_callback
         self._require_approval = set(require_approval or [])

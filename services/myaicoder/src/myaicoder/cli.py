@@ -101,6 +101,13 @@ async def _run_chat(
         tool_registry=tool_registry,
         approval_callback=ui.prompt_tool_approval if tool_registry else None,
         require_approval=config.tools.require_approval if tool_registry else None,
+        max_context_tokens=config.context.max_tokens,
+        compression_threshold=config.context.compression_threshold,
+    )
+
+    # Compression notification
+    engine.conversation.set_on_compress(
+        lambda freed: ui.print_info(f"Context compressed ({freed} tokens freed)")
     )
     # Health check
     if verbose:
@@ -190,6 +197,8 @@ def _handle_command(command: str, engine, ui) -> bool:
             "\n[bold]Commands:[/bold]\n"
             "  /help     Show this help\n"
             "  /clear    Clear conversation history\n"
+            "  /compact  Compress conversation context\n"
+            "  /tokens   Show token usage\n"
             "  /quit     Exit myAiCoder\n"
         )
         return True
@@ -197,6 +206,19 @@ def _handle_command(command: str, engine, ui) -> bool:
     if cmd == "/clear":
         engine.reset()
         ui.print_info("Conversation cleared.")
+        return True
+
+    if cmd == "/compact":
+        freed = engine.conversation.compact()
+        ui.print_info(f"Compressed: {freed} tokens freed")
+        return True
+
+    if cmd == "/tokens":
+        tokens = engine.conversation.estimate_tokens()
+        max_t = engine.conversation._max_tokens
+        pct = tokens / max_t * 100 if max_t else 0
+        compressions = engine.conversation.compression_count
+        ui.print_info(f"Tokens: {tokens}/{max_t} ({pct:.0f}%) | Compressions: {compressions}")
         return True
 
     if cmd == "/quit":

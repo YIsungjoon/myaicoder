@@ -1,1 +1,2 @@
 - [project_myaicoder_analysis.md](./project_myaicoder_analysis.md) - Gap analysis results for ai-coder-cli Phase 1-3 (2026-03-13, match rate 95%, Iteration 2)
+- [project_integration_testing.md](./project_integration_testing.md) - integration-testing gap analysis (2026-03-14, match rate 95%, vLLM->llama.cpp engine switch)
