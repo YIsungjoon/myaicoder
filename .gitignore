@@ -13,4 +13,5 @@ __pycache__/
 *.tfstate.backup
 .terraform.lock.hcl
 
-Qwen3.5-27B-Q4_0.gguf
+*.gguf
+sungjunCode/
