@@ -29,10 +29,13 @@ class ToolRegistry:
 def create_default_registry() -> ToolRegistry:
     """Create registry with all built-in tools."""
     from myaicoder.tools.bash import BashTool
+    from myaicoder.tools.build_runner import BuildRunnerTool
     from myaicoder.tools.edit import EditTool
     from myaicoder.tools.glob_tool import GlobTool
     from myaicoder.tools.grep_tool import GrepTool
+    from myaicoder.tools.list_dir import ListDirTool
     from myaicoder.tools.read import ReadTool
+    from myaicoder.tools.web_fetch import WebFetchTool
     from myaicoder.tools.write import WriteTool
 
     registry = ToolRegistry()
@@ -42,4 +45,7 @@ def create_default_registry() -> ToolRegistry:
     registry.register(GlobTool())
     registry.register(GrepTool())
     registry.register(BashTool())
+    registry.register(BuildRunnerTool())
+    registry.register(WebFetchTool())
+    registry.register(ListDirTool())
     return registry

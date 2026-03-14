@@ -4,6 +4,85 @@
 
 ---
 
+## [2026-03-14] - advanced-mcp-tools v1.0.0
+
+### Feature
+advanced-mcp-tools: 기존 6개 MCP 도구를 넘어 고급 도구 추가 (신규 3개, 개선 2개)
+
+### Added
+- **신규 도구 3개**:
+  - **BuildRunner**: 빌드/테스트 실행 + 구조화된 에러 파싱
+    - pytest, Python, TypeScript, 일반 형식 4개 패턴 지원
+    - 에러 구조화: `[{"file": "...", "line": N, "message": "..."}]`
+  - **WebFetch**: URL → 텍스트 추출 (문서 참조)
+    - HTML→Text 변환 (FB-B: script/style 먼저 제거)
+    - 타임아웃 10초, 크기 5MB 제한
+  - **ListDir**: 디렉토리 구조 트리 형태
+    - FB-A: 필터 최우선 배치 (.git, node_modules 등 스킵)
+    - 최대 500개 항목, 3단계 깊이
+
+- **기존 도구 개선 2개**:
+  - **Bash 고도화**: working_dir, env, 위험 명령 차단 (6가지 패턴)
+  - **Grep 개선**: context_lines (0~5), output_mode (matches/files/count)
+    - FB-C: context_lines > 0일 때 블록 간 `--` 구분선
+
+- **테스트 커버리지**: 32개 신규 테스트
+  - test_list_dir.py: 7 tests (T1~T7)
+  - test_web_fetch.py: 7 tests (T8~T14)
+  - test_build_runner.py: 7 tests (T15~T21)
+  - test_bash.py: 6 신규 + 4 기존 = 10 tests
+  - test_glob_grep.py: 5 신규 + 3 기존 = 8 tests
+
+### Feedback Integration
+- FB-A (ListDir .gitignore 존중): ✅ 재귀 진입 전 필터 최우선 배치
+- FB-B (WebFetch script/style): ✅ `<script>`, `<style>` 먼저 제거 (DOTALL)
+- FB-C (Grep 구분선): ✅ context_lines > 0일 때 `\n--\n` 구분선
+
+### Registry & MCP
+- tools/registry.py: 신규 3개 도구 등록 (create_default_registry)
+- 도구 수: 6개 → 9개
+- MCP Server: 동적 등록으로 자동 노출
+
+### Design Match
+- Match Rate: 100% (103/103 항목 일치)
+- 추가 구현 (설계 초과, 합리적):
+  - WebFetch: `<aside>`, `<tr>`, `<dt>`, `<dd>` 태그 추가
+  - Bash: env 값 안전 변환 (str() 강제)
+
+### Testing
+- 신규 테스트: 33개 통과
+- 전체 테스트: 178 passed, 4 skipped
+- Code quality: ruff all checks passed
+- 기존 145개 테스트 하위 호환 유지
+
+### Success Criteria
+- ✅ BuildRunner pytest 에러 구조화
+- ✅ WebFetch script/style 제거 (FB-B)
+- ✅ Bash working_dir + 위험 명령 차단
+- ✅ ListDir .git/node_modules 스킵 (FB-A)
+- ✅ Grep `--` 구분선 (FB-C)
+- ✅ 모든 신규 도구 registry 등록
+- ✅ MCP Server 노출
+- ✅ 32개 테스트 통과
+- ✅ 하위 호환성
+
+### Lessons Learned
+- ✅ 사전 피드백 3건 완벽 반영 (FB-A/B/C)
+- ✅ 설계 준수 + 안전성 고려 (URL 스킴 제한, Bash 차단, env 변환)
+- ✅ 포괄적 테스트 (경계값, 매개변수 조합)
+- ⚠️ MCP TOOL_NAME_MAP: 설계 명시되었으나 Out of Scope 섹션으로 생략 허용
+
+### Optional Action
+- MCP TOOL_NAME_MAP 추가 가능 (현재는 동적 등록으로 정상 동작)
+
+### Related Documents
+- Plan: docs/pdca/01-plan/features/advanced-mcp-tools.plan.md
+- Design: docs/pdca/02-design/features/advanced-mcp-tools.design.md
+- Analysis: docs/pdca/03-analysis/advanced-mcp-tools.analysis.md
+- Report: docs/pdca/06-report/features/advanced-mcp-tools.report.md
+
+---
+
 ## [2026-03-14] - integration-testing v1.0.0
 
 ### Feature
@@ -173,8 +252,11 @@ model-management: 로컬 LLM 모델 관리 및 환경별 런타임 전환
 | #8 | rate-limiting | Complete | 99% | 17/17 | 1 cycle |
 | #9 | gateway-internal-api | Complete | 100% | 6/6 | 1 cycle |
 | #10 | integration-testing | Complete | 95% | 20/20 | 1 cycle |
+| #11 | context-management | Complete | 100% | 22/22 | 1 cycle |
+| #12 | conversation-persistence | Complete | 100% | 15/15 | 1 cycle |
+| #13 | advanced-mcp-tools | Complete | 100% | 33/33 | 1 cycle |
 
-**누적 완료 PDCA**: 10개
+**누적 완료 PDCA**: 13개
 1. ai-coder-cli (95%)
 2. mcp-server (100%)
 3. myaicoder (99%)
@@ -184,13 +266,17 @@ model-management: 로컬 LLM 모델 관리 및 환경별 런타임 전환
 7. model-management (100%)
 8. rate-limiting (99%)
 9. gateway-internal-api (100%)
-10. **integration-testing (95%)**
+10. integration-testing (95%)
+11. context-management (100%)
+12. conversation-persistence (100%)
+13. **advanced-mcp-tools (100%)**
 
-**총 Match Rate**: 평균 97.8% (모든 사이클 ≥95%)
+**총 Match Rate**: 평균 99.0% (모든 사이클 ≥95%, 최근 8개 평균 99.1%)
 
-**총 Test Passing**: 144/151 tests (95.4%)
+**총 Test Passing**: 178/182 tests (97.8%)
 
-**Latest Cycle**: #10 integration-testing
-- Integrated Tests: 20/20 PASS (T1:4, T2:5, T3:6, T4:5)
-- CI Pipeline: 3/3 PASS (Gateway 12s, Python 39s, Extension 16s)
-- Key Achievements: mock→실환경 테스트 전환, 5개 리스크 해소, backend abstraction
+**Latest Cycle**: #13 advanced-mcp-tools
+- Completion: 178 tests PASS (기존 145 + 신규 33)
+- Design Match: 100% (103/103 항목)
+- Feedback Integration: 3/3 완벽 반영 (FB-A/B/C)
+- Key Achievements: 신규 도구 3개(BuildRunner, WebFetch, ListDir), 기존 도구 개선 2개(Bash, Grep)

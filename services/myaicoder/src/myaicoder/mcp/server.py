@@ -26,6 +26,9 @@ TOOL_NAME_MAP = {
     "Glob": "glob_search",
     "Grep": "grep_search",
     "Bash": "run_command",
+    "BuildRunner": "build_run",
+    "WebFetch": "web_fetch",
+    "ListDir": "list_dir",
 }
 
 
