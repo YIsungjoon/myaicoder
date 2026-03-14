@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import structlog
+
 from .config import ModelsConfig
 from .models import ModelRoute
+
+logger = structlog.get_logger("gateway.router")
 
 
 class ModelRouter:
@@ -28,6 +32,17 @@ class ModelRouter:
         if not model_name:
             return self._default_upstream
         return self._routes.get(model_name, self._default_upstream)
+
+    def reload(self, model_name: str, upstream: str) -> None:
+        """Reload routing for dev environment model switch.
+
+        All model names route to the same upstream (single vLLM port in dev).
+        This ensures requests with any model name reach the currently loaded model.
+        """
+        self._default_upstream = upstream
+        for name in self._routes:
+            self._routes[name] = upstream
+        logger.info("routes_reloaded", current_model=model_name, upstream=upstream)
 
     def list_models(self) -> list[dict]:
         """Return OpenAI-compatible model list."""

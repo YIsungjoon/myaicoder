@@ -17,6 +17,7 @@ class UserConfig(BaseModel):
 
 class AuthConfig(BaseModel):
     users: list[UserConfig] = []
+    internal_token: str = ""
 
 
 class RouteConfig(BaseModel):

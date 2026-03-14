@@ -11,6 +11,7 @@ from .config import GatewayConfig
 from .rate_limiter import RateLimitHeaderMiddleware, SlidingWindowLimiter
 from .router import ModelRouter
 from .routes.health import router as health_router
+from .routes.internal import router as internal_router
 from .routes.v1 import router as v1_router
 
 
@@ -60,6 +61,7 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
     app.add_middleware(RateLimitHeaderMiddleware)
 
     app.include_router(health_router)
+    app.include_router(internal_router)
     app.include_router(v1_router)
 
     return app

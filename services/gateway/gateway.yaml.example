@@ -7,6 +7,10 @@ server:
   port: 8080
 
 auth:
+  # Internal token for CLI→Gateway communication (model switch sync)
+  # Generate: python -c "import secrets; print(secrets.token_urlsafe(32))"
+  internal_token: ""  # Set this to enable POST /internal/routes/reload
+
   users:
     - api_key_hash: "sha256:PUT_YOUR_HASH_HERE"
       user_id: "admin_01"
