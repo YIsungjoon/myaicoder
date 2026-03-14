@@ -20,3 +20,7 @@ sungjunCode/
 config/gateway.yaml
 config/models.yaml
 !config/.gitkeep
+
+# Build outputs
+package-lock.json
+COMPLETION_SUMMARY_*.md

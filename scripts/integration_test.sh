@@ -1,8 +1,8 @@
 #!/bin/bash
 # myAiCoder Integration Test Script
 # Prerequisites:
-#   1. vLLM server running on :8001
-#      ~/vllm-env/.venv/bin/vllm serve ~/models/Qwen3.5-9B-Q4_K_M.gguf --host 0.0.0.0 --port 8001
+#   1. LLM server running on :8001 (llama.cpp or vLLM)
+#      llama-server --model ~/models/Qwen3.5-9B-Q4_K_M.gguf --port 8001 --n-gpu-layers -1
 #   2. Gateway running on :8080
 #      cd services/gateway && GATEWAY_CONFIG=../../config/gateway.yaml uv run uvicorn app.main:create_app --factory --host 0.0.0.0 --port 8080
 #
