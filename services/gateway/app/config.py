@@ -40,22 +40,66 @@ class LoggingConfig(BaseModel):
     format: str = "json"
 
 
+class RoleLimitConfig(BaseModel):
+    requests_per_minute: int = 30
+    requests_per_hour: int = 500
+
+
+class UserOverrideConfig(BaseModel):
+    user_id: str
+    requests_per_minute: int
+    requests_per_hour: int
+
+
+class RateLimitConfig(BaseModel):
+    enabled: bool = True
+    roles: dict[str, RoleLimitConfig] = {
+        "admin": RoleLimitConfig(requests_per_minute=120, requests_per_hour=3600),
+        "user": RoleLimitConfig(requests_per_minute=30, requests_per_hour=500),
+    }
+    overrides: list[UserOverrideConfig] = []
+
+
 class GatewayConfig(BaseModel):
     server: ServerConfig = ServerConfig()
     auth: AuthConfig = AuthConfig()
     models: ModelsConfig = ModelsConfig()
+    rate_limit: RateLimitConfig = RateLimitConfig()
     logging: LoggingConfig = LoggingConfig()
 
     @classmethod
     def load(cls, path: str | Path | None = None) -> GatewayConfig:
-        """Load config from YAML file. Falls back to env var GATEWAY_CONFIG, then defaults."""
-        if path is None:
-            path = os.environ.get("GATEWAY_CONFIG", "gateway.yaml")
+        """Load config from YAML file.
 
-        config_path = Path(path)
-        if config_path.exists():
-            with open(config_path, encoding="utf-8") as f:
-                data = yaml.safe_load(f) or {}
-            return cls.model_validate(data)
+        Search order:
+        1. Explicit path argument
+        2. GATEWAY_CONFIG env var
+        3. config/gateway.yaml (central config directory)
+        4. ./gateway.yaml (service directory, backward compat)
+        """
+        if path is not None:
+            config_path = Path(path)
+            if config_path.exists():
+                return cls._load_yaml(config_path)
+            return cls()
+
+        env_path = os.environ.get("GATEWAY_CONFIG")
+        search: list[Path] = []
+        if env_path:
+            search.append(Path(env_path))
+        search.extend([
+            Path("config/gateway.yaml"),
+            Path("gateway.yaml"),
+        ])
+
+        for p in search:
+            if p.exists():
+                return cls._load_yaml(p)
 
         return cls()
+
+    @classmethod
+    def _load_yaml(cls, path: Path) -> GatewayConfig:
+        with open(path, encoding="utf-8") as f:
+            data = yaml.safe_load(f) or {}
+        return cls.model_validate(data)

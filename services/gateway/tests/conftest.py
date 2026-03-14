@@ -15,6 +15,7 @@ from app.config import (
     UserConfig,
 )
 from app.main import create_app
+from app.rate_limiter import SlidingWindowLimiter
 from app.router import ModelRouter
 
 TEST_API_KEY = "test-secret-key-12345"
@@ -67,6 +68,7 @@ async def client(test_config: GatewayConfig) -> AsyncClient:
     app.state.config = test_config
     app.state.auth_store = AuthStore(test_config)
     app.state.model_router = ModelRouter(test_config.models)
+    app.state.rate_limiter = SlidingWindowLimiter()
     app.state.http_client = httpx.AsyncClient(
         timeout=httpx.Timeout(connect=2.0, read=5.0, write=2.0, pool=2.0),
         limits=httpx.Limits(max_connections=10, max_keepalive_connections=5),

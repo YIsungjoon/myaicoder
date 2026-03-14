@@ -48,13 +48,15 @@ class ModelsConfig:
 
         Search order:
         1. Explicit path
-        2. ./models.yaml (project scope)
-        3. ~/.config/myaicoder/models.yaml (user scope)
+        2. config/models.yaml (central config directory)
+        3. ./models.yaml (project scope)
+        4. ~/.config/myaicoder/models.yaml (user scope)
         """
         search: list[Path] = []
         if path:
             search.append(Path(path))
         search.extend([
+            Path.cwd() / "config" / "models.yaml",
             Path.cwd() / "models.yaml",
             Path.home() / ".config" / "myaicoder" / "models.yaml",
         ])

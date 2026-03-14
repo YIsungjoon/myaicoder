@@ -8,6 +8,7 @@ from fastapi import FastAPI
 
 from .auth import AuthStore
 from .config import GatewayConfig
+from .rate_limiter import RateLimitHeaderMiddleware, SlidingWindowLimiter
 from .router import ModelRouter
 from .routes.health import router as health_router
 from .routes.v1 import router as v1_router
@@ -39,6 +40,7 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
         app.state.config = config
         app.state.auth_store = AuthStore(config)
         app.state.model_router = ModelRouter(config.models)
+        app.state.rate_limiter = SlidingWindowLimiter()
         app.state.http_client = httpx.AsyncClient(
             timeout=httpx.Timeout(connect=5.0, read=None, write=5.0, pool=5.0),
             limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
@@ -51,9 +53,12 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
 
     app = FastAPI(
         title="myAiCoder Gateway",
-        description="API Gateway for vLLM - auth, logging, model routing",
+        description="API Gateway for vLLM - auth, logging, model routing, rate limiting",
         lifespan=lifespan,
     )
+
+    app.add_middleware(RateLimitHeaderMiddleware)
+
     app.include_router(health_router)
     app.include_router(v1_router)
 

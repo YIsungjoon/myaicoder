@@ -1,0 +1,3 @@
+# Central Configuration Directory
+# Place gateway.yaml, models.yaml, etc. here for centralized management.
+# Config load priority: config/ → service directory → ~/.config/myaicoder/

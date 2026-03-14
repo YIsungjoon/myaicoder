@@ -24,6 +24,20 @@ models:
       upstream: "http://localhost:8001/v1"
       description: "Qwen 3.5 9B (Fast)"
 
+rate_limit:
+  enabled: true
+  roles:
+    admin:
+      requests_per_minute: 120
+      requests_per_hour: 3600
+    user:
+      requests_per_minute: 30
+      requests_per_hour: 500
+  # overrides:
+  #   - user_id: "power_user_01"
+  #     requests_per_minute: 60
+  #     requests_per_hour: 1000
+
 logging:
   level: "INFO"
   format: "json"

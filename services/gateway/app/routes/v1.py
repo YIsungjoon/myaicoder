@@ -6,11 +6,14 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import Response, StreamingResponse
 
-from ..deps import get_current_user
+from ..deps import check_rate_limit, get_current_user
 from ..models import User
 from ..proxy import forward_request, stream_upstream
 
-router = APIRouter(prefix="/v1", dependencies=[Depends(get_current_user)])
+router = APIRouter(
+    prefix="/v1",
+    dependencies=[Depends(get_current_user), Depends(check_rate_limit)],
+)
 
 
 @router.get("/models")
