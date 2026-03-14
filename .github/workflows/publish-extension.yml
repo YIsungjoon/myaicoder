@@ -1,0 +1,54 @@
+name: Build Extension
+
+on:
+  push:
+    tags:
+      - 'ext-v*'
+
+jobs:
+  build:
+    name: Build & Release VS Code Extension
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/vscode-extension
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Package
+        run: npx @vscode/vsce package --no-dependencies
+
+      - name: Upload .vsix artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myaicoder-vsix
+          path: apps/vscode-extension/*.vsix
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: apps/vscode-extension/*.vsix
+          generate_release_notes: true

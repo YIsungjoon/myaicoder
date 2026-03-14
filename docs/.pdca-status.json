@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-14T11:39:45.183Z",
+  "lastUpdated": "2026-03-14T13:47:45.863Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -11,7 +11,7 @@
     "gateway",
     "scripts"
   ],
-  "primaryFeature": "conversation-persistence",
+  "primaryFeature": "observability",
   "features": {
     "api-gateway": {
       "phase": "completed",
@@ -114,9 +114,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-13T16:59:29.510Z",
-        "lastUpdated": "2026-03-14T02:27:45.821Z"
+        "lastUpdated": "2026-03-14T13:47:45.863Z"
       },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/gateway/tests/test_internal.py"
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/gateway/app/logging.py"
     },
     "scripts": {
       "phase": "do",
@@ -143,6 +143,32 @@
       "startedAt": "2026-03-14T09:00:00.000Z",
       "completedAt": "2026-03-14T10:00:00.000Z",
       "description": "대화 세션 영속성 - CLI 종료 후 대화/요약/압축상태 유지 (Track A-1)"
+    },
+    "observability": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "analysisPath": "docs/pdca/03-analysis/observability.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/observability.report.md",
+      "completedAt": "2026-03-14T16:00:00.000Z",
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/observability.plan.md",
+      "designPath": "docs/pdca/02-design/features/observability.design.md",
+      "startedAt": "2026-03-14T15:00:00.000Z",
+      "description": "Gateway Observability - Prometheus 메트릭 + Grafana 대시보드 (Track C-1)"
+    },
+    "marketplace-deployment": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 91,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/marketplace-deployment.plan.md",
+      "designPath": "docs/pdca/02-design/features/marketplace-deployment.design.md",
+      "analysisPath": "docs/pdca/03-analysis/marketplace-deployment.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/marketplace-deployment.report.md",
+      "completedAt": "2026-03-14T14:00:00.000Z",
+      "startedAt": "2026-03-14T13:00:00.000Z",
+      "description": "VS Code Extension 마켓플레이스 공식 배포 (Track A-2)"
     },
     "advanced-mcp-tools": {
       "phase": "completed",
@@ -177,7 +203,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-14T11:39:45.183Z"
+    "lastActivity": "2026-03-14T13:47:45.863Z"
   },
   "history": [
     {
@@ -1310,6 +1336,66 @@
     {
       "timestamp": "2026-03-14T11:39:45.183Z",
       "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:09.459Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:16.648Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:32.121Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:42.519Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:50.245Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:03.494Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:14.117Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:24.993Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:35.793Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:45.863Z",
+      "feature": "gateway",
       "phase": "do",
       "action": "updated"
     }

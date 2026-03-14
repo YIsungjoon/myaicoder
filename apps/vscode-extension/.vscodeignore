@@ -6,4 +6,11 @@ node_modules/**
 .gitignore
 tsconfig.json
 esbuild.config.mjs
+vitest.config.ts
 **/*.map
+**/*.test.ts
+**/*.spec.ts
+.claude/**
+.github/**
+pnpm-lock.yaml
+CONTRIBUTING.md

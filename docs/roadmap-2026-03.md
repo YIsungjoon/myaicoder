@@ -1,7 +1,7 @@
 # myAiCoder 로드맵 — 2026년 3월~
 
 **작성**: 2026-03-14
-**기준**: 11개 PDCA 피처 완료, 핵심 파이프라인 동작
+**기준**: 14개 PDCA 피처 완료, 핵심 파이프라인 동작
 
 ---
 
@@ -34,18 +34,18 @@ Core System ✅ → Gateway ✅ → Model Mgmt ✅ → Intelligence ✅ → QA �
 | 의존 | context-management (Turn 구조 활용) |
 | 우선순위 | **높음** — context-management 직후 자연스러운 연장 |
 
-### A-2. Marketplace 배포
+### A-2. Extension 사내 배포 ✅ (completed 2026-03-14, 91%)
 
-**목적**: VS Code Extension 공식 배포
+**목적**: VS Code Extension 사내 전용 패키징·배포
 
 | 항목 | 내용 |
 |------|------|
-| 패키징 | vsce package (.vsix) |
-| 필수 작업 | 아이콘, README, CHANGELOG, 라이선스 |
-| 보안 검토 | API key 노출 방지, 권한 최소화 |
-| 배포 대상 | VS Code Marketplace |
-| 의존 | vscode-extension 안정화 완료 |
-| 우선순위 | **중간** — 내부 사용 안정화 후 |
+| 패키징 | vsce package (.vsix) — 105KB, 경고 0개 |
+| 완료 작업 | 아이콘, README, CHANGELOG, MIT 라이선스, 보안 검토 |
+| 배포 전략 | 사내 전용 (퍼블릭 마켓플레이스 미사용 — 보안/자산 보호) |
+| 배포 채널 | GitHub Releases → 사내 인트라넷 / 카카오톡 |
+| CI/CD | `ext-v*` 태그 → GitHub Actions → .vsix 자동 빌드·Release 첨부 |
+| 설치 | `code --install-extension myaicoder-x.y.z.vsix` |
 
 ---
 
@@ -114,12 +114,12 @@ Core System ✅ → Gateway ✅ → Model Mgmt ✅ → Intelligence ✅ → QA �
 ## 권장 실행 순서
 
 ```
-즉시 (다음 세션):
-  A-1. 대화 저장/로드 ← context-management 직후, 가장 자연스러운 연장
+완료:
+  A-1. 대화 저장/로드 ✅ (conversation-persistence, 100%)
+  B-1. 고급 MCP 도구 ✅ (advanced-mcp-tools, 100%)
+  A-2. Extension 사내 배포 ✅ (marketplace-deployment, 91%)
 
-이후 (우선순위순):
-  B-1. 고급 MCP 도구 ← 에이전트 실용성 극대화
-  A-2. Marketplace 배포 ← 내부 안정화 후
+다음 (우선순위순):
   C-1. Observability ← 다중 사용자 운영 준비
   B-2. Token Rate Limiting ← 필요 시
   C-2. Performance Tuning ← 필요 시
@@ -127,7 +127,7 @@ Core System ✅ → Gateway ✅ → Model Mgmt ✅ → Intelligence ✅ → QA �
 
 ---
 
-## 참고: 완료된 피처 (11개)
+## 참고: 완료된 피처 (14개)
 
 | # | Feature | Match Rate |
 |---|---------|-----------|
@@ -142,3 +142,6 @@ Core System ✅ → Gateway ✅ → Model Mgmt ✅ → Intelligence ✅ → QA �
 | 9 | gateway-internal-api | 100% |
 | 10 | integration-testing | 95% |
 | 11 | context-management | 100% |
+| 12 | conversation-persistence | 100% |
+| 13 | advanced-mcp-tools | 100% |
+| 14 | marketplace-deployment | 91% |

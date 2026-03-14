@@ -1,17 +1,20 @@
 from __future__ import annotations
 
+import uuid
 from contextlib import asynccontextmanager
 
 import httpx
 import structlog
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 from .auth import AuthStore
 from .config import GatewayConfig
+from .metrics import ACTIVE_REQUESTS, REQUEST_COUNT
 from .rate_limiter import RateLimitHeaderMiddleware, SlidingWindowLimiter
 from .router import ModelRouter
 from .routes.health import router as health_router
 from .routes.internal import router as internal_router
+from .routes.metrics import router as metrics_router
 from .routes.v1 import router as v1_router
 
 
@@ -58,10 +61,33 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
         lifespan=lifespan,
     )
 
+    @app.middleware("http")
+    async def metrics_middleware(request: Request, call_next):
+        # Clear previous request context to prevent ID leaking across async requests
+        structlog.contextvars.clear_contextvars()
+        request_id = request.headers.get("X-Request-ID", str(uuid.uuid4())[:8])
+        request.state.request_id = request_id
+        structlog.contextvars.bind_contextvars(request_id=request_id)
+
+        ACTIVE_REQUESTS.inc()
+        status_code = 500
+        try:
+            response = await call_next(request)
+            status_code = response.status_code
+            return response
+        finally:
+            ACTIVE_REQUESTS.dec()
+            REQUEST_COUNT.labels(
+                method=request.method,
+                path=request.url.path,
+                status=str(status_code),
+            ).inc()
+
     app.add_middleware(RateLimitHeaderMiddleware)
 
     app.include_router(health_router)
     app.include_router(internal_router)
+    app.include_router(metrics_router)
     app.include_router(v1_router)
 
     return app

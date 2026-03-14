@@ -25,10 +25,12 @@ def log_usage(
     ttft_sec: float | None = None,
     status_code: int = 200,
     api_key_masked: str = "",
+    request_id: str = "",
 ) -> None:
     """Log a structured usage entry."""
     logger.info(
         "request_completed",
+        request_id=request_id,
         user_id=user_id,
         user_name=user_name,
         api_key=api_key_masked,

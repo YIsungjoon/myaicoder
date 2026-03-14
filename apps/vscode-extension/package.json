@@ -4,6 +4,28 @@
   "description": "AI coding assistant powered by local LLM via MCP",
   "version": "0.1.0",
   "publisher": "myaicoder",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/myaicoder/myaicoder"
+  },
+  "homepage": "https://github.com/myaicoder/myaicoder#readme",
+  "bugs": {
+    "url": "https://github.com/myaicoder/myaicoder/issues"
+  },
+  "keywords": [
+    "ai",
+    "coding-assistant",
+    "llm",
+    "mcp",
+    "local-ai",
+    "copilot-alternative"
+  ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -93,7 +115,8 @@
   "scripts": {
     "build": "node esbuild.config.mjs",
     "watch": "node esbuild.config.mjs --watch",
-    "package": "vsce package",
+    "package": "vsce package --no-dependencies",
+    "prepackage": "npm run build",
     "test": "vitest run",
     "lint": "tsc --noEmit -p tsconfig.json"
   },
@@ -103,7 +126,8 @@
     "@vscode/test-electron": "^2.3.0",
     "esbuild": "^0.20.0",
     "typescript": "^5.4.0",
-    "vitest": "^1.3.0"
+    "vitest": "^1.3.0",
+    "@vscode/vsce": "^3.0.0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
