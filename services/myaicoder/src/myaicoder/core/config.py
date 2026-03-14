@@ -52,12 +52,21 @@ class ContextConfig:
 
 
 @dataclass
+class SessionConfig:
+    auto_save: bool = True
+    auto_load: bool = True
+    max_sessions: int = 20
+    sessions_dir: str | None = None
+
+
+@dataclass
 class AppConfig:
     llm: LLMConfig = field(default_factory=LLMConfig)
     tools: ToolsConfig = field(default_factory=ToolsConfig)
     ui: UIConfig = field(default_factory=UIConfig)
     context: ContextConfig = field(default_factory=ContextConfig)
     server: ServerConfig = field(default_factory=ServerConfig)
+    session: SessionConfig = field(default_factory=SessionConfig)
 
     @classmethod
     def load(cls, path: str | None = None) -> "AppConfig":
@@ -108,5 +117,9 @@ class AppConfig:
             for k, v in data["server"].items():
                 if hasattr(config.server, k):
                     setattr(config.server, k, v)
+        if "session" in data:
+            for k, v in data["session"].items():
+                if hasattr(config.session, k):
+                    setattr(config.session, k, v)
 
         return config

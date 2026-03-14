@@ -155,6 +155,20 @@ class ConversationManager:
     def set_on_compress(self, callback: Callable[[int], None]) -> None:
         self._on_compress = callback
 
+    def restore(
+        self,
+        messages: list[Message],
+        summary: str = "",
+        compression_count: int = 0,
+    ) -> None:
+        """Restore conversation state from a saved session.
+
+        Caller should clear() first if replacing existing state.
+        """
+        self._history = list(messages)
+        self._summary = summary
+        self._compression_count = compression_count
+
     # ── Internal: Turn Grouping ──
 
     @staticmethod

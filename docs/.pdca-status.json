@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-14T07:50:49.526Z",
+  "lastUpdated": "2026-03-14T09:29:02.077Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -11,7 +11,7 @@
     "gateway",
     "scripts"
   ],
-  "primaryFeature": "api-gateway",
+  "primaryFeature": "conversation-persistence",
   "features": {
     "api-gateway": {
       "phase": "completed",
@@ -68,10 +68,10 @@
       },
       "timestamps": {
         "started": "2026-03-13T06:33:18.360Z",
-        "lastUpdated": "2026-03-14T07:50:49.526Z",
+        "lastUpdated": "2026-03-14T09:29:02.077Z",
         "completedAt": "2026-03-13T09:25:00.000Z"
       },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/tests/test_core/test_conversation.py"
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/tests/test_core/test_session.py"
     },
     "integration-and-ci": {
       "phase": "completed",
@@ -130,6 +130,19 @@
         "lastUpdated": "2026-03-14T03:54:05.752Z"
       },
       "lastFile": "/home/buttumaklevit/Desktop/myaicoder/scripts/integration_test.sh"
+    },
+    "conversation-persistence": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/conversation-persistence.plan.md",
+      "designPath": "docs/pdca/02-design/features/conversation-persistence.design.md",
+      "analysisPath": "docs/pdca/03-analysis/conversation-persistence.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/conversation-persistence.report.md",
+      "startedAt": "2026-03-14T09:00:00.000Z",
+      "completedAt": "2026-03-14T10:00:00.000Z",
+      "description": "대화 세션 영속성 - CLI 종료 후 대화/요약/압축상태 유지 (Track A-1)"
     }
   },
   "pipeline": {
@@ -151,7 +164,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-14T07:50:49.526Z"
+    "lastActivity": "2026-03-14T09:29:02.077Z"
   },
   "history": [
     {
@@ -1121,6 +1134,72 @@
     },
     {
       "timestamp": "2026-03-14T07:50:49.526Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:23:38.626Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:23:50.008Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:24:00.934Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:24:05.368Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:24:10.959Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:25:37.762Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:26:22.071Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:26:48.145Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:27:03.894Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:27:20.763Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:29:02.077Z",
       "feature": "myaicoder",
       "phase": "do",
       "action": "updated"

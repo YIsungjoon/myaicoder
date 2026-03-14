@@ -299,3 +299,54 @@ class TestSummaryOldestFirstDrop:
             assert len(cm.summary) <= 2000
             # Most recent compressed turns should be in summary
             # Oldest should be dropped
+
+
+# ── Restore (conversation-persistence, FB-1) ──
+
+
+class TestRestore:
+    def test_restore_messages(self):
+        """T21: restore() sets history correctly."""
+        cm = ConversationManager()
+        messages = [_user("Hello"), _assistant("Hi")]
+        cm.restore(messages)
+        assert cm.message_count == 2
+        assert cm.history[0].content == "Hello"
+
+    def test_restore_summary_and_compression_count(self):
+        """T22: restore() sets summary and compression_count (FB-1)."""
+        cm = ConversationManager()
+        cm.restore(
+            messages=[_user("Test")],
+            summary="Previous context about gateway",
+            compression_count=5,
+        )
+        assert cm.summary == "Previous context about gateway"
+        assert cm.compression_count == 5
+
+    def test_restore_then_continue(self):
+        """T23: After restore, add_message and get_messages work normally."""
+        cm = ConversationManager()
+        cm.restore([_user("Old message"), _assistant("Old response")])
+        cm.add_message(_user("New message"))
+
+        messages = cm.get_messages("system")
+        assert cm.message_count == 3
+        # system + 3 history messages
+        assert len(messages) == 4
+
+    def test_restore_with_tool_calls(self):
+        """T24: Restore with tool_calls, then Turn grouping works."""
+        cm = ConversationManager()
+        messages = [
+            _user("read file"),
+            _assistant(None, tool_calls=[_tc("Read", "c1")]),
+            _tool("file content", "c1"),
+            _assistant("Here's the file"),
+        ]
+        cm.restore(messages)
+
+        turns = ConversationManager._group_into_turns(cm.history)
+        assert len(turns) == 1
+        assert turns[0].is_tool_turn is True
+        assert len(turns[0].messages) == 4

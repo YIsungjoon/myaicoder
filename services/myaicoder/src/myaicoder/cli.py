@@ -1,6 +1,7 @@
 """CLI entry point using click."""
 
 import asyncio
+from pathlib import Path
 
 import click
 
@@ -43,6 +44,7 @@ async def _run_chat(
     from myaicoder.core.config import AppConfig
     from myaicoder.core.context import ContextManager
     from myaicoder.core.engine import AgentEngine
+    from myaicoder.core.session import SessionStore, _deserialize_message
     from myaicoder.llm.vllm_provider import VLLMProvider
     from myaicoder.tools.registry import create_default_registry
     from myaicoder.ui.chat import ChatUI
@@ -132,6 +134,32 @@ async def _run_chat(
             await mcp_client.close()
         return
 
+    # ── Session setup ──
+    sessions_dir = (
+        Path(config.session.sessions_dir)
+        if config.session.sessions_dir
+        else None
+    )
+    store = SessionStore(sessions_dir=sessions_dir)
+    current_session_id: str | None = None
+
+    # Auto-load last session
+    if config.session.auto_load:
+        try:
+            last = store.load_last()
+            if last:
+                messages = [_deserialize_message(m) for m in last.messages]
+                engine.conversation.restore(
+                    messages, last.summary, last.compression_count
+                )
+                current_session_id = last.id
+                ui.print_info(
+                    f'Restored: "{last.title}" ({last.message_count} messages)'
+                )
+        except Exception as e:
+            if verbose:
+                ui.print_info(f"Session restore: {e}")
+
     # Interactive mode
     ui.print_welcome()
 
@@ -139,10 +167,19 @@ async def _run_chat(
         try:
             user_input = ui.get_input()
         except KeyboardInterrupt:
+            # Ctrl+C at input prompt: save and exit
+            if config.session.auto_save:
+                current_session_id = _save_session(
+                    store, engine, current_session_id, ui
+                )
             ui.print_goodbye()
             break
 
-        if user_input is None:
+        if user_input is None:  # Ctrl+D
+            if config.session.auto_save:
+                current_session_id = _save_session(
+                    store, engine, current_session_id, ui
+                )
             ui.print_goodbye()
             break
 
@@ -151,26 +188,75 @@ async def _run_chat(
 
         # Built-in commands
         if user_input.startswith("/"):
-            if _handle_command(user_input, engine, ui):
+            result = _handle_command(
+                user_input, engine, ui, store, current_session_id
+            )
+            if result is True:
                 continue
-            if user_input == "/quit":
+            if result is False:  # /quit
+                if config.session.auto_save:
+                    current_session_id = _save_session(
+                        store, engine, current_session_id, ui
+                    )
                 ui.print_goodbye()
                 break
+            if isinstance(result, str):
+                # /new or /load returned new session_id
+                current_session_id = result
+                continue
 
+        # Chat
         try:
             if no_stream:
                 response = await engine.chat(user_input)
                 ui.print_assistant(response)
             else:
                 ui.print_streaming_start()
-                async for chunk in engine.chat_stream(user_input):
-                    ui.print_streaming_chunk(chunk)
-                ui.print_streaming_end()
+                try:
+                    async for chunk in engine.chat_stream(user_input):
+                        ui.print_streaming_chunk(chunk)
+                    ui.print_streaming_end()
+                except KeyboardInterrupt:
+                    # Streaming interrupted: cancel response only, keep conversation
+                    ui.print_streaming_end()
+                    ui.print_info("Response interrupted.")
         except Exception as e:
             ui.print_error(str(e))
 
     if mcp_client:
         await mcp_client.close()
+
+
+def _save_session(store, engine, session_id, ui) -> str:
+    """Save current conversation. Returns session_id."""
+    if engine.conversation.message_count == 0:
+        return session_id or ""
+    try:
+        data = store.save(engine.conversation, session_id=session_id)
+        ui.print_info(f'Session saved: "{data.title}"')
+        return data.id
+    except OSError as e:
+        ui.print_info(f"Warning: Could not save session: {e}")
+        return session_id or ""
+
+
+def _format_age(iso_str: str) -> str:
+    """Format ISO timestamp as human-readable age."""
+    from datetime import datetime
+
+    try:
+        dt = datetime.fromisoformat(iso_str)
+        delta = datetime.now() - dt
+        minutes = int(delta.total_seconds() / 60)
+        if minutes < 60:
+            return f"{minutes}m ago"
+        hours = minutes // 60
+        if hours < 24:
+            return f"{hours}h ago"
+        days = hours // 24
+        return f"{days}d ago"
+    except (ValueError, TypeError):
+        return ""
 
 
 async def _one_shot(engine, ui, prompt: str, no_stream: bool):
@@ -188,18 +274,30 @@ async def _one_shot(engine, ui, prompt: str, no_stream: bool):
         ui.print_error(str(e))
 
 
-def _handle_command(command: str, engine, ui) -> bool:
-    """Handle slash commands. Returns True if handled."""
+def _handle_command(command: str, engine, ui, store=None, current_session_id=None):
+    """Handle slash commands.
+
+    Returns:
+        True: command handled, continue loop
+        False: /quit, exit loop
+        str: new session_id (from /new or /load)
+    """
+    from myaicoder.core.session import _deserialize_message, _generate_session_id
+
     cmd = command.lower().strip()
 
     if cmd == "/help":
         ui.console.print(
             "\n[bold]Commands:[/bold]\n"
-            "  /help     Show this help\n"
-            "  /clear    Clear conversation history\n"
-            "  /compact  Compress conversation context\n"
-            "  /tokens   Show token usage\n"
-            "  /quit     Exit myAiCoder\n"
+            "  /help              Show this help\n"
+            "  /clear             Clear conversation history\n"
+            "  /compact           Compress conversation context\n"
+            "  /tokens            Show token usage\n"
+            "  /sessions          List saved sessions\n"
+            "  /new               Start new session (saves current)\n"
+            "  /load <id|index>   Load a saved session\n"
+            "  /sessions delete <id|index>  Delete a session\n"
+            "  /quit              Exit myAiCoder\n"
         )
         return True
 
@@ -221,11 +319,95 @@ def _handle_command(command: str, engine, ui) -> bool:
         ui.print_info(f"Tokens: {tokens}/{max_t} ({pct:.0f}%) | Compressions: {compressions}")
         return True
 
+    # ── Session commands ──
+
+    if cmd == "/sessions" and store:
+        sessions = store.list_sessions()
+        if not sessions:
+            ui.print_info("No saved sessions.")
+            return True
+        ui.console.print("\n[bold]Sessions:[/bold]")
+        for i, s in enumerate(sessions, 1):
+            age = _format_age(s.get("updated_at", ""))
+            ui.console.print(
+                f"  [{i}] {s['id']} — {s['title']} ({s['message_count']} msgs, {age})"
+            )
+        ui.console.print()
+        return True
+
+    if cmd.startswith("/sessions delete") and store:
+        parts = command.strip().split(maxsplit=2)
+        if len(parts) < 3:
+            ui.print_info("Usage: /sessions delete <session_id or index>")
+            return True
+        target = parts[2].strip()
+        session_id = _resolve_session_target(target, store)
+        if not session_id:
+            ui.print_info(f"Session not found: {target}")
+            return True
+        if store.delete(session_id):
+            ui.print_info(f"Deleted session: {session_id}")
+        else:
+            ui.print_info(f"Session not found: {session_id}")
+        return True
+
+    if cmd == "/new" and store:
+        # Save current session before starting new one
+        if engine.conversation.message_count > 0:
+            _save_session(store, engine, current_session_id, ui)
+        engine.reset()
+        ui.print_info("New session started.")
+        return _generate_session_id()
+
+    if cmd.startswith("/load") and store:
+        parts = command.strip().split(maxsplit=1)
+        if len(parts) < 2:
+            ui.print_info("Usage: /load <session_id or index>")
+            return True
+        target = parts[1].strip()
+        session_id = _resolve_session_target(target, store)
+        if not session_id:
+            ui.print_info(f"Session not found: {target}")
+            return True
+
+        # Save current before loading
+        if engine.conversation.message_count > 0:
+            _save_session(store, engine, current_session_id, ui)
+
+        try:
+            data = store.load(session_id)
+            messages = [_deserialize_message(m) for m in data.messages]
+            engine.conversation.clear()
+            engine.conversation.restore(
+                messages, data.summary, data.compression_count
+            )
+            ui.print_info(f'Loaded: "{data.title}" ({data.message_count} messages)')
+            return session_id
+        except (FileNotFoundError, ValueError) as e:
+            ui.print_info(f"Failed to load: {e}")
+            return True
+
     if cmd == "/quit":
         return False  # Let the caller handle exit
 
     ui.print_info(f"Unknown command: {command}")
     return True
+
+
+def _resolve_session_target(target: str, store) -> str | None:
+    """Resolve a session target (index number or session ID) to session_id."""
+    sessions = store.list_sessions()
+    try:
+        idx = int(target) - 1
+        if 0 <= idx < len(sessions):
+            return sessions[idx]["id"]
+    except ValueError:
+        pass
+    # Check if it's a direct session_id
+    for s in sessions:
+        if s["id"] == target:
+            return target
+    return None
 
 
 @main.command()
