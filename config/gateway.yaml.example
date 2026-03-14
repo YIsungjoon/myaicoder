@@ -1,0 +1,36 @@
+# myAiCoder Gateway Configuration
+# Copy to config/gateway.yaml and fill in your values:
+#   cp config/gateway.yaml.example config/gateway.yaml
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+auth:
+  users:
+    - user_id: "dev_user"
+      name: "Developer"
+      # Generate hash: python -c "import hashlib; print(hashlib.sha256(b'your-api-key').hexdigest())"
+      api_key_hash: "<your-sha256-hash-here>"
+      role: "admin"
+  # Generate token: python -c "import secrets; print(secrets.token_urlsafe(32))"
+  internal_token: "<your-internal-token-here>"
+
+models:
+  default_model: "qwen3.5-9b"
+  routes:
+    "qwen3.5-9b": "http://localhost:8001/v1"
+
+rate_limit:
+  enabled: true
+  roles:
+    admin:
+      requests_per_minute: 120
+      requests_per_hour: 3600
+    user:
+      requests_per_minute: 30
+      requests_per_hour: 500
+
+logging:
+  level: "INFO"
+  format: "json"

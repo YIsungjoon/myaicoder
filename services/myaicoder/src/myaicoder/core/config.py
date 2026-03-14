@@ -9,7 +9,7 @@ from pathlib import Path
 class LLMConfig:
     provider: str = "vllm"
     base_url: str = "http://localhost:8080/v1"
-    model: str = "Qwen3.5-27B-Q4_0.gguf"
+    model: str = "qwen3.5-9b"
     temperature: float = 0.0
     max_tokens: int = 8192
 

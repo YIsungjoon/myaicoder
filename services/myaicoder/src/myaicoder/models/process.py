@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import shutil
 import signal
 from collections.abc import Callable
@@ -45,11 +46,13 @@ class VLLMProcessManager:
         self._instances: dict[int, VLLMInstance] = {}
         self._backend = backend
         if command:
-            self._cmd = command
+            self._cmd = command                                     # 1. yaml 명시값
+        elif os.environ.get("LLAMA_SERVER_PATH") and backend == "llama-cpp":
+            self._cmd = os.environ["LLAMA_SERVER_PATH"]             # 2. 환경변수
         elif backend == "llama-cpp":
-            self._cmd = "llama-server"
+            self._cmd = "llama-server"                              # 3. PATH 자동 탐지
         else:
-            self._cmd = "vllm"
+            self._cmd = os.environ.get("VLLM_PATH", "vllm")
         self._original_sigint: signal.Handlers | None = None
         self._original_sigterm: signal.Handlers | None = None
 

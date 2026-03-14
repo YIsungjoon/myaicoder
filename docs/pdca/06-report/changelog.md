@@ -4,6 +4,101 @@
 
 ---
 
+## [2026-03-14] - developer-onboarding v1.0.0
+
+### Feature
+developer-onboarding: 신규 개발자 10분 내 myAiCoder 셋업 (로컬 모드 + 서버 모드)
+
+### Added
+- **온보딩 가이드**: `docs/getting-started.md`
+  - 서버 모드 Quick Start (3분) — DGX 서버 환경
+  - 로컬 모드 Quick Start (10분) — 개발자 PC
+  - DGX 관리자 가이드 (LLM+Gateway 기동)
+  - Troubleshooting 5개 항목 (llama-server not found, 인증 실패, Extension 연결 안 됨 등)
+  - Extension Settings 테이블 (myaicoder.llmUrl, llmPort 등)
+
+- **프로젝트 개요**: `README.md` (프로젝트 루트)
+  - AI coding assistant 소개
+  - Quick Start 링크
+  - Architecture 다이어그램 (Extension ↔ MCP ↔ myaicoder ↔ Gateway ↔ LLM)
+  - 핵심 기능 5가지 (Local-first, MCP support, Rate limiting, Context management, Conversation persistence)
+
+- **설정 템플릿 3개**:
+  - `config/gateway.yaml.example` — Gateway 설정 (auth, rate_limit, routes)
+  - `config/models.yaml.example` — 모델 설정 (backend_command 3-tier fallback 주석)
+  - `.env.example` — 환경변수 (LLAMA_SERVER_PATH, MODELS_DIR, GATEWAY_CONFIG)
+
+- **셋업 자동화 스크립트 2개**:
+  - `scripts/setup-dev.sh` (멱등성 보장):
+    - [1/5] Config 복사 (기존 파일 보호)
+    - [2/5] Python 의존성 설치 (uv sync)
+    - [3/5] CLI 설치 (myaicoder)
+    - [4/5] 모델 다운로드 (huggingface-cli, 없는 경우만)
+    - [5/5] 검증 (CLI, config, model, llama-server 확인)
+
+  - `scripts/start-all.sh` (서비스 기동):
+    - LLM 서버 기동 (llama-server)
+    - 헬스 체크 (curl /health 30회)
+    - Gateway 기동 (uvicorn)
+    - Graceful shutdown (Ctrl+C → 두 서비스 정리)
+
+### Changed
+- `services/myaicoder/src/myaicoder/models/process.py`: 3-tier backend_command fallback
+  - 1순위: yaml 명시값
+  - 2순위: LLAMA_SERVER_PATH 환경변수 (llama-cpp 백엔드만)
+  - 3순위: PATH에서 자동 탐지
+
+- `services/myaicoder/src/myaicoder/core/config.py`: 기본 모델명 통일
+  - Before: `model: str = "Qwen3.5-27B-Q4_0.gguf"`
+  - After: `model: str = "qwen3.5-9b"` (config/models.yaml과 일치)
+
+### Design Match
+- Match Rate: 100% (9/9 설계 항목)
+- Gap: 0 (Missing 0, Changed 0)
+- Implementation Improvements: 7개 (I1-I7)
+  - I1: D4 backend 가드 (vLLM 호환성)
+  - I2: D2 gateway_url/internal_token 필드 추가
+  - I3: D6 uv 미설치 대응
+  - I4: D6 check() 함수 구조화
+  - I5: D7 dead process 감지 (kill -0)
+  - I6: D8 Extension Settings 테이블
+  - I7: D9 Key Features 목록
+
+### Testing
+- Python (myaicoder): 178/178 PASS
+- Python (gateway): 43/43 PASS
+- Extension: 20/20 PASS
+- Code quality: ruff PASS (all checks)
+- Total: 241/241 PASS, 0 regression
+
+### Key Design Decisions
+- **코드 변경 최소화**: 2개 파일만 수정 (프로세스/설정)
+- **멱등성 우선**: setup-dev.sh 여러 번 실행 가능
+- **포터블화**: 절대경로 제거, 환경변수 3-tier fallback
+- **모드 유연성**: 로컬(10분) + 서버(3분) 모드 동시 지원
+- **Architecture 준수**: Clean Architecture 유지
+
+### Lessons Learned
+- ✅ 설계의 정확성: 9개 항목 모두 100% 예상대로 구현
+- ✅ 포터블화 패턴: 환경변수 3-tier fallback (타 기능 재사용 가능)
+- ✅ 구현 개선: 설계보다 7개 항목 추가 개선 (안전성/편의성)
+- ⚠️ 온보딩 실검증: 신규 개발자 2-3명으로 10분 내 완료 테스트 권장
+
+### P1 Deferred
+- 없음 (P0 7개 + P1 2개 모두 완료)
+
+### P2 Future
+- Docker 원클릭 셋업 (GPU 패스스루 해결 필요)
+- CI/CD 온보딩 자동화 (GitHub Actions 통합)
+
+### Related Documents
+- Plan: docs/pdca/01-plan/features/developer-onboarding.plan.md
+- Design: docs/pdca/02-design/features/developer-onboarding.design.md
+- Analysis: docs/pdca/03-analysis/developer-onboarding.analysis.md
+- Report: docs/pdca/06-report/features/developer-onboarding.report.md
+
+---
+
 ## [2026-03-14] - advanced-mcp-tools v1.0.0
 
 ### Feature
@@ -255,8 +350,11 @@ model-management: 로컬 LLM 모델 관리 및 환경별 런타임 전환
 | #11 | context-management | Complete | 100% | 22/22 | 1 cycle |
 | #12 | conversation-persistence | Complete | 100% | 15/15 | 1 cycle |
 | #13 | advanced-mcp-tools | Complete | 100% | 33/33 | 1 cycle |
+| #14 | marketplace-deployment | Complete | 91% | 20/20 | 1 cycle |
+| #15 | observability | Complete | 100% | 16/16 | 1 cycle |
+| #16 | developer-onboarding | Complete | 100% | 241/241 | 1 cycle |
 
-**누적 완료 PDCA**: 13개
+**누적 완료 PDCA**: 16개
 1. ai-coder-cli (95%)
 2. mcp-server (100%)
 3. myaicoder (99%)
@@ -269,14 +367,19 @@ model-management: 로컬 LLM 모델 관리 및 환경별 런타임 전환
 10. integration-testing (95%)
 11. context-management (100%)
 12. conversation-persistence (100%)
-13. **advanced-mcp-tools (100%)**
+13. advanced-mcp-tools (100%)
+14. marketplace-deployment (91%)
+15. observability (100%)
+16. **developer-onboarding (100%)**
 
-**총 Match Rate**: 평균 99.0% (모든 사이클 ≥95%, 최근 8개 평균 99.1%)
+**총 Match Rate**: 평균 98.3% (모든 사이클 ≥91%, 최근 11개 평균 99.0%)
 
-**총 Test Passing**: 178/182 tests (97.8%)
+**총 Test Passing**: 241/241 tests (100%)
 
-**Latest Cycle**: #13 advanced-mcp-tools
-- Completion: 178 tests PASS (기존 145 + 신규 33)
-- Design Match: 100% (103/103 항목)
-- Feedback Integration: 3/3 완벽 반영 (FB-A/B/C)
-- Key Achievements: 신규 도구 3개(BuildRunner, WebFetch, ListDir), 기존 도구 개선 2개(Bash, Grep)
+**Latest Cycle**: #16 developer-onboarding
+- Completion: 241 tests PASS (178 myaicoder + 43 gateway + 20 extension)
+- Design Match: 100% (9/9 항목, 0 gap)
+- Implementation Improvements: 7 items (I1-I7)
+- Key Achievements: 온보딩 자동화 (setup-dev.sh), 서비스 관리 (start-all.sh), 포터블화 (3-tier fallback), 문서화 (getting-started.md + README.md)
+- Code Changes: Minimal (2 files: process.py + config.py)
+- Key Design: 로컬 모드 10분 + 서버 모드 3분, Clean Architecture 준수

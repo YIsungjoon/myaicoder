@@ -1,0 +1,28 @@
+# myAiCoder Models Configuration
+# Copy to config/models.yaml and adjust paths for your environment:
+#   cp config/models.yaml.example config/models.yaml
+
+environment: dev
+models_dir: "~/models"
+default_model: "qwen3.5-9b"
+port: 8001
+backend: "llama-cpp"
+
+# backend_command: llama-server 바이너리 경로 (생략 시 자동 탐지)
+#   우선순위: 1) 이 필드 → 2) 환경변수 LLAMA_SERVER_PATH → 3) PATH의 llama-server
+# backend_command: "/path/to/llama-server"
+
+gateway_url: "http://localhost:8080"
+# Generate token: python -c "import secrets; print(secrets.token_urlsafe(32))"
+internal_token: "<your-internal-token-here>"
+
+instances:
+  - name: "qwen3.5-9b"
+    file: "Qwen3.5-9B-Q4_K_M.gguf"
+    description: "Qwen 3.5 9B — fast response"
+    vllm_args:
+      gpu_memory_utilization: 0.5
+      max_model_len: 32768
+    defaults:
+      temperature: 0.0
+      max_tokens: 8192

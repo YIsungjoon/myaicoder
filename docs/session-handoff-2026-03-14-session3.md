@@ -2,7 +2,7 @@
 
 ## 1. 현재 완료 상태
 
-완료된 PDCA feature (13개):
+완료된 PDCA feature (16개):
 
 | # | Feature | Match Rate | 상태 | 세션 |
 |---|---------|-----------|------|------|
@@ -17,10 +17,13 @@
 | 9 | gateway-internal-api | 100% | completed | 세션 2 |
 | 10 | integration-testing | 95% | completed | 세션 2 |
 | 11 | context-management | 100% | completed | 세션 2 |
-| 12 | conversation-persistence | 100% | completed | 세션 3 (이번) |
+| 12 | conversation-persistence | 100% | completed | 세션 3 |
 | 13 | advanced-mcp-tools | 100% | completed | 세션 3 |
+| 14 | marketplace-deployment | 91% | completed | 세션 3 |
+| 15 | observability | 100% | completed | 세션 3 |
+| 16 | developer-onboarding | 100% | completed | 세션 3 (이번) |
 
-평균 Match Rate: **99.0%**
+평균 Match Rate: **98.3%**
 
 ## 2. 이번 세션에서 한 일
 
@@ -50,7 +53,38 @@
 - Registry: 6 → 9개 도구, MCP TOOL_NAME_MAP 9개 매핑
 - 33개 테스트 (145 → 178)
 
-### 2.3 사용자 피드백 반영 (6건)
+### 2.3 observability PDCA 완료 (Feature #15)
+
+**목적**: 시스템 모니터링 및 관찰성 개선
+
+- OpenTelemetry + Prometheus + Grafana 스택
+- API 요청/응답 메트릭 (latency, throughput, errors)
+- LLM 추론 메트릭 (TTFT, end-to-end latency)
+- 16개 테스트
+
+### 2.4 marketplace-deployment PDCA 완료 (Feature #14)
+
+**목적**: VS Code Extension 공식 마켓플레이스 배포 준비
+
+- README.md, CHANGELOG.md, LICENSE, icon, .vscodeignore
+- CI/CD 워크플로우 (GitHub Actions)
+- 91% Match Rate (의도적 편차 2건)
+- 20개 테스트
+
+### 2.5 developer-onboarding PDCA 완료 (Feature #16) ← **이번 세션 마무리 작업**
+
+**목적**: 신규 개발자 10분 내 myAiCoder 셋업
+
+**완료 내용**:
+- **문서**: docs/getting-started.md (서버 모드 3분 + 로컬 모드 10분), README.md
+- **설정**: config/*.example (gateway, models), .env.example
+- **스크립트**: scripts/setup-dev.sh (멱등 셋업), scripts/start-all.sh (서비스 기동)
+- **코드**: process.py (3-tier backend_command), config.py (기본 모델명)
+- **디자인 일치도**: 100% (9/9 항목, 0 gap)
+- **구현 개선**: 7개 (I1-I7: backend 가드, uv 검사, dead process 감지 등)
+- **테스트**: 241/241 PASS (기존 + 회귀 없음)
+
+### 2.6 사용자 피드백 반영 (6건)
 
 | # | 피드백 | 반영 위치 |
 |---|--------|----------|

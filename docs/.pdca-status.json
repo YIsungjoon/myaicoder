@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-14T13:47:45.863Z",
+  "lastUpdated": "2026-03-14T14:43:28.871Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -11,7 +11,7 @@
     "gateway",
     "scripts"
   ],
-  "primaryFeature": "observability",
+  "primaryFeature": "developer-onboarding",
   "features": {
     "api-gateway": {
       "phase": "completed",
@@ -68,10 +68,10 @@
       },
       "timestamps": {
         "started": "2026-03-13T06:33:18.360Z",
-        "lastUpdated": "2026-03-14T11:39:45.183Z",
+        "lastUpdated": "2026-03-14T14:42:08.264Z",
         "completedAt": "2026-03-13T09:25:00.000Z"
       },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/tests/test_mcp/test_server.py"
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/src/myaicoder/core/config.py"
     },
     "integration-and-ci": {
       "phase": "completed",
@@ -127,9 +127,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-14T03:54:05.752Z",
-        "lastUpdated": "2026-03-14T03:54:05.752Z"
+        "lastUpdated": "2026-03-14T14:43:28.871Z"
       },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/scripts/integration_test.sh"
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/scripts/start-all.sh"
     },
     "conversation-persistence": {
       "phase": "completed",
@@ -156,6 +156,19 @@
       "designPath": "docs/pdca/02-design/features/observability.design.md",
       "startedAt": "2026-03-14T15:00:00.000Z",
       "description": "Gateway Observability - Prometheus 메트릭 + Grafana 대시보드 (Track C-1)"
+    },
+    "developer-onboarding": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/developer-onboarding.plan.md",
+      "designPath": "docs/pdca/02-design/features/developer-onboarding.design.md",
+      "analysisPath": "docs/pdca/03-analysis/developer-onboarding.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/developer-onboarding.report.md",
+      "startedAt": "2026-03-14T17:00:00.000Z",
+      "completedAt": "2026-03-14T18:00:00.000Z",
+      "description": "신규 개발자 온보딩 - getting-started 가이드 + config 포터블화 + 셋업 자동화"
     },
     "marketplace-deployment": {
       "phase": "completed",
@@ -203,7 +216,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-14T13:47:45.863Z"
+    "lastActivity": "2026-03-14T14:43:28.871Z"
   },
   "history": [
     {
@@ -1396,6 +1409,36 @@
     {
       "timestamp": "2026-03-14T13:47:45.863Z",
       "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:41:50.653Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:42:00.427Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:42:08.264Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:42:43.499Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:43:28.871Z",
+      "feature": "scripts",
       "phase": "do",
       "action": "updated"
     }
