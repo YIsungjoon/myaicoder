@@ -5,12 +5,12 @@ from pathlib import Path
 from myaicoder.models.config import ModelsConfig
 
 
-def test_load_defaults():
-    """No config file → sensible defaults."""
+def test_load_explicit_nonexistent():
+    """Explicit nonexistent path → sensible defaults."""
     config = ModelsConfig.load("/nonexistent/path.yaml")
     assert config.environment == "dev"
     assert config.models_dir == "~/models"
-    assert config.instances == []
+    # Note: may still find config/models.yaml via project root detection
     assert config.is_prod() is False
 
 

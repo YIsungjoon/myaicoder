@@ -12,7 +12,7 @@ from pathlib import Path
 
 import httpx
 
-from myaicoder.models.config import VLLMArgs
+from myaicoder.models.config import LlamaCppArgs, VLLMArgs
 
 
 class ProcessState(str, Enum):
@@ -34,15 +34,22 @@ class VLLMInstance:
 
 
 class VLLMProcessManager:
-    """Manages vLLM server processes with safety features.
+    """Manages LLM server processes (llama.cpp or vLLM) with safety features.
 
-    - Dead process detection: fail-fast if vLLM crashes on startup
+    - Supports both llama-cpp (llama-server) and vLLM backends
+    - Dead process detection: fail-fast if server crashes on startup
     - Signal handlers: kill child processes on Ctrl+C (zombie prevention)
     """
 
-    def __init__(self, vllm_command: str = "vllm"):
+    def __init__(self, backend: str = "llama-cpp", command: str = ""):
         self._instances: dict[int, VLLMInstance] = {}
-        self._vllm_cmd = vllm_command
+        self._backend = backend
+        if command:
+            self._cmd = command
+        elif backend == "llama-cpp":
+            self._cmd = "llama-server"
+        else:
+            self._cmd = "vllm"
         self._original_sigint: signal.Handlers | None = None
         self._original_sigterm: signal.Handlers | None = None
 
@@ -54,10 +61,11 @@ class VLLMProcessManager:
         model_name: str,
         port: int,
         vllm_args: VLLMArgs | None = None,
+        llama_cpp_args: LlamaCppArgs | None = None,
         on_status: Callable[[str], None] | None = None,
         health_timeout: int = 120,
     ) -> VLLMInstance:
-        """Start a vLLM process on the given port."""
+        """Start an LLM server process on the given port."""
         instance = VLLMInstance(
             model_name=model_name,
             model_path=model_path,
@@ -66,16 +74,19 @@ class VLLMProcessManager:
         )
         self._instances[port] = instance
 
-        if not shutil.which(self._vllm_cmd):
+        if not shutil.which(self._cmd):
+            if self._backend == "llama-cpp":
+                hint = "Build from source: https://github.com/ggml-org/llama.cpp"
+            else:
+                hint = "Install with: pip install vllm"
             raise RuntimeError(
-                f"vLLM executable not found: '{self._vllm_cmd}'. "
-                f"Install with: pip install vllm"
+                f"LLM server not found: '{self._cmd}'. {hint}"
             )
 
         if on_status:
             on_status(f"Loading {model_name} on :{port}...")
 
-        cmd = self._build_command(model_path, port, vllm_args)
+        cmd = self._build_command(model_path, port, vllm_args, llama_cpp_args)
         instance.process = await asyncio.create_subprocess_exec(
             *cmd,
             stdout=asyncio.subprocess.DEVNULL,
@@ -159,10 +170,21 @@ class VLLMProcessManager:
     # ── Internal ──
 
     def _build_command(
+        self,
+        model_path: Path,
+        port: int,
+        vllm_args: VLLMArgs | None = None,
+        llama_cpp_args: LlamaCppArgs | None = None,
+    ) -> list[str]:
+        if self._backend == "llama-cpp":
+            return self._build_llama_cpp_command(model_path, port, llama_cpp_args)
+        return self._build_vllm_command(model_path, port, vllm_args)
+
+    def _build_vllm_command(
         self, model_path: Path, port: int, args: VLLMArgs | None
     ) -> list[str]:
         cmd = [
-            self._vllm_cmd, "serve", str(model_path),
+            self._cmd, "serve", str(model_path),
             "--host", "0.0.0.0",
             "--port", str(port),
         ]
@@ -170,6 +192,23 @@ class VLLMProcessManager:
             cmd.extend(["--gpu-memory-utilization", str(args.gpu_memory_utilization)])
             cmd.extend(["--max-model-len", str(args.max_model_len)])
             cmd.extend(args.extra_args)
+        return cmd
+
+    def _build_llama_cpp_command(
+        self, model_path: Path, port: int, args: LlamaCppArgs | None
+    ) -> list[str]:
+        cmd = [
+            self._cmd,
+            "--model", str(model_path),
+            "--host", "0.0.0.0",
+            "--port", str(port),
+        ]
+        if args:
+            cmd.extend(["--n-gpu-layers", str(args.n_gpu_layers)])
+            cmd.extend(["--ctx-size", str(args.ctx_size)])
+            cmd.extend(args.extra_args)
+        else:
+            cmd.extend(["--n-gpu-layers", "-1"])
         return cmd
 
     async def _wait_for_health(self, port: int, timeout: int = 120) -> bool:

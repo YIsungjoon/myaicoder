@@ -1,7 +1,9 @@
 """Tests for MCP Client."""
 
-import pytest
+import os
 from types import SimpleNamespace
+
+import pytest
 
 from myaicoder.mcp.client import MCPClient, MCPToolProxy
 from myaicoder.mcp.config import MCPConfig
@@ -66,10 +68,15 @@ class TestMCPClient:
 
 
 @pytest.mark.skipif(
-    True,  # Set to False when MCP test server is available
-    reason="Integration test: requires MCP server",
+    not os.environ.get("MCP_INTEGRATION"),
+    reason="Set MCP_INTEGRATION=1 to run MCP integration tests",
 )
 class TestMCPIntegration:
+    """Integration tests — requires myaicoder MCP server.
+
+    Run: MCP_INTEGRATION=1 uv run pytest tests/test_mcp -q
+    """
+
     @pytest.mark.asyncio
     async def test_connect_stdio_server(self):
         """Connect to a stdio MCP server."""

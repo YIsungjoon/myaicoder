@@ -311,6 +311,22 @@ def mcp_list():
         click.echo()
 
 
+def _build_model_manager():
+    """Build ModelManager with config-driven backend."""
+    from myaicoder.models.config import ModelsConfig
+    from myaicoder.models.manager import ModelManager
+    from myaicoder.models.process import VLLMProcessManager
+    from myaicoder.models.scanner import ModelScanner
+
+    config = ModelsConfig.load()
+    pm = VLLMProcessManager(
+        backend=config.backend,
+        command=config.backend_command,
+    )
+    scanner = ModelScanner(config.models_dir, config)
+    return ModelManager(config, pm, scanner), config
+
+
 @main.group()
 def model():
     """Model management commands."""
@@ -320,15 +336,9 @@ def model():
 @model.command("list")
 def model_list():
     """List available models and their status."""
-    from myaicoder.models.config import ModelsConfig
-    from myaicoder.models.manager import ModelManager, ModelStatus
-    from myaicoder.models.process import VLLMProcessManager
-    from myaicoder.models.scanner import ModelScanner
+    from myaicoder.models.manager import ModelStatus
 
-    config = ModelsConfig.load()
-    pm = VLLMProcessManager()
-    scanner = ModelScanner(config.models_dir, config)
-    mgr = ModelManager(config, pm, scanner)
+    mgr, config = _build_model_manager()
 
     models = mgr.list_models()
     env_info = "DGX Spark, 128GB" if config.is_prod() else "Desktop"
@@ -355,15 +365,7 @@ def model_list():
 @click.argument("name")
 def model_switch(name):
     """Switch to a different model (dev environment only)."""
-    from myaicoder.models.config import ModelsConfig
-    from myaicoder.models.manager import ModelManager
-    from myaicoder.models.process import VLLMProcessManager
-    from myaicoder.models.scanner import ModelScanner
-
-    config = ModelsConfig.load()
-    pm = VLLMProcessManager()
-    scanner = ModelScanner(config.models_dir, config)
-    mgr = ModelManager(config, pm, scanner)
+    mgr, config = _build_model_manager()
 
     def on_status(msg: str) -> None:
         click.echo(f"  ⏳ {msg}")
@@ -379,15 +381,7 @@ def model_switch(name):
 @model.command("status")
 def model_status():
     """Show current model and environment status."""
-    from myaicoder.models.config import ModelsConfig
-    from myaicoder.models.manager import ModelManager
-    from myaicoder.models.process import VLLMProcessManager
-    from myaicoder.models.scanner import ModelScanner
-
-    config = ModelsConfig.load()
-    pm = VLLMProcessManager()
-    scanner = ModelScanner(config.models_dir, config)
-    mgr = ModelManager(config, pm, scanner)
+    mgr, config = _build_model_manager()
 
     status = mgr.get_status()
     click.echo(f"  Environment: {status['environment']}")
@@ -405,19 +399,10 @@ def model_status():
     help="Environment override",
 )
 def model_launch(env):
-    """Launch vLLM processes for the current environment."""
-    from myaicoder.models.config import ModelsConfig
-    from myaicoder.models.manager import ModelManager
-    from myaicoder.models.process import VLLMProcessManager
-    from myaicoder.models.scanner import ModelScanner
-
-    config = ModelsConfig.load()
+    """Launch LLM server for the current environment."""
+    mgr, config = _build_model_manager()
     if env:
         config.environment = env
-
-    pm = VLLMProcessManager()
-    scanner = ModelScanner(config.models_dir, config)
-    mgr = ModelManager(config, pm, scanner)
 
     def on_status(msg: str) -> None:
         click.echo(f"  ⏳ {msg}")

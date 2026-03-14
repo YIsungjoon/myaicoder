@@ -16,6 +16,13 @@ class VLLMArgs:
 
 
 @dataclass
+class LlamaCppArgs:
+    n_gpu_layers: int = -1
+    ctx_size: int = 32768
+    extra_args: list[str] = field(default_factory=list)
+
+
+@dataclass
 class ModelDefaults:
     temperature: float = 0.0
     max_tokens: int = 8192
@@ -29,6 +36,7 @@ class ModelProfile:
     port: int = 8001
     always_on: bool = False
     vllm_args: VLLMArgs = field(default_factory=VLLMArgs)
+    llama_cpp_args: LlamaCppArgs = field(default_factory=LlamaCppArgs)
     defaults: ModelDefaults = field(default_factory=ModelDefaults)
 
 
@@ -38,6 +46,8 @@ class ModelsConfig:
     models_dir: str = "~/models"
     default_model: str = ""
     port: int = 8001
+    backend: str = "llama-cpp"  # "llama-cpp" | "vllm"
+    backend_command: str = ""   # explicit path, e.g. ~/llm-server-env/llama.cpp/build/bin/llama-server
     gateway_url: str = ""
     internal_token: str = ""
     instances: list[ModelProfile] = field(default_factory=list)
@@ -55,6 +65,12 @@ class ModelsConfig:
         search: list[Path] = []
         if path:
             search.append(Path(path))
+
+        # Find project root via git
+        project_root = cls._find_project_root()
+        if project_root:
+            search.append(project_root / "config" / "models.yaml")
+
         search.extend([
             Path.cwd() / "config" / "models.yaml",
             Path.cwd() / "models.yaml",
@@ -74,6 +90,7 @@ class ModelsConfig:
         instances: list[ModelProfile] = []
         for item in data.get("instances", []):
             vllm_raw = item.get("vllm_args", {})
+            llama_raw = item.get("llama_cpp_args", {})
             defaults_raw = item.get("defaults", {})
             instances.append(ModelProfile(
                 name=item["name"],
@@ -86,6 +103,11 @@ class ModelsConfig:
                     max_model_len=vllm_raw.get("max_model_len", 32768),
                     extra_args=vllm_raw.get("extra_args", []),
                 ),
+                llama_cpp_args=LlamaCppArgs(
+                    n_gpu_layers=llama_raw.get("n_gpu_layers", -1),
+                    ctx_size=llama_raw.get("ctx_size", 32768),
+                    extra_args=llama_raw.get("extra_args", []),
+                ),
                 defaults=ModelDefaults(
                     temperature=defaults_raw.get("temperature", 0.0),
                     max_tokens=defaults_raw.get("max_tokens", 8192),
@@ -97,10 +119,21 @@ class ModelsConfig:
             models_dir=data.get("models_dir", "~/models"),
             default_model=data.get("default_model", ""),
             port=data.get("port", 8001),
+            backend=data.get("backend", "llama-cpp"),
+            backend_command=data.get("backend_command", ""),
             gateway_url=data.get("gateway_url", ""),
             internal_token=data.get("internal_token", ""),
             instances=instances,
         )
+
+    @staticmethod
+    def _find_project_root() -> Path | None:
+        """Walk up from CWD to find project root (directory containing .git)."""
+        current = Path.cwd()
+        for parent in [current, *current.parents]:
+            if (parent / ".git").exists():
+                return parent
+        return None
 
     def is_prod(self) -> bool:
         return self.environment == "prod"

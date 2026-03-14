@@ -133,6 +133,7 @@ class ModelManager:
                     model_name=target_name,
                     port=port,
                     vllm_args=profile.vllm_args,
+                    llama_cpp_args=profile.llama_cpp_args,
                     on_status=on_status,
                 )
             except RuntimeError:
@@ -148,6 +149,7 @@ class ModelManager:
                             model_name=previous_name,
                             port=port,
                             vllm_args=prev_profile.vllm_args,
+                            llama_cpp_args=prev_profile.llama_cpp_args,
                             on_status=on_status,
                         )
                 raise
@@ -214,6 +216,7 @@ class ModelManager:
                     model_name=default.name,
                     port=self._config.port,
                     vllm_args=default.vllm_args,
+                    llama_cpp_args=default.llama_cpp_args,
                     on_status=on_status,
                 )
                 return [inst]

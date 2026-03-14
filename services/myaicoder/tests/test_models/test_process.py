@@ -5,34 +5,60 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from myaicoder.models.config import VLLMArgs
+from myaicoder.models.config import LlamaCppArgs, VLLMArgs
 from myaicoder.models.process import ProcessState, VLLMInstance, VLLMProcessManager
 
 
-class TestBuildCommand:
-    def test_basic_command(self):
-        pm = VLLMProcessManager(vllm_command="vllm")
-        cmd = pm._build_command(Path("/models/test.gguf"), 8001, None)
+class TestBuildCommandVLLM:
+    def test_basic_vllm_command(self):
+        pm = VLLMProcessManager(backend="vllm", command="vllm")
+        cmd = pm._build_command(Path("/models/test.gguf"), 8001)
         assert cmd == [
             "vllm", "serve", "/models/test.gguf",
             "--host", "0.0.0.0",
             "--port", "8001",
         ]
 
-    def test_command_with_args(self):
-        pm = VLLMProcessManager()
+    def test_vllm_command_with_args(self):
+        pm = VLLMProcessManager(backend="vllm", command="vllm")
         args = VLLMArgs(
             gpu_memory_utilization=0.5,
             max_model_len=4096,
             extra_args=["--dtype", "float16"],
         )
-        cmd = pm._build_command(Path("/models/test.gguf"), 9001, args)
+        cmd = pm._build_command(Path("/models/test.gguf"), 9001, vllm_args=args)
         assert "--gpu-memory-utilization" in cmd
         assert "0.5" in cmd
         assert "--max-model-len" in cmd
         assert "4096" in cmd
         assert "--dtype" in cmd
         assert "float16" in cmd
+
+
+class TestBuildCommandLlamaCpp:
+    def test_basic_llama_cpp_command(self):
+        pm = VLLMProcessManager(backend="llama-cpp", command="llama-server")
+        cmd = pm._build_command(Path("/models/test.gguf"), 8001)
+        assert cmd == [
+            "llama-server",
+            "--model", "/models/test.gguf",
+            "--host", "0.0.0.0",
+            "--port", "8001",
+            "--n-gpu-layers", "-1",
+        ]
+
+    def test_llama_cpp_command_with_args(self):
+        pm = VLLMProcessManager(backend="llama-cpp", command="llama-server")
+        args = LlamaCppArgs(n_gpu_layers=32, ctx_size=16384, extra_args=["--flash-attn"])
+        cmd = pm._build_command(
+            Path("/models/test.gguf"), 8001, llama_cpp_args=args
+        )
+        assert "--model" in cmd
+        assert "--n-gpu-layers" in cmd
+        assert "32" in cmd
+        assert "--ctx-size" in cmd
+        assert "16384" in cmd
+        assert "--flash-attn" in cmd
 
 
 class TestHealthCheck:
@@ -68,12 +94,11 @@ class TestHealthCheck:
 class TestDeadProcessDetection:
     @pytest.mark.asyncio
     async def test_dead_process_raises_immediately(self):
-        """If vLLM crashes on startup, don't wait 120s — fail fast."""
+        """If server crashes on startup, don't wait 120s — fail fast."""
         pm = VLLMProcessManager()
 
-        # Simulate a dead process
         mock_proc = MagicMock()
-        mock_proc.returncode = 1  # Already exited
+        mock_proc.returncode = 1
 
         mock_stderr = AsyncMock()
         mock_stderr.read = AsyncMock(return_value=b"CUDA out of memory")
@@ -120,12 +145,12 @@ class TestInstanceManagement:
         assert pm.get_instance(9999) is None
 
 
-class TestVLLMBinaryCheck:
+class TestBinaryCheck:
     @pytest.mark.asyncio
-    async def test_missing_vllm_binary_gives_clear_error(self):
-        """If vllm is not installed, raise with user-friendly message."""
-        pm = VLLMProcessManager(vllm_command="nonexistent-vllm-binary-xyz")
-        with pytest.raises(RuntimeError, match="executable not found"):
+    async def test_missing_binary_gives_clear_error(self):
+        """Missing server binary raises with user-friendly message."""
+        pm = VLLMProcessManager(command="nonexistent-binary-xyz")
+        with pytest.raises(RuntimeError, match="not found"):
             await pm.start(
                 model_path=Path("/fake/model.gguf"),
                 model_name="test",

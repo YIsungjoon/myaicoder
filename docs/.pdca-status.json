@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-14T02:27:45.821Z",
+  "lastUpdated": "2026-03-14T06:34:45.001Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -8,7 +8,8 @@
     "mcp-server",
     "myaicoder",
     "vscode-extension",
-    "gateway"
+    "gateway",
+    "scripts"
   ],
   "primaryFeature": "api-gateway",
   "features": {
@@ -67,10 +68,10 @@
       },
       "timestamps": {
         "started": "2026-03-13T06:33:18.360Z",
-        "lastUpdated": "2026-03-14T01:47:59.449Z",
+        "lastUpdated": "2026-03-14T06:34:45.001Z",
         "completedAt": "2026-03-13T09:25:00.000Z"
       },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/src/myaicoder/models/config.py"
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/src/myaicoder/cli.py"
     },
     "integration-and-ci": {
       "phase": "completed",
@@ -116,6 +117,19 @@
         "lastUpdated": "2026-03-14T02:27:45.821Z"
       },
       "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/gateway/tests/test_internal.py"
+    },
+    "scripts": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-14T03:54:05.752Z",
+        "lastUpdated": "2026-03-14T03:54:05.752Z"
+      },
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/scripts/integration_test.sh"
     }
   },
   "pipeline": {
@@ -137,7 +151,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-14T02:27:45.821Z"
+    "lastActivity": "2026-03-14T06:34:45.001Z"
   },
   "history": [
     {
@@ -904,6 +918,150 @@
     {
       "timestamp": "2026-03-14T02:27:45.821Z",
       "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:53:12.150Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:53:21.489Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:53:28.223Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:54:05.752Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:22:42.420Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:22:54.083Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:23:17.983Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:23:39.325Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:23:52.843Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:24:17.606Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:24:24.303Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:24:34.856Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:22.351Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:42.395Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:49.548Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:55.236Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:26:40.911Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:30:05.992Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:30:18.625Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:30:38.963Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:10.592Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:28.861Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:38.274Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:45.001Z",
+      "feature": "myaicoder",
       "phase": "do",
       "action": "updated"
     }
