@@ -1,0 +1,7 @@
+{
+  "server_url": "http://dgx-server:8080",
+  "install_dir_name": ".myaicoder",
+  "model_name": "qwen3.5-9b",
+  "extension_file": "myaicoder-0.1.0.vsix",
+  "binary_name": "myaicoder"
+}

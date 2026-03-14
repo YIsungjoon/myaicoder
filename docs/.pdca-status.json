@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-14T14:43:28.871Z",
+  "lastUpdated": "2026-03-14T15:18:46.174Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -9,9 +9,10 @@
     "myaicoder",
     "vscode-extension",
     "gateway",
-    "scripts"
+    "scripts",
+    "installer"
   ],
-  "primaryFeature": "developer-onboarding",
+  "primaryFeature": "oneclick-installer",
   "features": {
     "api-gateway": {
       "phase": "completed",
@@ -170,6 +171,19 @@
       "completedAt": "2026-03-14T18:00:00.000Z",
       "description": "신규 개발자 온보딩 - getting-started 가이드 + config 포터블화 + 셋업 자동화"
     },
+    "oneclick-installer": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/oneclick-installer.plan.md",
+      "designPath": "docs/pdca/02-design/features/oneclick-installer.design.md",
+      "analysisPath": "docs/pdca/03-analysis/oneclick-installer.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/oneclick-installer.report.md",
+      "startedAt": "2026-03-15T00:00:00.000Z",
+      "completedAt": "2026-03-15T01:00:00.000Z",
+      "description": "비개발자용 더블클릭 설치 패키지 - PyInstaller + install script + settings 자동 주입"
+    },
     "marketplace-deployment": {
       "phase": "completed",
       "status": "report_generated",
@@ -195,6 +209,19 @@
       "startedAt": "2026-03-14T11:00:00.000Z",
       "completedAt": "2026-03-14T12:00:00.000Z",
       "description": "고급 MCP 도구 확장 - BuildRunner, WebFetch, ListDir, Bash/Grep 개선 (Track B-1)"
+    },
+    "installer": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-14T15:18:46.174Z",
+        "lastUpdated": "2026-03-14T15:18:46.174Z"
+      },
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/installer/install.bat"
     }
   },
   "pipeline": {
@@ -216,7 +243,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-14T14:43:28.871Z"
+    "lastActivity": "2026-03-14T15:18:46.174Z"
   },
   "history": [
     {
@@ -1439,6 +1466,12 @@
     {
       "timestamp": "2026-03-14T14:43:28.871Z",
       "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T15:18:46.174Z",
+      "feature": "installer",
       "phase": "do",
       "action": "updated"
     }
