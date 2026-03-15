@@ -13,6 +13,8 @@ export function buildServeArgs(options: {
   allowBash?: boolean;
   maxConcurrent?: number;
   enableAgentic?: boolean;
+  llmUrl?: string;
+  modelName?: string;
 }): string[] {
   const args = ['serve'];
   if (options.allowBash) {
@@ -23,6 +25,12 @@ export function buildServeArgs(options: {
   }
   if (options.enableAgentic) {
     args.push('--agentic');
+  }
+  if (options.llmUrl) {
+    args.push('--llm-url', options.llmUrl);
+  }
+  if (options.modelName) {
+    args.push('--model-name', String(options.modelName));
   }
   return args;
 }

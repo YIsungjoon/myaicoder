@@ -35,10 +35,13 @@ export class McpClientManager {
    */
   async connect(): Promise<void> {
     const execPath = await this.config.resolveExecutablePath();
+    const llmUrl = this.config.getLlmUrl();
     const args = buildServeArgs({
       allowBash: this.config.get<boolean>('allowBash'),
       maxConcurrent: this.config.get<number>('maxConcurrent'),
       enableAgentic: this.config.get<boolean>('enableAgentic'),
+      llmUrl: llmUrl ? `${llmUrl.replace(/\/+$/, '')}/v1` : undefined,
+      modelName: this.config.getModelName(),
     });
     const cwd = this.config.getWorkspaceFolder();
     this.disconnectRequested = false;

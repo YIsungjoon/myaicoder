@@ -450,7 +450,17 @@ def config():
     is_flag=True,
     help="Enable agentic_task tool for multi-step execution",
 )
-def serve(transport, port, allow_bash, working_dir, max_concurrent, agentic):
+@click.option(
+    "--llm-url",
+    default=None,
+    help="LLM server URL for agentic mode (overrides config)",
+)
+@click.option(
+    "--model-name",
+    default=None,
+    help="Model name for agentic mode (overrides config)",
+)
+def serve(transport, port, allow_bash, working_dir, max_concurrent, agentic, llm_url, model_name):
     """Run as MCP server (for Claude Code, Cursor, etc.)."""
     from myaicoder.mcp.server import MCPServer
     from myaicoder.tools.registry import create_default_registry
@@ -463,9 +473,11 @@ def serve(transport, port, allow_bash, working_dir, max_concurrent, agentic):
         from myaicoder.llm.vllm_provider import VLLMProvider
 
         config = AppConfig.load()
+        base_url = llm_url or config.llm.base_url
+        model = model_name or config.llm.model
         llm_provider = VLLMProvider(
-            base_url=config.llm.base_url,
-            model=config.llm.model,
+            base_url=base_url,
+            model=model,
             max_tokens=config.llm.max_tokens,
         )
 

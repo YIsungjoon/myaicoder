@@ -94,6 +94,7 @@ describe('ConfigManager', () => {
       get: vi.fn().mockReturnValue(undefined),
     } as any);
     mockExecSync.mockReturnValue('/usr/local/bin/myaicoder\n');
+    mockExistsSync.mockReturnValue(true);
 
     const { ConfigManager } = await import('../../src/config');
     const config = new ConfigManager();
