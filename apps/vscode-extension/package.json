@@ -2,7 +2,7 @@
   "name": "myaicoder",
   "displayName": "myAiCoder",
   "description": "AI coding assistant powered by local LLM via MCP",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "publisher": "myaicoder",
   "license": "MIT",
   "icon": "media/icon.png",
