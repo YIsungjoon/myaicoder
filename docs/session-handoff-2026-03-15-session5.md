@@ -227,7 +227,20 @@ scripts/start-all.sh
 curl http://localhost:8080/health
 ```
 
-## 10. 다음 세션에서 먼저 볼 파일
+## 10. 다음 세션 주요 작업: DGX Spark 이전
+
+DGX Spark (ARM aarch64, GB10 Blackwell, 128GB 통합 메모리)로 서버 이전 예정.
+
+**핵심**: ARM 아키텍처이므로 llama.cpp 재빌드 필수 (x86 바이너리 복사 불가)
+
+```
+SSH 접속 → 저장소 클론 → llama.cpp ARM 빌드 → 모델 배치
+→ setup-dev.sh → start-all.sh → config.json IP 변경 → 재배포
+```
+
+**모델 업그레이드 검토**: 128GB 통합 메모리로 Qwen3.5-72B Q4 (~45GB)까지 가능
+
+## 11. 다음 세션에서 먼저 볼 파일
 
 - `docs/session-handoff-2026-03-15-session5.md` (이 파일)
 - `docs/roadmap-2026-03.md`
