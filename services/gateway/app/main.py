@@ -49,9 +49,21 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
             timeout=httpx.Timeout(connect=5.0, read=None, write=5.0, pool=5.0),
             limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
         )
+
+        # DB init (conversation logging)
+        if config.database.enabled and config.database.url:
+            from .db import init_db
+
+            await init_db(config.database.url)
+
         yield
-        # Shutdown: close HTTP client
+
+        # Shutdown: close HTTP client + DB
         await app.state.http_client.aclose()
+        if config.database.enabled:
+            from .db import close_db
+
+            await close_db()
 
     configure_structlog()
 

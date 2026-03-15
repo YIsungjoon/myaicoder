@@ -39,3 +39,7 @@ rate_limit:
 logging:
   level: "INFO"
   format: "json"
+
+database:
+  enabled: true
+  url: "postgresql+asyncpg://myaicoder:localdev@postgres:5432/myaicoder"

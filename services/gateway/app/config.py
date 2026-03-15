@@ -61,12 +61,18 @@ class RateLimitConfig(BaseModel):
     overrides: list[UserOverrideConfig] = []
 
 
+class DatabaseConfig(BaseModel):
+    url: str = ""
+    enabled: bool = False
+
+
 class GatewayConfig(BaseModel):
     server: ServerConfig = ServerConfig()
     auth: AuthConfig = AuthConfig()
     models: ModelsConfig = ModelsConfig()
     rate_limit: RateLimitConfig = RateLimitConfig()
     logging: LoggingConfig = LoggingConfig()
+    database: DatabaseConfig = DatabaseConfig()
 
     @classmethod
     def load(cls, path: str | Path | None = None) -> GatewayConfig:

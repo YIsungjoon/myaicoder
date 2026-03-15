@@ -15,6 +15,62 @@ from .router import ModelRouter
 
 logger = structlog.get_logger("gateway.proxy")
 
+_MAX_CONTENT_LEN = 1_000_000  # 1MB truncate limit
+
+
+def _save_chat_completion(
+    *,
+    body: bytes,
+    user: User,
+    model_name: str | None,
+    latency: float,
+    status_code: int,
+    is_stream: bool,
+    client_ip: str,
+    response: bytes | None = None,
+    response_content: str | None = None,
+    prompt_tokens: int = 0,
+    completion_tokens: int = 0,
+) -> None:
+    """Parse request/response and schedule DB save."""
+    try:
+        from .db import save_conversation_bg
+
+        request_data = json.loads(body)
+        messages = request_data.get("messages", [])
+
+        response_raw = None
+        if response and not response_content:
+            resp_data = json.loads(response)
+            choices = resp_data.get("choices", [])
+            if choices:
+                content = choices[0].get("message", {}).get("content", "")
+                response_content = content
+            usage = resp_data.get("usage", {})
+            prompt_tokens = usage.get("prompt_tokens", 0)
+            completion_tokens = usage.get("completion_tokens", 0)
+            response_raw = resp_data
+
+        if response_content and len(response_content) > _MAX_CONTENT_LEN:
+            response_content = response_content[:_MAX_CONTENT_LEN] + "\n[TRUNCATED]"
+
+        save_conversation_bg(
+            user_id=user.user_id,
+            user_name=user.name,
+            model=model_name,
+            messages=messages,
+            response_content=response_content,
+            response_raw=response_raw,
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            latency_ms=int(latency * 1000),
+            status_code=status_code,
+            is_stream=is_stream,
+            client_ip=client_ip,
+        )
+    except Exception:
+        pass
+
 
 def _extract_model(body: bytes) -> str | None:
     """Best-effort extraction of model name from request body."""
@@ -111,6 +167,18 @@ async def forward_request(
             status_code=final_status,
             api_key_masked=mask_api_key(raw_api_key),
         )
+        # Conversation logging
+        if path == "chat/completions" and "resp" in dir() and final_status == 200:
+            _save_chat_completion(
+                body=body,
+                response=resp.content,
+                user=user,
+                model_name=model_name,
+                latency=latency,
+                status_code=final_status,
+                is_stream=False,
+                client_ip=client_ip,
+            )
 
     return resp
 
@@ -136,6 +204,8 @@ async def stream_upstream(
     status_code = 200
     prompt_tokens = 0
     completion_tokens = 0
+    accumulated_content: list[str] = []
+    stream_tokens: tuple[int, int] | None = None
 
     try:
         async with http_client.stream(
@@ -148,6 +218,16 @@ async def stream_upstream(
                 prompt_tokens, completion_tokens = _try_parse_usage(
                     chunk, prompt_tokens, completion_tokens
                 )
+                # Conversation logging: extract content + usage from SSE
+                from .db import extract_stream_content, extract_stream_usage
+
+                content = extract_stream_content(chunk)
+                if content:
+                    accumulated_content.append(content)
+                usage = extract_stream_usage(chunk)
+                if usage:
+                    stream_tokens = usage
+
                 yield chunk
     except httpx.RemoteProtocolError:
         logger.warning("upstream_disconnected", url=url, model=model_name)
@@ -189,3 +269,20 @@ async def stream_upstream(
             status_code=status_code,
             api_key_masked=mask_api_key(raw_api_key),
         )
+        # Conversation logging (streaming)
+        if status_code == 200 and accumulated_content:
+            final_content = "".join(accumulated_content)
+            p_tokens = stream_tokens[0] if stream_tokens else 0
+            c_tokens = stream_tokens[1] if stream_tokens else len(final_content) // 4
+            _save_chat_completion(
+                body=body,
+                response_content=final_content,
+                user=user,
+                model_name=model_name,
+                latency=latency,
+                status_code=status_code,
+                is_stream=True,
+                client_ip=client_ip,
+                prompt_tokens=p_tokens,
+                completion_tokens=c_tokens,
+            )
