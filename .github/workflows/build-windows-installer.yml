@@ -31,7 +31,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: services/myaicoder
-        run: uv sync --frozen --extra dev
+        run: |
+          uv sync --frozen --extra dev
+          uv pip install pyinstaller
 
       - name: Build frozen binary
         working-directory: services/myaicoder
