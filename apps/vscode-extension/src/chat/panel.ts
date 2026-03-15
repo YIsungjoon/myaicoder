@@ -28,6 +28,13 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       localResourceRoots: [this.extensionUri],
     };
 
+    // Preserve chat state when switching sidebar views
+    webviewView.onDidChangeVisibility(() => {
+      if (webviewView.visible && this.messages.length > 0) {
+        this.restoreMessages();
+      }
+    });
+
     webviewView.webview.html = this.getHtml(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(
@@ -131,6 +138,7 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
     }
 
     // 4. User request
+    // Note: Conversation history is managed by CLI's AgentEngine (persistent ConversationManager)
     parts.push(`User request: ${text}`);
 
     return parts.join('\n\n');
@@ -208,6 +216,13 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       if (success) {
         vscode.window.showInformationMessage(`Changes applied to ${path.basename(targetPath!)}`);
       }
+    }
+  }
+
+  private restoreMessages(): void {
+    this.postMessage({ type: 'clearChat' });
+    for (const msg of this.messages) {
+      this.postMessage({ type: 'addMessage', message: msg });
     }
   }
 

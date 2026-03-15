@@ -165,18 +165,22 @@ class MCPServer:
 
     def _register_agentic_task(self, llm_provider) -> None:
         """Register agentic_task special tool for Agentic Execution mode."""
-        registry = self.registry
+        from myaicoder.core.engine import AgentEngine
+
+        # Persistent engine — retains conversation history across calls
+        # Uses ConversationManager with 32K context window + auto-compression
+        engine = AgentEngine(
+            llm=llm_provider,
+            tool_registry=self.registry,
+            max_context_tokens=32768,
+            compression_threshold=0.8,
+        )
 
         async def agentic_task(prompt: str) -> str:
             """Execute a complex multi-step task using local LLM agent.
             Use for high-level instructions like BIM modifications or
-            multi-tool workflows. The local LLM handles sub-task planning."""
-            from myaicoder.core.engine import AgentEngine
-
-            engine = AgentEngine(
-                llm=llm_provider,
-                tool_registry=registry,
-            )
+            multi-tool workflows. The local LLM handles sub-task planning.
+            Conversation history is preserved across calls."""
             return await engine.chat(prompt)
 
         self.mcp.add_tool(
