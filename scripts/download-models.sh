@@ -6,9 +6,9 @@ mkdir -p "$MODELS_DIR"
 
 # Model definitions: name|filename|repo|size
 MODELS=(
-    "Qwen3.5-9B|Qwen3.5-9B-Q4_K_M.gguf|Qwen/Qwen3.5-9B-GGUF|~6GB"
-    "Qwen3.5-27B|Qwen3.5-27B-Q4_K_M.gguf|Qwen/Qwen3.5-27B-GGUF|~16GB"
-    "Qwen3-Coder-30B|Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf|Qwen/Qwen3-Coder-30B-A3B-Instruct-GGUF|~18GB"
+    "Qwen3.5-9B|Qwen3.5-9B-Q4_K_M.gguf|unsloth/Qwen3.5-9B-GGUF|~6GB"
+    "Qwen3.5-27B|Qwen3.5-27B-Q4_K_M.gguf|unsloth/Qwen3.5-27B-GGUF|~17GB"
+    "Qwen3-Coder-30B|Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf|unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF|~18GB"
 )
 
 echo "=== Model Download ==="
