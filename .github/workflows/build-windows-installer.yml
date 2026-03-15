@@ -1,0 +1,87 @@
+name: Build Windows Installer
+
+on:
+  push:
+    tags:
+      - 'installer-v*'
+
+jobs:
+  build:
+    name: Build Windows Installer Package
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        working-directory: services/myaicoder
+        run: uv sync --frozen --extra dev
+
+      - name: Build frozen binary
+        working-directory: services/myaicoder
+        run: |
+          uv run pyinstaller ../../installer/myaicoder.spec \
+            --distpath ../../dist \
+            --workpath /tmp/pyinstaller-build \
+            -y
+
+      - name: Verify binary
+        run: |
+          ls -lh dist/myaicoder.exe
+          echo "Binary size: $(du -h dist/myaicoder.exe | cut -f1)"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build Extension
+        working-directory: apps/vscode-extension
+        run: |
+          npm ci
+          npm run build
+          npx @vscode/vsce package --no-dependencies
+
+      - name: Assemble package
+        run: |
+          mkdir -p dist/myaicoder-windows-setup
+          cp dist/myaicoder.exe dist/myaicoder-windows-setup/
+          cp apps/vscode-extension/myaicoder-*.vsix dist/myaicoder-windows-setup/
+          cp installer/install.bat "dist/myaicoder-windows-setup/설치하기.bat"
+          cp installer/config.json dist/myaicoder-windows-setup/
+          cp installer/README.txt dist/myaicoder-windows-setup/
+          echo "=== Package contents ==="
+          ls -lh dist/myaicoder-windows-setup/
+
+      - name: Create zip package
+        run: |
+          cd dist
+          7z a myaicoder-windows-setup.zip myaicoder-windows-setup/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myaicoder-windows-setup
+          path: dist/myaicoder-windows-setup.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/myaicoder-windows-setup.zip
+          generate_release_notes: true

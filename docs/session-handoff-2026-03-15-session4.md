@@ -115,7 +115,38 @@
 - 자동 업데이트 (oneclick-installer P2)
 - GUI 설치 마법사
 
-## 7. 다음 세션에서 먼저 볼 파일
+## 7. CI 오류 수정 + 코드베이스 정리
+
+### CI 오류
+- **원인**: marketplace-deployment에서 `@vscode/vsce` 추가 후 `pnpm-lock.yaml` 미갱신
+- **수정**: `pnpm install` → lockfile 업데이트 → CI 3/3 PASS
+
+### 코드베이스 정리 (삭제 7건)
+| 삭제 파일 | 이유 |
+|----------|------|
+| `services/gateway/gateway.yaml.example` | 중복 (config/에 중앙화) |
+| `services/myaicoder/models.yaml.example` | 중복 (config/에 중앙화) |
+| `apps/vscode-extension/package-lock.json` | npm 잔재 (pnpm이 정식) |
+| `chat_log/020_ci_검증_및_model_management.md` | 중복 번호 (020 2개) |
+| `myaicoder/` (루트 빈 폴더) | 초기 생성 후 방치 |
+| `main.py` (루트) | "Hello" 플레이스홀더 |
+| `COMPLETION_SUMMARY_oneclick-installer.md` | 자동 생성물 |
+
+### .gitignore 추가
+- `package-lock.json` — pnpm 프로젝트에서 npm lockfile 방지
+- `COMPLETION_SUMMARY_*.md` — 빌드 산출물
+
+### 기타
+- `scripts/integration_test.sh` 주석 업데이트 (vLLM → llama.cpp)
+- 빈 agent-memory 폴더 3개 삭제
+
+## 8. 미커밋 변경사항 (다음 세션에서 커밋 필요)
+
+- .gitignore 업데이트 (package-lock.json, COMPLETION_SUMMARY_*)
+- 파일 7건 삭제 (중복 config, 잔재 파일)
+- integration_test.sh 주석 수정
+
+## 9. 다음 세션에서 먼저 볼 파일
 
 - `docs/session-handoff-2026-03-15-session4.md` (이 파일)
 - `docs/roadmap-2026-03.md`

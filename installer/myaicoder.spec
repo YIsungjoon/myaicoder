@@ -1,11 +1,18 @@
 # -*- mode: python ; coding: utf-8 -*-
 """PyInstaller spec for myAiCoder CLI frozen binary."""
 
+import os
 from PyInstaller.utils.hooks import collect_data_files
 
+# OS-independent paths (Edge Case B: Windows path separator compatibility)
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(SPECPATH), '..'))
+SERVICE_DIR = os.path.join(REPO_ROOT, 'services', 'myaicoder')
+SRC_DIR = os.path.join(SERVICE_DIR, 'src')
+ENTRY_POINT = os.path.join(SRC_DIR, 'myaicoder', 'cli.py')
+
 a = Analysis(
-    ['../services/myaicoder/src/myaicoder/cli.py'],
-    pathex=['../services/myaicoder/src'],
+    [ENTRY_POINT],
+    pathex=[SRC_DIR],
     binaries=[],
     datas=collect_data_files('certifi'),
     hiddenimports=[

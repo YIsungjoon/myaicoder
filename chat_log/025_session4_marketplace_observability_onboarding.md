@@ -49,3 +49,24 @@
 | Gateway | 43 passed |
 | Extension | 20 passed |
 | 총합 | 241 passed |
+
+## 추가 작업
+
+### Feature #17: oneclick-installer (100%)
+- PyInstaller frozen binary (25MB, onefile)
+- install.bat (Windows 관리자 자동 상승, settings.json 주입)
+- install.command (macOS code CLI 2-tier 폴백)
+- build-installer.sh → myaicoder-setup.zip (24MB)
+
+### CI 오류 수정
+- pnpm-lock.yaml 미갱신으로 Extension Tests 실패 (Observability 커밋부터)
+- pnpm install → lockfile 업데이트 → CI 3/3 PASS
+
+### 코드베이스 정리
+- 불필요 파일 7건 삭제 (중복 config, npm lockfile, 빈 폴더, 플레이스홀더)
+- .gitignore에 package-lock.json, COMPLETION_SUMMARY_*.md 추가
+
+### Windows 실제 접속 테스트 (일부 진행)
+- 서버: LLM(8001) + Gateway(8080) 구동, 192.168.0.22
+- Windows 노트북에서 /health OK 확인
+- CLI + Extension 설치 → 다음 세션에서 채팅 테스트 이어서
