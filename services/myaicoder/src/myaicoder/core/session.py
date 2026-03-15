@@ -29,12 +29,12 @@ from myaicoder.llm.base import Message, ToolCall
 def _generate_session_id() -> str:
     """Generate collision-resistant session ID.
 
-    Format: YYYYMMDD_HHMMSSfff_XXXX
-    Collision probability: ~1/65536 per millisecond.
+    Format: YYYYMMDD_HHMMSSfff_XXXXXXXX
+    Collision probability: ~1/4 billion per millisecond.
     """
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d_%H%M%S") + f"{now.microsecond // 1000:03d}"
-    random_suffix = os.urandom(2).hex()
+    random_suffix = os.urandom(4).hex()
     return f"{timestamp}_{random_suffix}"
 
 
