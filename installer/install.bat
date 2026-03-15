@@ -6,9 +6,12 @@ setlocal enabledelayedexpansion
 net session >nul 2>&1
 if errorlevel 1 (
     echo [안내] 관리자 권한이 필요합니다. 권한을 요청합니다...
-    powershell -Command "Start-Process '%~f0' -Verb RunAs"
+    powershell -Command "Start-Process '%~f0' -ArgumentList '%~dp0' -Verb RunAs"
     exit /b
 )
+
+:: ── 관리자 상승 후 작업 디렉토리 복원 ──
+if not "%~1"=="" cd /d "%~1"
 
 echo ========================================
 echo   myAiCoder 설치 프로그램
