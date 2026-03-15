@@ -76,6 +76,25 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // 4. Register status bar
   context.subscriptions.push(statusBar);
+
+  // 5. Move chat panel to Secondary Side Bar (right side, Copilot-style)
+  const hasMovedKey = 'myaicoder.movedToSecondarySidebar';
+  if (!context.globalState.get<boolean>(hasMovedKey)) {
+    // Wait for view to be registered, then move it
+    setTimeout(async () => {
+      try {
+        await vscode.commands.executeCommand(
+          'myaicoder.chatPanel.focus',
+        );
+        await vscode.commands.executeCommand(
+          'workbench.action.moveViewToSecondarySideBar',
+        );
+        await context.globalState.update(hasMovedKey, true);
+      } catch {
+        // View may not be visible yet, skip silently
+      }
+    }, 1500);
+  }
 }
 
 export async function deactivate() {

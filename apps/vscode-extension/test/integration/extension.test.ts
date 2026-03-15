@@ -25,6 +25,7 @@ vi.mock('vscode', () => ({
   },
   commands: {
     registerCommand,
+    executeCommand: vi.fn().mockResolvedValue(undefined),
   },
   Uri: {
     file: vi.fn(),
@@ -94,6 +95,10 @@ describe('extension integration', () => {
     const context = {
       extensionUri: {},
       subscriptions: [],
+      globalState: {
+        get: vi.fn().mockReturnValue(false),
+        update: vi.fn().mockResolvedValue(undefined),
+      },
     } as any;
 
     await activate(context);
@@ -110,6 +115,10 @@ describe('extension integration', () => {
     const context = {
       extensionUri: {},
       subscriptions: [],
+      globalState: {
+        get: vi.fn().mockReturnValue(false),
+        update: vi.fn().mockResolvedValue(undefined),
+      },
     } as any;
 
     await extension.activate(context);

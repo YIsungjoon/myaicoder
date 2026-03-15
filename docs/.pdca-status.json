@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-15T11:33:53.900Z",
+  "lastUpdated": "2026-03-15T11:48:50.032Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -106,9 +106,9 @@
       "lastStabilizedAt": "2026-03-13T17:40:00.000Z",
       "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5)",
       "phaseNumber": 3,
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/apps/vscode-extension/src/mcp/client.ts",
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/apps/vscode-extension/test/integration/extension.test.ts",
       "timestamps": {
-        "lastUpdated": "2026-03-15T11:33:53.900Z"
+        "lastUpdated": "2026-03-15T11:48:50.032Z"
       }
     },
     "gateway": {
@@ -274,7 +274,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-15T11:33:53.900Z"
+    "lastActivity": "2026-03-15T11:48:50.032Z"
   },
   "history": [
     {
@@ -1682,6 +1682,24 @@
     },
     {
       "timestamp": "2026-03-15T11:33:53.900Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:48:06.228Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:48:38.671Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:48:50.032Z",
       "feature": "vscode-extension",
       "phase": "do",
       "action": "updated"

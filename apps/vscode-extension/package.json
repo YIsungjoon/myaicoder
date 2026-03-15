@@ -37,7 +37,7 @@
   "main": "./dist/extension.js",
   "contributes": {
     "viewsContainers": {
-      "auxiliarybar": [
+      "activitybar": [
         {
           "id": "myaicoder",
           "title": "myAiCoder",
