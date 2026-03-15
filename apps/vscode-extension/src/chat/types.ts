@@ -19,6 +19,7 @@ export interface ToolResultItem {
 /** Webview -> Extension messages */
 export type WebviewMessage =
   | { type: 'sendMessage'; text: string }
+  | { type: 'applyCode'; code: string; filePath?: string }
   | { type: 'cancelRequest' }
   | { type: 'ready' };
 

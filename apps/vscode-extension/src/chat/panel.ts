@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { McpClientManager } from '../mcp/client';
 import { EditorContext } from '../editor/context';
 import { StatusBarManager } from '../ui/statusbar';
-import { ChatMessage, WebviewMessage, ExtensionMessage } from './types';
+import { ChatMessage, ToolResultItem, WebviewMessage, ExtensionMessage } from './types';
 
 export class ChatPanelProvider implements vscode.WebviewViewProvider {
   private webviewView?: vscode.WebviewView;
@@ -35,6 +36,9 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
           case 'sendMessage':
             await this.handleUserMessage(message.text);
             break;
+          case 'applyCode':
+            await this.handleApplyCode(message.code, message.filePath);
+            break;
           case 'cancelRequest':
             break;
         }
@@ -65,8 +69,15 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
         result = await this.mcpClient.callTool('agentic_task', {
           prompt: this.buildPrompt(text, fileContext),
         });
+
+        // Parse and display tool call results from agentic response
+        const toolResults = this.parseToolResults(result.content);
+        if (toolResults.length > 0) {
+          toolResults.forEach((tr) => {
+            this.postMessage({ type: 'toolResult', result: tr });
+          });
+        }
       } else {
-        // Direct mode: pass user message as-is (no LLM routing in extension)
         result = {
           content: 'agentic_task not available. Enable with --agentic flag.\n'
             + 'Available tools: ' + tools.map((t) => t.name).join(', '),
@@ -97,10 +108,107 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
   }
 
   private buildPrompt(text: string, fileContext: string | null): string {
-    if (fileContext) {
-      return `Current file context:\n${fileContext}\n\nUser request: ${text}`;
+    const parts: string[] = [];
+
+    // 1. Workspace info
+    const wsInfo = this.editorContext.getWorkspaceInfo();
+    if (wsInfo) {
+      parts.push(`Workspace: ${wsInfo.name} (${wsInfo.rootPath})`);
     }
-    return text;
+
+    // 2. Open tabs (max 10)
+    const tabs = this.editorContext.getOpenTabs();
+    if (tabs.length > 0) {
+      const relTabs = wsInfo
+        ? tabs.map((t) => path.relative(wsInfo.rootPath, t)).slice(0, 10)
+        : tabs.slice(0, 10);
+      parts.push(`Open files:\n${relTabs.map((t) => `  - ${t}`).join('\n')}`);
+    }
+
+    // 3. Active file context
+    if (fileContext) {
+      parts.push(`Active file context:\n${fileContext}`);
+    }
+
+    // 4. User request
+    parts.push(`User request: ${text}`);
+
+    return parts.join('\n\n');
+  }
+
+  /**
+   * Parse tool call results from agentic_task response.
+   * Format: [TOOL_CALL] toolName | duration_ms | result
+   */
+  private parseToolResults(content: string): ToolResultItem[] {
+    const results: ToolResultItem[] = [];
+    const pattern = /\[TOOL_CALL\]\s+(\w+)\s*\|\s*(\d+)ms\s*\|\s*([\s\S]*?)(?=\[TOOL_CALL\]|$)/g;
+    let match;
+    while ((match = pattern.exec(content)) !== null) {
+      results.push({
+        toolName: match[1],
+        args: {},
+        result: match[3].trim(),
+        isError: false,
+        duration: parseInt(match[2], 10),
+      });
+    }
+    return results;
+  }
+
+  private async handleApplyCode(code: string, filePath?: string): Promise<void> {
+    const { showDiff, applyToFile } = await import('../editor/apply');
+
+    // Determine target file
+    let targetPath = filePath;
+    if (!targetPath) {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showWarningMessage('No active editor to apply code to.');
+        return;
+      }
+      targetPath = editor.document.uri.fsPath;
+    }
+
+    // Resolve relative path to workspace
+    const wsInfo = this.editorContext.getWorkspaceInfo();
+    if (wsInfo && !path.isAbsolute(targetPath)) {
+      targetPath = path.join(wsInfo.rootPath, targetPath);
+    }
+
+    // EC-A: Check dirty state
+    const existingDoc = vscode.workspace.textDocuments.find(
+      (d) => d.uri.fsPath === targetPath,
+    );
+    if (existingDoc?.isDirty) {
+      const save = await vscode.window.showWarningMessage(
+        `${path.basename(targetPath!)} has unsaved changes. Save first?`,
+        'Save & Continue',
+        'Cancel',
+      );
+      if (save === 'Save & Continue') {
+        await existingDoc.save();
+      } else {
+        return;
+      }
+    }
+
+    // Show diff first
+    await showDiff(targetPath!, code);
+
+    // Ask user to confirm
+    const choice = await vscode.window.showInformationMessage(
+      `Apply changes to ${path.basename(targetPath!)}?`,
+      'Apply',
+      'Cancel',
+    );
+
+    if (choice === 'Apply') {
+      const success = await applyToFile(targetPath!, code);
+      if (success) {
+        vscode.window.showInformationMessage(`Changes applied to ${path.basename(targetPath!)}`);
+      }
+    }
   }
 
   clearChat(): void {

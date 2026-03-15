@@ -15,6 +15,7 @@ export function buildServeArgs(options: {
   enableAgentic?: boolean;
   llmUrl?: string;
   modelName?: string;
+  workingDir?: string;
 }): string[] {
   const args = ['serve'];
   if (options.allowBash) {
@@ -31,6 +32,9 @@ export function buildServeArgs(options: {
   }
   if (options.modelName) {
     args.push('--model-name', String(options.modelName));
+  }
+  if (options.workingDir) {
+    args.push('--working-dir', options.workingDir);
   }
   return args;
 }

@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-15T06:33:03.810Z",
+  "lastUpdated": "2026-03-15T07:53:00.959Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -12,7 +12,7 @@
     "scripts",
     "installer"
   ],
-  "primaryFeature": "windows-installer",
+  "primaryFeature": "workspace-integration",
   "features": {
     "api-gateway": {
       "phase": "completed",
@@ -106,9 +106,9 @@
       "lastStabilizedAt": "2026-03-13T17:40:00.000Z",
       "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5)",
       "phaseNumber": 3,
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/apps/vscode-extension/test/unit/client.test.ts",
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/apps/vscode-extension/src/chat/types.ts",
       "timestamps": {
-        "lastUpdated": "2026-03-15T06:33:03.810Z"
+        "lastUpdated": "2026-03-15T07:53:00.959Z"
       }
     },
     "gateway": {
@@ -202,6 +202,19 @@
       "completedAt": "2026-03-15T02:00:00.000Z",
       "description": "GitHub Actions Windows .exe 자동 빌드 + Release 배포 (oneclick-installer P1-R8)"
     },
+    "workspace-integration": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "analysisPath": "docs/pdca/03-analysis/workspace-integration.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/workspace-integration.report.md",
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/workspace-integration.plan.md",
+      "designPath": "docs/pdca/02-design/features/workspace-integration.design.md",
+      "startedAt": "2026-03-15T07:00:00.000Z",
+      "completedAt": "2026-03-15T09:00:00.000Z",
+      "description": "V0.2 워크스페이스 통합 - Context Awareness + Workspace Tools + Apply & Diff"
+    },
     "marketplace-deployment": {
       "phase": "completed",
       "status": "report_generated",
@@ -261,7 +274,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-15T06:33:03.810Z"
+    "lastActivity": "2026-03-15T07:53:00.959Z"
   },
   "history": [
     {
@@ -1543,6 +1556,78 @@
     },
     {
       "timestamp": "2026-03-15T06:33:03.810Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:49:37.635Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:49:56.514Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:50:16.003Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:50:37.754Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:50:54.201Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:51:11.188Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:51:40.716Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:51:49.312Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:52:07.896Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:52:23.035Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:52:34.366Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:53:00.959Z",
       "feature": "vscode-extension",
       "phase": "do",
       "action": "updated"

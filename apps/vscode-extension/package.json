@@ -98,7 +98,7 @@
         },
         "myaicoder.enableAgentic": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Enable agentic_task tool for multi-step execution"
         }
       }

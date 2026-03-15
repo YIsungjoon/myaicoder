@@ -2,6 +2,33 @@ import * as vscode from 'vscode';
 
 export class EditorContext {
   /**
+   * Returns list of currently open editor tab file paths.
+   */
+  getOpenTabs(): string[] {
+    return vscode.window.tabGroups.all
+      .flatMap((group) => group.tabs)
+      .map((tab) => {
+        if (tab.input instanceof vscode.TabInputText) {
+          return tab.input.uri.fsPath;
+        }
+        return null;
+      })
+      .filter((p): p is string => p !== null);
+  }
+
+  /**
+   * Returns workspace root path and name.
+   */
+  getWorkspaceInfo(): { rootPath: string; name: string } | null {
+    const folder = vscode.workspace.workspaceFolders?.[0];
+    if (!folder) return null;
+    return {
+      rootPath: folder.uri.fsPath,
+      name: folder.name,
+    };
+  }
+
+  /**
    * Returns active editor file info as context string.
    * Includes file path + selected text or cursor surroundings (±20 lines).
    */

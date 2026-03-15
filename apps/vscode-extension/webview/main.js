@@ -20,9 +20,16 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
 
-    // Code blocks (```lang\ncode\n```)
-    html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
-      return `<pre><code class="language-${lang}">${code}</code></pre>`;
+    // Code blocks with [Apply] button (```lang:filepath\ncode\n```)
+    // EC-B: Tolerant regex for missing language
+    html = html.replace(/```([a-zA-Z0-9_+\-]*)(?::([^\n]+))?\n([\s\S]*?)```/g, (_, lang, filePath, code) => {
+      const blockId = 'code-' + Math.random().toString(36).substr(2, 9);
+      const langLabel = lang || 'text';
+      const fp = filePath ? filePath.trim() : '';
+      const applyBtn = fp
+        ? `<button class="apply-btn" data-block-id="${blockId}" data-file="${escapeHtml(fp)}">Apply to ${escapeHtml(fp)}</button>`
+        : `<button class="apply-btn" data-block-id="${blockId}">Apply to Editor</button>`;
+      return `<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang">${langLabel}</span>${applyBtn}</div><pre><code id="${blockId}" class="language-${langLabel}">${code}</code></pre></div>`;
     });
 
     // Inline code
@@ -165,6 +172,23 @@
         break;
       }
     }
+  });
+
+  // Apply button click handler (event delegation)
+  messageList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.apply-btn');
+    if (!btn) return;
+
+    const blockId = btn.dataset.blockId;
+    const filePath = btn.dataset.file || null;
+    const codeEl = document.getElementById(blockId);
+    if (!codeEl) return;
+
+    vscode.postMessage({
+      type: 'applyCode',
+      code: codeEl.textContent,
+      filePath: filePath,
+    });
   });
 
   vscode.postMessage({ type: 'ready' });
