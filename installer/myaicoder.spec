@@ -4,8 +4,14 @@
 import os
 from PyInstaller.utils.hooks import collect_data_files
 
-# OS-independent paths (Edge Case B: Windows path separator compatibility)
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(SPECPATH), '..'))
+# CI: WORKSPACE_ROOT env var set by GitHub Actions (avoids MSYS path mangling)
+# Local: fallback to SPECPATH (already a directory path) → one level up
+WORKSPACE_ROOT = os.environ.get('WORKSPACE_ROOT')
+
+if WORKSPACE_ROOT:
+    REPO_ROOT = WORKSPACE_ROOT
+else:
+    REPO_ROOT = os.path.abspath(os.path.join(SPECPATH, '..'))
 SERVICE_DIR = os.path.join(REPO_ROOT, 'services', 'myaicoder')
 SRC_DIR = os.path.join(SERVICE_DIR, 'src')
 ENTRY_POINT = os.path.join(SRC_DIR, 'myaicoder', 'cli.py')

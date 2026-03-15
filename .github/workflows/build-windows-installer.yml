@@ -37,9 +37,11 @@ jobs:
 
       - name: Build frozen binary
         working-directory: services/myaicoder
+        env:
+          WORKSPACE_ROOT: ${{ github.workspace }}
         run: |
-          uv run pyinstaller "$GITHUB_WORKSPACE/installer/myaicoder.spec" \
-            --distpath "$GITHUB_WORKSPACE/dist" \
+          uv run pyinstaller "$WORKSPACE_ROOT/installer/myaicoder.spec" \
+            --distpath "$WORKSPACE_ROOT/dist" \
             --workpath /tmp/pyinstaller-build \
             -y
 
