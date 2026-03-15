@@ -27,8 +27,8 @@ echo ""
 echo "[2/4] Building VS Code Extension..."
 cd "$REPO_ROOT/apps/vscode-extension"
 npm run build 2>&1 | tail -1
-npx @vscode/vsce package --no-dependencies -o "$OUTPUT_DIR/myaicoder-0.1.0.vsix" 2>&1 | tail -1
-echo "      → myaicoder-0.1.0.vsix"
+npx @vscode/vsce package --no-dependencies -o "$OUTPUT_DIR/myaicoder-1.0.1.vsix" 2>&1 | tail -1
+echo "      → myaicoder-1.0.1.vsix"
 
 # ── 3. 설치 파일 복사 ──
 echo ""

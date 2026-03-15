@@ -28,7 +28,7 @@ pip install -e services/myaicoder/
 팀에서 공유받은 `.vsix` 파일을 설치합니다:
 
 ```bash
-code --install-extension myaicoder-0.1.0.vsix
+code --install-extension myaicoder-1.0.1.vsix
 ```
 
 또는 VS Code > Extensions > `...` > Install from VSIX...
@@ -93,7 +93,7 @@ LLM 서버 + Gateway가 순차적으로 기동됩니다.
 
 ```bash
 cd apps/vscode-extension && npm install && npm run package
-code --install-extension myaicoder-0.1.0.vsix
+code --install-extension myaicoder-1.0.1.vsix
 ```
 
 VS Code Activity Bar > myAiCoder > 채팅 시작!
