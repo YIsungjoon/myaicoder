@@ -19,6 +19,7 @@ sungjunCode/
 # Central config (contains API keys and tokens)
 config/gateway.yaml
 config/models.yaml
+.env.prod
 !config/.gitkeep
 
 # Build outputs

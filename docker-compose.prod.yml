@@ -1,0 +1,212 @@
+version: "3.8"
+
+services:
+  # ── LLM Servers (3 instances) ──
+  llama-9b:
+    build:
+      context: .
+      dockerfile: docker/llama-server.Dockerfile
+    container_name: llama-9b
+    command:
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+      - "--model"
+      - "/models/${MODEL_9B:-Qwen3.5-9B-Q4_K_M.gguf}"
+      - "--n-gpu-layers"
+      - "-1"
+      - "--ctx-size"
+      - "${CTX_SIZE_9B:-32768}"
+    volumes:
+      - ${MODELS_DIR:-~/models}:/models:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - llm-net
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 120s
+
+  llama-27b:
+    build:
+      context: .
+      dockerfile: docker/llama-server.Dockerfile
+    container_name: llama-27b
+    command:
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+      - "--model"
+      - "/models/${MODEL_27B:-Qwen3.5-27B-Q4_K_M.gguf}"
+      - "--n-gpu-layers"
+      - "-1"
+      - "--ctx-size"
+      - "${CTX_SIZE_27B:-32768}"
+    volumes:
+      - ${MODELS_DIR:-~/models}:/models:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - llm-net
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 180s
+
+  llama-coder:
+    build:
+      context: .
+      dockerfile: docker/llama-server.Dockerfile
+    container_name: llama-coder
+    command:
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+      - "--model"
+      - "/models/${MODEL_CODER:-Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf}"
+      - "--n-gpu-layers"
+      - "-1"
+      - "--ctx-size"
+      - "${CTX_SIZE_CODER:-16384}"
+    volumes:
+      - ${MODELS_DIR:-~/models}:/models:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - llm-net
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 180s
+
+  # ── API Gateway ──
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/gateway.Dockerfile
+    container_name: gateway
+    environment:
+      - GATEWAY_CONFIG=/app/config/gateway.prod.yaml
+    volumes:
+      - ./config:/app/config:ro
+    ports:
+      - "${GATEWAY_PORT:-8080}:8080"
+    depends_on:
+      llama-9b:
+        condition: service_healthy
+      llama-27b:
+        condition: service_healthy
+      llama-coder:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - llm-net
+      - infra-net
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # ── Infrastructure ──
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-myaicoder}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-myaicoder}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - infra-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-myaicoder}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - infra-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ── Monitoring ──
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: prometheus
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./config/prometheus.prod.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+    networks:
+      - infra-net
+      - llm-net
+    depends_on:
+      gateway:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: grafana
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - infra-net
+    depends_on:
+      - prometheus
+
+networks:
+  llm-net:
+    driver: bridge
+  infra-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  grafana_data:

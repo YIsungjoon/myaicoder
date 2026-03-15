@@ -1,25 +1,14 @@
 {
   "version": "1.0",
-  "enabled": true,
+  "enabled": false,
   "teamName": "",
   "feature": "workspace-integration",
   "pdcaPhase": "completed",
   "orchestrationPattern": "leader",
   "ctoAgent": "opus",
-  "startedAt": "2026-03-15T13:11:35.201Z",
-  "lastUpdated": "2026-03-15T13:12:24.966Z",
-  "teammates": [
-    {
-      "name": "a976c85a4eba33c0b",
-      "role": "Explore",
-      "model": "sonnet",
-      "status": "completed",
-      "currentTask": null,
-      "taskId": null,
-      "startedAt": "2026-03-15T13:11:35.201Z",
-      "lastActivityAt": "2026-03-15T13:12:24.965Z"
-    }
-  ],
+  "startedAt": "2026-03-15T13:42:42.976Z",
+  "lastUpdated": "2026-03-15T13:45:33.235Z",
+  "teammates": [],
   "progress": {
     "totalTasks": 0,
     "completedTasks": 0,

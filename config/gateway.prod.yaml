@@ -1,0 +1,41 @@
+# myAiCoder Gateway — Prod Environment Configuration (DGX Spark)
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+auth:
+  internal_token: "${INTERNAL_TOKEN}"
+  users:
+    - api_key_hash: "${ADMIN_API_KEY_HASH}"
+      user_id: "admin"
+      name: "관리자"
+      org: "MyAiCoder"
+      role: "admin"
+
+models:
+  default: "qwen3.5-9b"
+  routes:
+    - name: "qwen3.5-9b"
+      upstream: "http://llama-9b:8080/v1"
+      description: "Qwen 3.5 9B (Fast)"
+    - name: "qwen3.5-27b"
+      upstream: "http://llama-27b:8080/v1"
+      description: "Qwen 3.5 27B (Quality)"
+    - name: "qwen3-coder-30b"
+      upstream: "http://llama-coder:8080/v1"
+      description: "Qwen 3 Coder 30B (Coding)"
+
+rate_limit:
+  enabled: true
+  roles:
+    admin:
+      requests_per_minute: 120
+      requests_per_hour: 3600
+    user:
+      requests_per_minute: 30
+      requests_per_hour: 500
+
+logging:
+  level: "INFO"
+  format: "json"

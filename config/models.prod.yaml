@@ -1,0 +1,35 @@
+# myAiCoder Models — Prod Environment Configuration (DGX Spark)
+# Multiple models simultaneously (128GB unified memory)
+
+environment: prod
+models_dir: "/models"
+default_model: "qwen3.5-9b"
+gateway_url: "http://gateway:8080"
+
+instances:
+  - name: "qwen3.5-9b"
+    file: "Qwen3.5-9B-Q4_K_M.gguf"
+    port: 8080
+    container: "llama-9b"
+    description: "Qwen 3.5 9B — fast response"
+    defaults:
+      temperature: 0.0
+      max_tokens: 8192
+
+  - name: "qwen3.5-27b"
+    file: "Qwen3.5-27B-Q4_K_M.gguf"
+    port: 8080
+    container: "llama-27b"
+    description: "Qwen 3.5 27B — high quality"
+    defaults:
+      temperature: 0.0
+      max_tokens: 8192
+
+  - name: "qwen3-coder-30b"
+    file: "Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf"
+    port: 8080
+    container: "llama-coder"
+    description: "Qwen 3 Coder 30B — coding specialized"
+    defaults:
+      temperature: 0.0
+      max_tokens: 8192
