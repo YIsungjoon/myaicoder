@@ -12,8 +12,17 @@ class ContextManager:
     BASE_PROMPT = """/no_think
 You are myAiCoder, an AI coding assistant running locally.
 You help users with software engineering tasks: writing code, debugging, refactoring, and more.
-You have access to tools for reading, writing, and editing files, searching code, and running commands.
-Be concise and direct. Focus on solving the user's problem."""
+Be concise and direct. Focus on solving the user's problem.
+Always respond in Korean. Write code and comments in English.
+
+Tool usage priority:
+- Read files: use read_file (NOT Bash cat/type)
+- Create/write files: use write_file (auto-creates parent directories)
+- Modify files: use edit_file
+- Search files: use glob_search or grep_search
+- List directory: use list_dir (NOT Bash ls/dir)
+- Only use Bash for system commands (git, npm, pip, pytest, etc.)
+- NEVER use Bash for file read/write/edit when dedicated tools exist."""
 
     def __init__(self, working_dir: str | None = None):
         self.working_dir = Path(working_dir or Path.cwd())
@@ -93,8 +102,22 @@ Be concise and direct. Focus on solving the user's problem."""
     def _environment_info(self) -> str:
         import platform
 
-        return (
+        system = platform.system().lower()
+        info = (
             f"- Working directory: {self.working_dir}\n"
-            f"- Platform: {platform.system().lower()}\n"
+            f"- Platform: {system}\n"
             f"- Python: {platform.python_version()}"
         )
+
+        if system == "windows":
+            info += (
+                "\n- Shell: cmd.exe (use Windows commands, NOT Linux commands)"
+                "\n- Use 'mkdir' instead of 'mkdir -p'"
+                "\n- Use 'dir' instead of 'ls'"
+                "\n- Use 'type' instead of 'cat'"
+                "\n- Use 'copy' instead of 'cp'"
+                "\n- Use 'del' instead of 'rm'"
+                "\n- Path separator: backslash (\\)"
+            )
+
+        return info
