@@ -55,16 +55,19 @@ RUN cmake -B build \
     -DGGML_CUDA=ON \
     -DCMAKE_CUDA_ARCHITECTURES="100" \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_EXE_LINKER_FLAGS="-lcuda" \
     && cmake --build build --target llama-server -j$(nproc)
 
 # ── Stage 2: Runtime ──
 FROM nvidia/cuda:12.8.0-runtime-ubuntu24.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates \
+    curl ca-certificates libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /build/llama.cpp/build/bin/llama-server /usr/local/bin/llama-server
+COPY --from=builder /build/llama.cpp/build/bin/*.so* /usr/local/lib/
+RUN ldconfig
 
 # Model mount point
 VOLUME /models
@@ -86,6 +89,9 @@ CMD ["--host", "0.0.0.0", "--port", "8080"]
 | D1-2 | Multi-stage | builder → runtime (빌드 도구 제외로 이미지 경량화) |
 | D1-3 | CUDA Architecture | `CMAKE_CUDA_ARCHITECTURES="100"` (Blackwell GB10 = SM 100) |
 | D1-4 | 빌드 타겟 | `llama-server`만 빌드 (불필요한 바이너리 제외) |
+| D1-9 | CUDA 링커 | `-DCMAKE_EXE_LINKER_FLAGS="-lcuda"` — CUDA driver API 심볼 링크 |
+| D1-10 | 공유 라이브러리 분리 | 바이너리는 `/usr/local/bin/`, `.so`는 `/usr/local/lib/` + `ldconfig` |
+| D1-11 | libgomp1 | OpenMP 런타임 의존성 설치 |
 | D1-5 | 버전 핀닝 | `LLAMA_CPP_VERSION` ARG로 태그/커밋 지정 가능 (기본 master) |
 | D1-6 | HEALTHCHECK | `/health` 엔드포인트 30초 간격 체크 |
 | D1-7 | VOLUME | `/models` 마운트 포인트 선언 |
@@ -98,6 +104,9 @@ CMD ["--host", "0.0.0.0", "--port", "8080"]
 | EC-D1-A | CUDA 12.8 이미지가 ARM64 미제공 | `12.6.0`으로 fallback, DGX 호스트 CUDA 버전 확인 후 결정 |
 | EC-D1-B | Blackwell SM 100 미지원 (llama.cpp 버전 문제) | `CMAKE_CUDA_ARCHITECTURES="90;100"` 으로 확장, 또는 최신 llama.cpp 태그 사용 |
 | EC-D1-C | 빌드 시간 과다 (>30분) | `--build-arg LLAMA_CPP_VERSION=b5000` 등 안정 태그 사용, 빌드 캐시 활용 |
+| EC-D1-D | CUDA driver API 미링크 (`cuGetErrorString` 등) | `-DCMAKE_EXE_LINKER_FLAGS="-lcuda"` 추가 |
+| EC-D1-E | `libmtmd.so.0` not found (공유 라이브러리) | `.so` 파일을 `/usr/local/lib/`에 복사 + `ldconfig` |
+| EC-D1-F | `libgomp.so.1` not found | runtime 이미지에 `libgomp1` 패키지 설치 |
 
 ---
 
@@ -681,9 +690,9 @@ mkdir -p "$MODELS_DIR"
 
 # Model definitions: name|filename|repo|size
 MODELS=(
-    "Qwen3.5-9B|Qwen3.5-9B-Q4_K_M.gguf|Qwen/Qwen3.5-9B-GGUF|~6GB"
-    "Qwen3.5-27B|Qwen3.5-27B-Q4_K_M.gguf|Qwen/Qwen3.5-27B-GGUF|~16GB"
-    "Qwen3-Coder-30B|Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf|Qwen/Qwen3-Coder-30B-A3B-Instruct-GGUF|~18GB"
+    "Qwen3.5-9B|Qwen3.5-9B-Q4_K_M.gguf|unsloth/Qwen3.5-9B-GGUF|~6GB"
+    "Qwen3.5-27B|Qwen3.5-27B-Q4_K_M.gguf|unsloth/Qwen3.5-27B-GGUF|~17GB"
+    "Qwen3-Coder-30B|Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf|unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF|~18GB"
 )
 
 echo "=== Model Download ==="
