@@ -29,6 +29,7 @@ for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | Convert
 for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).install_dir_name"') do set "INSTALL_DIR_NAME=%%i"
 for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).model_name"') do set "MODEL_NAME=%%i"
 for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).extension_file"') do set "VSIX_FILE=%%i"
+for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).api_key"') do set "API_KEY=%%i"
 
 set "INSTALL_DIR=%USERPROFILE%\%INSTALL_DIR_NAME%"
 
@@ -73,11 +74,12 @@ if exist "%SETTINGS_FILE%" (
         "$s = Get-Content '%SETTINGS_FILE%' -Raw | ConvertFrom-Json; ^
          $s | Add-Member -NotePropertyName 'myaicoder.llmUrl' -NotePropertyValue '%SERVER_URL%' -Force; ^
          $s | Add-Member -NotePropertyName 'myaicoder.modelName' -NotePropertyValue '%MODEL_NAME%' -Force; ^
+         $s | Add-Member -NotePropertyName 'myaicoder.apiKey' -NotePropertyValue '%API_KEY%' -Force; ^
          $s | Add-Member -NotePropertyName 'myaicoder.executablePath' -NotePropertyValue '%INSTALL_DIR%\myaicoder.exe' -Force; ^
          $s | ConvertTo-Json -Depth 10 | Set-Content '%SETTINGS_FILE%' -Encoding UTF8"
 ) else (
     powershell -Command ^
-        "@{ 'myaicoder.llmUrl'='%SERVER_URL%'; 'myaicoder.modelName'='%MODEL_NAME%'; 'myaicoder.executablePath'='%INSTALL_DIR%\myaicoder.exe' } | ConvertTo-Json | Set-Content '%SETTINGS_FILE%' -Encoding UTF8"
+        "@{ 'myaicoder.llmUrl'='%SERVER_URL%'; 'myaicoder.modelName'='%MODEL_NAME%'; 'myaicoder.apiKey'='%API_KEY%'; 'myaicoder.executablePath'='%INSTALL_DIR%\myaicoder.exe' } | ConvertTo-Json | Set-Content '%SETTINGS_FILE%' -Encoding UTF8"
 )
 echo       -^> 서버 URL: %SERVER_URL%
 

@@ -16,6 +16,7 @@ export function buildServeArgs(options: {
   llmUrl?: string;
   modelName?: string;
   workingDir?: string;
+  apiKey?: string;
 }): string[] {
   const args = ['serve'];
   if (options.allowBash) {
@@ -35,6 +36,9 @@ export function buildServeArgs(options: {
   }
   if (options.workingDir) {
     args.push('--working-dir', options.workingDir);
+  }
+  if (options.apiKey) {
+    args.push('--api-key', options.apiKey);
   }
   return args;
 }

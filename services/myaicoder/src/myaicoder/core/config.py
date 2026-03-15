@@ -1,6 +1,7 @@
 """Configuration management."""
 
 import json
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -12,6 +13,7 @@ class LLMConfig:
     model: str = "qwen3.5-9b"
     temperature: float = 0.0
     max_tokens: int = 8192
+    api_key: str = "not-needed"
 
 
 @dataclass
@@ -87,9 +89,17 @@ class AppConfig:
 
         for p in search_paths:
             if p.exists():
-                return cls._from_file(p)
+                config = cls._from_file(p)
+                break
+        else:
+            config = cls()
 
-        return cls()
+        # Environment variable override for API key
+        env_api_key = os.environ.get("MYAICODER_API_KEY", "").strip()
+        if env_api_key:
+            config.llm.api_key = env_api_key
+
+        return config
 
     @classmethod
     def _from_file(cls, path: Path) -> "AppConfig":

@@ -20,6 +20,7 @@ SERVER_URL=$(python3 -c "import json; print(json.load(open('$CONFIG'))['server_u
 INSTALL_DIR_NAME=$(python3 -c "import json; print(json.load(open('$CONFIG'))['install_dir_name'])")
 MODEL_NAME=$(python3 -c "import json; print(json.load(open('$CONFIG'))['model_name'])")
 VSIX_FILE=$(python3 -c "import json; print(json.load(open('$CONFIG'))['extension_file'])")
+API_KEY=$(python3 -c "import json; print(json.load(open('$CONFIG')).get('api_key', ''))")
 
 INSTALL_DIR="$HOME/$INSTALL_DIR_NAME"
 
@@ -87,6 +88,8 @@ if os.path.exists(settings_file):
 
 settings['myaicoder.llmUrl'] = '$SERVER_URL'
 settings['myaicoder.modelName'] = '$MODEL_NAME'
+if '$API_KEY':
+    settings['myaicoder.apiKey'] = '$API_KEY'
 settings['myaicoder.executablePath'] = os.path.expanduser('$INSTALL_DIR/myaicoder')
 
 with open(settings_file, 'w') as f:

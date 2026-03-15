@@ -67,6 +67,10 @@ export class ConfigManager {
     return this.get<string>('llmUrl') || 'http://localhost:8080';
   }
 
+  getApiKey(): string {
+    return this.get<string>('apiKey') || '';
+  }
+
   getWorkspaceFolder(): string | null {
     return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? null;
   }

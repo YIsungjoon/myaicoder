@@ -1,0 +1,177 @@
+name: Build Installer (Windows + macOS)
+
+on:
+  push:
+    tags:
+      - 'installer-v*'
+
+jobs:
+  build-extension:
+    name: Build VS Code Extension
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Build Extension
+        working-directory: apps/vscode-extension
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build
+          pnpm exec vsce package --no-dependencies
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: apps/vscode-extension/myaicoder-*.vsix
+
+  build-binary:
+    name: Build ${{ matrix.os-label }} binary
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - runner: windows-latest
+            os-label: Windows
+            binary-name: myaicoder.exe
+            setup-dir: myaicoder-windows-setup
+            install-script: install.bat
+            install-name: "설치하기.bat"
+            zip-name: myaicoder-windows-setup.zip
+          - runner: macos-latest
+            os-label: macOS
+            binary-name: myaicoder
+            setup-dir: myaicoder-macos-setup
+            install-script: install.command
+            install-name: "설치하기.command"
+            zip-name: myaicoder-macos-setup.zip
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        working-directory: services/myaicoder
+        run: |
+          uv sync --frozen --extra dev
+          uv pip install pyinstaller
+
+      - name: Build frozen binary
+        working-directory: services/myaicoder
+        env:
+          WORKSPACE_ROOT: ${{ github.workspace }}
+        run: |
+          uv run pyinstaller "$WORKSPACE_ROOT/installer/myaicoder.spec" \
+            --distpath "$WORKSPACE_ROOT/dist" \
+            --workpath /tmp/pyinstaller-build \
+            -y
+
+      - name: Verify binary
+        run: |
+          ls -lh dist/${{ matrix.binary-name }}
+          echo "Binary size: $(du -h dist/${{ matrix.binary-name }} | cut -f1)"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.os-label }}
+          path: dist/${{ matrix.binary-name }}
+
+  package:
+    name: Package ${{ matrix.os-label }}
+    needs: [build-extension, build-binary]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os-label: Windows
+            binary-name: myaicoder.exe
+            setup-dir: myaicoder-windows-setup
+            install-script: install.bat
+            install-name: "설치하기.bat"
+            zip-name: myaicoder-windows-setup.zip
+          - os-label: macOS
+            binary-name: myaicoder
+            setup-dir: myaicoder-macos-setup
+            install-script: install.command
+            install-name: "설치하기.command"
+            zip-name: myaicoder-macos-setup.zip
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: binary-${{ matrix.os-label }}
+          path: dist/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+          path: dist/
+
+      - name: Assemble package
+        run: |
+          mkdir -p "dist/${{ matrix.setup-dir }}"
+          cp "dist/${{ matrix.binary-name }}" "dist/${{ matrix.setup-dir }}/"
+          cp dist/myaicoder-*.vsix "dist/${{ matrix.setup-dir }}/"
+          cp "installer/${{ matrix.install-script }}" "dist/${{ matrix.setup-dir }}/${{ matrix.install-name }}"
+          cp installer/config.json "dist/${{ matrix.setup-dir }}/"
+          cp installer/README.txt "dist/${{ matrix.setup-dir }}/"
+          chmod +x "dist/${{ matrix.setup-dir }}/${{ matrix.install-name }}" 2>/dev/null || true
+          echo "=== Package contents ==="
+          ls -lh "dist/${{ matrix.setup-dir }}/"
+
+      - name: Create zip
+        run: |
+          cd dist
+          zip -r "${{ matrix.zip-name }}" "${{ matrix.setup-dir }}/"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.setup-dir }}
+          path: dist/${{ matrix.zip-name }}
+
+  release:
+    name: Create Release
+    needs: [package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: myaicoder-windows-setup
+          path: dist/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: myaicoder-macos-setup
+          path: dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/myaicoder-windows-setup.zip
+            dist/myaicoder-macos-setup.zip
+          generate_release_notes: true

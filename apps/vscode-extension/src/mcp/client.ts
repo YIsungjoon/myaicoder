@@ -36,6 +36,7 @@ export class McpClientManager {
   async connect(): Promise<void> {
     const execPath = await this.config.resolveExecutablePath();
     const llmUrl = this.config.getLlmUrl();
+    const apiKey = this.config.getApiKey();
     const cwd = this.config.getWorkspaceFolder();
     const args = buildServeArgs({
       allowBash: this.config.get<boolean>('allowBash'),
@@ -44,6 +45,7 @@ export class McpClientManager {
       llmUrl: llmUrl ? `${llmUrl.replace(/\/+$/, '')}/v1` : undefined,
       modelName: this.config.getModelName(),
       workingDir: cwd ?? undefined,
+      apiKey: apiKey || undefined,
     });
     this.disconnectRequested = false;
 

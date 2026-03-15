@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-15T13:57:57.311Z",
+  "lastUpdated": "2026-03-15T15:18:25.963Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -11,7 +11,8 @@
     "gateway",
     "scripts",
     "installer",
-    "dgx-migration"
+    "dgx-migration",
+    "api-key-auth"
   ],
   "primaryFeature": "workspace-integration",
   "features": {
@@ -70,10 +71,10 @@
       },
       "timestamps": {
         "started": "2026-03-13T06:33:18.360Z",
-        "lastUpdated": "2026-03-15T12:19:18.988Z",
+        "lastUpdated": "2026-03-15T15:06:26.311Z",
         "completedAt": "2026-03-13T09:25:00.000Z"
       },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/src/myaicoder/core/context.py"
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/src/myaicoder/cli.py"
     },
     "integration-and-ci": {
       "phase": "completed",
@@ -107,9 +108,9 @@
       "lastStabilizedAt": "2026-03-13T17:40:00.000Z",
       "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5)",
       "phaseNumber": 3,
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/apps/vscode-extension/src/mcp/client.ts",
+      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/apps/vscode-extension/test/unit/client.test.ts",
       "timestamps": {
-        "lastUpdated": "2026-03-15T12:55:14.464Z"
+        "lastUpdated": "2026-03-15T15:08:26.859Z"
       }
     },
     "gateway": {
@@ -251,7 +252,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-14T15:18:46.174Z",
-        "lastUpdated": "2026-03-14T15:18:46.174Z"
+        "lastUpdated": "2026-03-15T15:18:25.963Z"
       },
       "lastFile": "/home/buttumaklevit/Desktop/myaicoder/installer/install.bat"
     },
@@ -265,6 +266,20 @@
       "timestamps": {
         "started": "2026-03-15T13:39:43.022Z",
         "lastUpdated": "2026-03-15T13:39:43.022Z"
+      },
+      "previousPhase": "check",
+      "autoAdvanced": true
+    },
+    "api-key-auth": {
+      "phase": "act",
+      "phaseNumber": 5,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-15T15:11:42.550Z",
+        "lastUpdated": "2026-03-15T15:11:42.550Z"
       },
       "previousPhase": "check",
       "autoAdvanced": true
@@ -289,7 +304,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-15T13:57:57.311Z"
+    "lastActivity": "2026-03-15T15:18:25.963Z"
   },
   "history": [
     {
@@ -1770,6 +1785,126 @@
     {
       "timestamp": "2026-03-15T13:57:57.311Z",
       "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:06.833Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:14.553Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:22.102Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:29.345Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:36.975Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:50.321Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:57.652Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:07.357Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:17.756Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:26.311Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:33.201Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:40.740Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:47.650Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:57.467Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:08:17.865Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:08:26.859Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:11:42.550Z",
+      "feature": "api-key-auth",
+      "phase": "act",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:18:10.506Z",
+      "feature": "installer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:18:18.242Z",
+      "feature": "installer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:18:25.963Z",
+      "feature": "installer",
       "phase": "do",
       "action": "updated"
     }

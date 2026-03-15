@@ -86,6 +86,12 @@
           "default": "qwen3.5-27b",
           "description": "Model name to display in status bar"
         },
+        "myaicoder.apiKey": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "API key for Gateway authentication (leave empty for local mode)"
+        },
         "myaicoder.allowBash": {
           "type": "boolean",
           "default": false,

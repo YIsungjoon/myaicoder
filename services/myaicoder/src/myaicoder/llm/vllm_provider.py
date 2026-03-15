@@ -26,6 +26,7 @@ class VLLMProvider(LLMProvider):
         self.model = model
         self.max_tokens = max_tokens
         self.base_url = base_url
+        self.api_key = api_key
         self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
 
     async def chat(
@@ -106,10 +107,15 @@ class VLLMProvider(LLMProvider):
             payload["tools"] = kwargs["tools"]
             payload["tool_choice"] = kwargs.get("tool_choice", "auto")
 
+        headers = {}
+        if self.api_key and self.api_key.strip() and self.api_key != "not-needed":
+            headers["Authorization"] = f"Bearer {self.api_key}"
+
         async with httpx.AsyncClient(timeout=120.0) as client:
             resp = await client.post(
                 f"{self.base_url}/chat/completions",
                 json=payload,
+                headers=headers,
             )
             resp.raise_for_status()
             data = resp.json()

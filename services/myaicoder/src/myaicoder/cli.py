@@ -11,13 +11,14 @@ from myaicoder import __version__
 @click.group(invoke_without_command=True)
 @click.option("--model", default=None, help="Model name (default: from config)")
 @click.option("--vllm-url", default=None, help="vLLM server URL (default: http://localhost:8080/v1)")
+@click.option("--api-key", default=None, help="API key for Gateway authentication")
 @click.option("--no-stream", is_flag=True, help="Disable streaming output")
 @click.option("--no-tools", is_flag=True, help="Disable all tools")
 @click.option("--verbose", is_flag=True, help="Show debug information")
 @click.option("-p", "--prompt", default=None, help="One-shot prompt (non-interactive)")
 @click.version_option(version=__version__)
 @click.pass_context
-def main(ctx, model, vllm_url, no_stream, no_tools, verbose, prompt):
+def main(ctx, model, vllm_url, api_key, no_stream, no_tools, verbose, prompt):
     """myAiCoder - AI Coding Assistant powered by local LLM."""
     if ctx.invoked_subcommand is not None:
         return
@@ -25,16 +26,18 @@ def main(ctx, model, vllm_url, no_stream, no_tools, verbose, prompt):
     ctx.ensure_object(dict)
     ctx.obj["model"] = model
     ctx.obj["vllm_url"] = vllm_url
+    ctx.obj["api_key"] = api_key
     ctx.obj["no_stream"] = no_stream
     ctx.obj["no_tools"] = no_tools
     ctx.obj["verbose"] = verbose
 
-    asyncio.run(_run_chat(model, vllm_url, no_stream, no_tools, verbose, prompt))
+    asyncio.run(_run_chat(model, vllm_url, api_key, no_stream, no_tools, verbose, prompt))
 
 
 async def _run_chat(
     model: str | None,
     vllm_url: str | None,
+    api_key: str | None,
     no_stream: bool,
     no_tools: bool,
     verbose: bool,
@@ -56,12 +59,15 @@ async def _run_chat(
         config.llm.model = model
     if vllm_url:
         config.llm.base_url = vllm_url
+    if api_key:
+        config.llm.api_key = api_key
     if no_tools:
         config.tools.enabled = False
 
     llm = VLLMProvider(
         base_url=config.llm.base_url,
         model=config.llm.model,
+        api_key=config.llm.api_key,
         max_tokens=config.llm.max_tokens,
     )
     context = ContextManager()
@@ -460,7 +466,12 @@ def config():
     default=None,
     help="Model name for agentic mode (overrides config)",
 )
-def serve(transport, port, allow_bash, working_dir, max_concurrent, agentic, llm_url, model_name):
+@click.option(
+    "--api-key",
+    default=None,
+    help="API key for Gateway authentication",
+)
+def serve(transport, port, allow_bash, working_dir, max_concurrent, agentic, llm_url, model_name, api_key):
     """Run as MCP server (for Claude Code, Cursor, etc.)."""
     from myaicoder.mcp.server import MCPServer
     from myaicoder.tools.registry import create_default_registry
@@ -475,9 +486,11 @@ def serve(transport, port, allow_bash, working_dir, max_concurrent, agentic, llm
         config = AppConfig.load()
         base_url = llm_url or config.llm.base_url
         model = model_name or config.llm.model
+        resolved_api_key = api_key or config.llm.api_key
         llm_provider = VLLMProvider(
             base_url=base_url,
             model=model,
+            api_key=resolved_api_key,
             max_tokens=config.llm.max_tokens,
         )
 

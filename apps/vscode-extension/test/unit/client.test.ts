@@ -140,6 +140,7 @@ describe('McpClientManager', () => {
       getWorkspaceFolder: vi.fn().mockReturnValue('/test/workspace'),
       getLlmUrl: vi.fn().mockReturnValue('http://localhost:8080'),
       getModelName: vi.fn().mockReturnValue('qwen3.5-9b'),
+      getApiKey: vi.fn().mockReturnValue(''),
       get: vi.fn().mockImplementation((key: string) => {
         if (key === 'maxConcurrent') return 2;
         return false;
@@ -167,6 +168,7 @@ describe('McpClientManager', () => {
       getWorkspaceFolder: vi.fn().mockReturnValue('/test/workspace'),
       getLlmUrl: vi.fn().mockReturnValue('http://localhost:8080'),
       getModelName: vi.fn().mockReturnValue('qwen3.5-9b'),
+      getApiKey: vi.fn().mockReturnValue(''),
       get: vi.fn().mockReturnValue(undefined),
     } as any;
     const client = new McpClientManager(config, {
