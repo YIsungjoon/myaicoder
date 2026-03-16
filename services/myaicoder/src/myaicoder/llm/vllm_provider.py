@@ -111,7 +111,7 @@ class VLLMProvider(LLMProvider):
         if self.api_key and self.api_key.strip() and self.api_key != "not-needed":
             headers["Authorization"] = f"Bearer {self.api_key}"
 
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        async with httpx.AsyncClient(timeout=3600.0) as client:
             resp = await client.post(
                 f"{self.base_url}/chat/completions",
                 json=payload,

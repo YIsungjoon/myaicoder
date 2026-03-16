@@ -80,7 +80,11 @@ export class McpClientManager {
       throw new Error('MCP client not connected');
     }
 
-    const result = await this.client.callTool({ name, arguments: args });
+    const result = await this.client.callTool(
+      { name, arguments: args },
+      undefined,
+      { timeout: 3_600_000 },
+    );
 
     const contentArray = result.content as Array<{ type: string; text?: string }>;
     const content = contentArray
