@@ -4,7 +4,7 @@ import asyncio
 import re
 from pathlib import Path
 
-from myaicoder.tools.base import Tool, ToolResult
+from myaicoder.tools.base import Tool, ToolResult, validate_command
 
 # Error parsing patterns (order: most specific first)
 ERROR_PATTERNS = [
@@ -68,6 +68,11 @@ class BuildRunnerTool(Tool):
 
         if not command:
             return ToolResult(success=False, output="", error="command is required")
+
+        # Safety: check for dangerous commands
+        danger = validate_command(command)
+        if danger:
+            return ToolResult(success=False, output="", error=danger)
 
         cwd = None
         if working_dir:

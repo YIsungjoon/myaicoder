@@ -13,7 +13,7 @@ class LLMConfig:
     model: str = "qwen3.5-9b"
     temperature: float = 0.0
     max_tokens: int = 8192
-    api_key: str = "not-needed"
+    api_key: str = ""
 
 
 @dataclass

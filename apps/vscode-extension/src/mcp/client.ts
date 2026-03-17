@@ -48,7 +48,7 @@ export class McpClientManager {
     const llmUrl = this.config.getLlmUrl();
     const apiKey = this.config.getApiKey();
     const cwd = this.config.getWorkspaceFolder();
-    const args = buildServeArgs({
+    const { args, env } = buildServeArgs({
       allowBash: this.config.get<boolean>('allowBash'),
       maxConcurrent: this.config.get<number>('maxConcurrent'),
       enableAgentic: this.config.get<boolean>('enableAgentic'),
@@ -66,6 +66,7 @@ export class McpClientManager {
       args,
       cwd: cwd ?? undefined,
       stderr: 'pipe',
+      env: { ...process.env, ...env },
     });
     this.transport.onclose = () => {
       void this.handleTransportClose();

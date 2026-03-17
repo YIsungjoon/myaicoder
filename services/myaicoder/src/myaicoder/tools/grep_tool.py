@@ -70,7 +70,10 @@ class GrepTool(Tool):
         except re.error as e:
             return ToolResult(success=False, output="", error=f"Invalid regex: {e}")
 
-        base = Path(search_path).resolve()
+        try:
+            base = self.validate_path(search_path)
+        except ValueError as e:
+            return ToolResult(success=False, output="", error=str(e))
 
         skip_dirs = {
             ".git", "node_modules", "__pycache__", ".venv", "venv",

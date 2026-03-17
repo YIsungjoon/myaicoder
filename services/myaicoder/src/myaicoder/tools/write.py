@@ -41,7 +41,10 @@ class WriteTool(Tool):
         if not file_path:
             return ToolResult(success=False, output="", error="file_path is required")
 
-        path = Path(file_path)
+        try:
+            path = self.validate_path(file_path)
+        except ValueError as e:
+            return ToolResult(success=False, output="", error=str(e))
 
         try:
             path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,9 +1,46 @@
 """WebFetch tool — fetch URL and extract text content."""
 
 import html as html_module
+import ipaddress
 import re
+import socket
+from urllib.parse import urlparse
 
 from myaicoder.tools.base import Tool, ToolResult
+
+_BLOCKED_NETWORKS = [
+    ipaddress.ip_network("127.0.0.0/8"),
+    ipaddress.ip_network("10.0.0.0/8"),
+    ipaddress.ip_network("172.16.0.0/12"),
+    ipaddress.ip_network("192.168.0.0/16"),
+    ipaddress.ip_network("169.254.0.0/16"),
+    ipaddress.ip_network("::1/128"),
+    ipaddress.ip_network("fc00::/7"),
+    ipaddress.ip_network("fe80::/10"),
+]
+
+
+def _is_private_url(url: str) -> str | None:
+    """Check if URL resolves to a private/loopback IP.
+
+    Returns error message if blocked, None if safe.
+    """
+    parsed = urlparse(url)
+    hostname = parsed.hostname
+    if not hostname:
+        return "Invalid URL: no hostname"
+
+    try:
+        infos = socket.getaddrinfo(hostname, parsed.port or 443, proto=socket.IPPROTO_TCP)
+        for _family, _, _, _, sockaddr in infos:
+            ip = ipaddress.ip_address(sockaddr[0])
+            for network in _BLOCKED_NETWORKS:
+                if ip in network:
+                    return f"Blocked: URL resolves to private IP {ip}"
+    except socket.gaierror:
+        return f"DNS resolution failed for: {hostname}"
+
+    return None
 
 MAX_RESPONSE_BYTES = 5 * 1024 * 1024  # 5MB
 REQUEST_TIMEOUT = 10
@@ -54,6 +91,11 @@ class WebFetchTool(Tool):
                 success=False, output="",
                 error="Only http:// and https:// URLs are allowed",
             )
+
+        # SSRF protection: block private/loopback IPs
+        ssrf_error = _is_private_url(url)
+        if ssrf_error:
+            return ToolResult(success=False, output="", error=ssrf_error)
 
         try:
             import httpx

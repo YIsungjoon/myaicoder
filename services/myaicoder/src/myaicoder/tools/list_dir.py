@@ -52,7 +52,10 @@ class ListDirTool(Tool):
         max_depth = kwargs.get("max_depth", 3)
         show_hidden = kwargs.get("show_hidden", False)
 
-        root = Path(path_str).resolve()
+        try:
+            root = self.validate_path(path_str)
+        except ValueError as e:
+            return ToolResult(success=False, output="", error=str(e))
         if not root.is_dir():
             return ToolResult(
                 success=False, output="", error=f"Not a directory: {path_str}"

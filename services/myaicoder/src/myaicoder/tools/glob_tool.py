@@ -42,7 +42,10 @@ class GlobTool(Tool):
         if not pattern:
             return ToolResult(success=False, output="", error="pattern is required")
 
-        base = Path(search_path).resolve()
+        try:
+            base = self.validate_path(search_path)
+        except ValueError as e:
+            return ToolResult(success=False, output="", error=str(e))
         if not base.is_dir():
             return ToolResult(
                 success=False, output="", error=f"Not a directory: {search_path}"

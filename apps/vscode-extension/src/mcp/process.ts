@@ -17,8 +17,9 @@ export function buildServeArgs(options: {
   modelName?: string;
   workingDir?: string;
   apiKey?: string;
-}): string[] {
+}): { args: string[]; env: Record<string, string> } {
   const args = ['serve'];
+  const env: Record<string, string> = {};
   if (options.allowBash) {
     args.push('--allow-bash');
   }
@@ -38,7 +39,9 @@ export function buildServeArgs(options: {
     args.push('--working-dir', options.workingDir);
   }
   if (options.apiKey) {
-    args.push('--api-key', options.apiKey);
+    // Pass API key via environment variable instead of CLI argument
+    // to prevent exposure via `ps aux`
+    env['MYAICODER_API_KEY'] = options.apiKey;
   }
-  return args;
+  return { args, env };
 }

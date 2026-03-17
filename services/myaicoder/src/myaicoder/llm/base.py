@@ -4,6 +4,7 @@ This ABC defines the contract for all LLM providers.
 When migrating to TypeScript or Rust, only this interface needs re-implementation.
 """
 
+import json as _json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import AsyncIterator
@@ -40,7 +41,7 @@ class Message:
                         "arguments": (
                             tc.arguments
                             if isinstance(tc.arguments, str)
-                            else __import__("json").dumps(tc.arguments)
+                            else _json.dumps(tc.arguments)
                         ),
                     },
                 }

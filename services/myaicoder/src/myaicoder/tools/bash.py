@@ -2,30 +2,9 @@
 
 import asyncio
 import os
-import re
 from pathlib import Path
 
-from myaicoder.tools.base import Tool, ToolResult
-
-BLOCKED_PATTERNS = [
-    re.compile(r"\brm\s+(-[a-zA-Z]*f[a-zA-Z]*\s+)?/(?!\S)"),  # rm -rf /
-    re.compile(r"\bmkfs\b"),                                      # filesystem format
-    re.compile(r"\bdd\s+.*of=/dev/"),                             # disk overwrite
-    re.compile(r":\(\)\s*\{.*\}\s*;"),                            # fork bomb
-    re.compile(r"\bshutdown\b"),                                  # system shutdown
-    re.compile(r"\breboot\b"),                                    # system reboot
-]
-
-
-def _is_dangerous(command: str) -> str | None:
-    """Check if command matches any blocked pattern.
-
-    Returns error message if blocked, None otherwise.
-    """
-    for pattern in BLOCKED_PATTERNS:
-        if pattern.search(command):
-            return f"Blocked: dangerous command matches '{pattern.pattern}'"
-    return None
+from myaicoder.tools.base import Tool, ToolResult, validate_command
 
 
 class BashTool(Tool):
@@ -78,7 +57,7 @@ class BashTool(Tool):
             return ToolResult(success=False, output="", error="command is required")
 
         # Safety: check for dangerous commands
-        danger = _is_dangerous(command)
+        danger = validate_command(command)
         if danger:
             return ToolResult(success=False, output="", error=danger)
 

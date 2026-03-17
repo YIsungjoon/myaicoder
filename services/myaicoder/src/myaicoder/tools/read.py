@@ -47,7 +47,10 @@ class ReadTool(Tool):
         if not file_path:
             return ToolResult(success=False, output="", error="file_path is required")
 
-        path = Path(file_path)
+        try:
+            path = self.validate_path(file_path)
+        except ValueError as e:
+            return ToolResult(success=False, output="", error=str(e))
         if not path.exists():
             return ToolResult(
                 success=False, output="", error=f"File not found: {file_path}"
