@@ -83,7 +83,6 @@ async def chat_completions(request: Request) -> Response:
             raw_api_key=raw_key,
         )
     except httpx.ConnectError:
-        await _release_concurrency(request)
         raise HTTPException(status_code=502, detail="Upstream server unreachable")
     finally:
         if not is_stream:
@@ -120,6 +119,8 @@ async def catch_all(path: str, request: Request) -> Response:
         )
     except httpx.ConnectError:
         raise HTTPException(status_code=502, detail="Upstream server unreachable")
+    finally:
+        await _release_concurrency(request)
 
     return Response(
         content=resp.content,

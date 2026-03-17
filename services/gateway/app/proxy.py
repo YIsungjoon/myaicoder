@@ -68,8 +68,8 @@ def _save_chat_completion(
             is_stream=is_stream,
             client_ip=client_ip,
         )
-    except Exception:
-        pass
+    except Exception as e:
+        logger.error("save_chat_completion_failed", error=str(e))
 
 
 def _extract_model(body: bytes) -> str | None:
@@ -142,6 +142,7 @@ async def forward_request(
     url = f"{upstream_base}/{path}"
     clean = _clean_headers(headers)
 
+    resp = None
     try:
         resp = await http_client.request(method=method, url=url, content=body, headers=clean)
     except httpx.ConnectError:
@@ -149,11 +150,11 @@ async def forward_request(
         raise
     finally:
         latency = time.monotonic() - start
-        final_status = resp.status_code if "resp" in dir() else 502
+        final_status = resp.status_code if resp is not None else 502
         REQUEST_LATENCY.labels(method=method, path=path, is_stream="false").observe(latency)
         if final_status >= 500:
             ERROR_COUNT.labels(type="upstream_error").inc()
-        if "resp" in dir():
+        if resp is not None:
             _record_usage_from_response(resp, model_name)
         log_usage(
             user_id=user.user_id,
@@ -168,7 +169,7 @@ async def forward_request(
             api_key_masked=mask_api_key(raw_api_key),
         )
         # Conversation logging
-        if path == "chat/completions" and "resp" in dir() and final_status == 200:
+        if path == "chat/completions" and resp is not None and final_status == 200:
             _save_chat_completion(
                 body=body,
                 response=resp.content,
@@ -207,6 +208,8 @@ async def stream_upstream(
     accumulated_content: list[str] = []
     stream_tokens: tuple[int, int] | None = None
 
+    from .db import extract_stream_content, extract_stream_usage
+
     try:
         async with http_client.stream(
             method="POST", url=url, content=body, headers=clean
@@ -219,8 +222,6 @@ async def stream_upstream(
                     chunk, prompt_tokens, completion_tokens
                 )
                 # Conversation logging: extract content + usage from SSE
-                from .db import extract_stream_content, extract_stream_usage
-
                 content = extract_stream_content(chunk)
                 if content:
                     accumulated_content.append(content)

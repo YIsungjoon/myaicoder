@@ -62,7 +62,11 @@ async def init_db(database_url: str) -> None:
     async with _engine.begin() as conn:
         await conn.run_sync(metadata.create_all)
 
-    logger.info("database_initialized", url=database_url.split("@")[-1])
+    from urllib.parse import urlparse
+
+    parsed = urlparse(database_url)
+    safe_url = f"{parsed.hostname}:{parsed.port}{parsed.path}" if parsed.hostname else "(local)"
+    logger.info("database_initialized", url=safe_url)
 
 
 async def close_db() -> None:
@@ -116,13 +120,23 @@ async def save_conversation(
         logger.error("conversation_save_failed", error=str(e))
 
 
+def _on_task_done(task: asyncio.Task) -> None:
+    """Log errors from fire-and-forget background tasks."""
+    if task.cancelled():
+        return
+    exc = task.exception()
+    if exc:
+        logger.error("background_task_failed", error=str(exc), task=task.get_name())
+
+
 def save_conversation_bg(**kwargs) -> None:
     """Schedule save_conversation as fire-and-forget background task."""
     try:
         loop = asyncio.get_running_loop()
-        loop.create_task(save_conversation(**kwargs))
+        task = loop.create_task(save_conversation(**kwargs), name="save_conversation")
+        task.add_done_callback(_on_task_done)
     except RuntimeError:
-        pass
+        logger.warning("save_conversation_bg_no_loop")
 
 
 def extract_stream_content(chunk: bytes) -> str:
