@@ -6,13 +6,17 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import Response, StreamingResponse
 
-from ..deps import check_rate_limit, get_current_user
+from ..deps import check_concurrency, check_rate_limit, get_current_user
 from ..models import User
 from ..proxy import forward_request, stream_upstream
 
 router = APIRouter(
     prefix="/v1",
-    dependencies=[Depends(get_current_user), Depends(check_rate_limit)],
+    dependencies=[
+        Depends(get_current_user),
+        Depends(check_rate_limit),
+        Depends(check_concurrency),
+    ],
 )
 
 
@@ -21,6 +25,14 @@ async def list_models(request: Request) -> dict:
     """Return available models from config."""
     model_router = request.app.state.model_router
     return {"object": "list", "data": model_router.list_models()}
+
+
+async def _release_concurrency(request: Request) -> None:
+    """Release concurrency slot if acquired."""
+    limiter = getattr(request.app.state, "concurrency_limiter", None)
+    if limiter and getattr(request.state, "concurrency_acquired", False):
+        await limiter.release(request.state.user.user_id)
+        request.state.concurrency_acquired = False
 
 
 @router.post("/chat/completions")
@@ -40,17 +52,23 @@ async def chat_completions(request: Request) -> Response:
         is_stream = False
 
     if is_stream:
-        generator = stream_upstream(
-            http_client=request.app.state.http_client,
-            router=request.app.state.model_router,
-            path="chat/completions",
-            body=body,
-            headers=headers,
-            user=user,
-            client_ip=client_ip,
-            raw_api_key=raw_key,
-        )
-        return StreamingResponse(generator, media_type="text/event-stream")
+        async def stream_with_release():
+            try:
+                async for chunk in stream_upstream(
+                    http_client=request.app.state.http_client,
+                    router=request.app.state.model_router,
+                    path="chat/completions",
+                    body=body,
+                    headers=headers,
+                    user=user,
+                    client_ip=client_ip,
+                    raw_api_key=raw_key,
+                ):
+                    yield chunk
+            finally:
+                await _release_concurrency(request)
+
+        return StreamingResponse(stream_with_release(), media_type="text/event-stream")
 
     try:
         resp = await forward_request(
@@ -65,7 +83,11 @@ async def chat_completions(request: Request) -> Response:
             raw_api_key=raw_key,
         )
     except httpx.ConnectError:
+        await _release_concurrency(request)
         raise HTTPException(status_code=502, detail="Upstream server unreachable")
+    finally:
+        if not is_stream:
+            await _release_concurrency(request)
 
     return Response(
         content=resp.content,

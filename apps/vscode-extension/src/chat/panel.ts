@@ -8,6 +8,8 @@ import { ChatMessage, ToolResultItem, WebviewMessage, ExtensionMessage } from '.
 export class ChatPanelProvider implements vscode.WebviewViewProvider {
   private webviewView?: vscode.WebviewView;
   private messages: ChatMessage[] = [];
+  private isProcessing = false;
+  private cancelRequested = false;
 
   constructor(
     private extensionUri: vscode.Uri,
@@ -47,6 +49,17 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
             await this.handleApplyCode(message.code, message.filePath);
             break;
           case 'cancelRequest':
+            this.cancelRequested = true;
+            this.isProcessing = false;
+            this.postMessage({ type: 'setLoading', loading: false });
+            this.postMessage({
+              type: 'addMessage',
+              message: {
+                role: 'assistant',
+                content: 'Request cancelled.',
+                timestamp: Date.now(),
+              },
+            });
             break;
         }
       },
@@ -54,6 +67,12 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
   }
 
   private async handleUserMessage(text: string): Promise<void> {
+    if (this.isProcessing) {
+      return;
+    }
+    this.isProcessing = true;
+    this.cancelRequested = false;
+
     const userMsg: ChatMessage = {
       role: 'user',
       content: text,
@@ -77,6 +96,10 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
           prompt: this.buildPrompt(text, fileContext),
         });
 
+        if (this.cancelRequested) {
+          return;
+        }
+
         // Parse and display tool call results from agentic response
         const toolResults = this.parseToolResults(result.content);
         if (toolResults.length > 0) {
@@ -98,18 +121,26 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
         timestamp: Date.now(),
         isError: result.isError,
       };
-      this.messages.push(aiMsg);
+      // Error responses: show in UI only, exclude from conversation history
+      if (!result.isError) {
+        this.messages.push(aiMsg);
+      }
       this.postMessage({ type: 'addMessage', message: aiMsg });
     } catch (error) {
+      if (this.cancelRequested) {
+        return;
+      }
       const errorMsg: ChatMessage = {
         role: 'assistant',
         content: `Error: ${error instanceof Error ? error.message : String(error)}`,
         timestamp: Date.now(),
         isError: true,
       };
-      this.messages.push(errorMsg);
+      // Error: show in UI only, do not pollute conversation history
       this.postMessage({ type: 'addMessage', message: errorMsg });
     } finally {
+      this.isProcessing = false;
+      this.cancelRequested = false;
       this.postMessage({ type: 'setLoading', loading: false });
     }
   }

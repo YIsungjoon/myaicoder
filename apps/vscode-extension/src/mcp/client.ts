@@ -3,6 +3,11 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { ConfigManager } from '../config';
 import { buildServeArgs } from './process';
 
+/** Minimal OutputChannel interface for logging (avoids direct vscode import) */
+export interface LogChannel {
+  appendLine(value: string): void;
+}
+
 export interface ToolInfo {
   name: string;
   description: string;
@@ -12,6 +17,10 @@ export interface ToolInfo {
 export interface ToolCallResult {
   content: string;
   isError: boolean;
+}
+
+function ts(): string {
+  return new Date().toISOString().slice(11, 19);
 }
 
 export class McpClientManager {
@@ -27,6 +36,7 @@ export class McpClientManager {
       onDisconnected?: () => void;
       onReconnectFailed?: (error: Error) => void;
     },
+    private log?: LogChannel,
   ) {}
 
   /**
@@ -48,6 +58,8 @@ export class McpClientManager {
       apiKey: apiKey || undefined,
     });
     this.disconnectRequested = false;
+
+    this.log?.appendLine(`[${ts()}] Spawning: ${execPath} ${args.join(' ')}`);
 
     this.transport = new StdioClientTransport({
       command: execPath,
@@ -72,6 +84,7 @@ export class McpClientManager {
       description: t.description ?? '',
       inputSchema: t.inputSchema as Record<string, unknown>,
     }));
+    this.log?.appendLine(`[${ts()}] Tools loaded: ${this.tools.map((t) => t.name).join(', ')}`);
     this.handlers?.onConnected?.(this.tools.length);
   }
 
@@ -127,6 +140,7 @@ export class McpClientManager {
   }
 
   private async handleTransportClose(): Promise<void> {
+    this.log?.appendLine(`[${ts()}] Transport closed`);
     this.transport = null;
     this.client = null;
     this.tools = [];

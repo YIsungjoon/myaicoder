@@ -129,13 +129,35 @@
     }
   }
 
+  let isGenerating = false;
+
   function sendMessage() {
+    if (isGenerating) {
+      vscode.postMessage({ type: 'cancelRequest' });
+      return;
+    }
     const text = messageInput.value.trim();
     if (!text) return;
+
+    isGenerating = true;
+    updateSendButton();
 
     vscode.postMessage({ type: 'sendMessage', text: text });
     messageInput.value = '';
     messageInput.style.height = 'auto';
+  }
+
+  function updateSendButton() {
+    if (isGenerating) {
+      sendBtn.textContent = 'Stop';
+      sendBtn.classList.add('generating');
+      messageInput.disabled = true;
+    } else {
+      sendBtn.textContent = 'Send';
+      sendBtn.classList.remove('generating');
+      messageInput.disabled = false;
+      messageInput.focus();
+    }
   }
 
   sendBtn.addEventListener('click', sendMessage);
@@ -143,7 +165,9 @@
   messageInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      if (!isGenerating) {
+        sendMessage();
+      }
     }
   });
 
@@ -156,6 +180,8 @@
         break;
       case 'setLoading':
         setLoading(message.loading);
+        isGenerating = message.loading;
+        updateSendButton();
         break;
       case 'clearChat':
         messageList.innerHTML = '';

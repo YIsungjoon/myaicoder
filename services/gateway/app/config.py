@@ -66,11 +66,17 @@ class DatabaseConfig(BaseModel):
     enabled: bool = False
 
 
+class ConcurrencyConfig(BaseModel):
+    max_per_user: int = 1
+    max_global: int = 4
+
+
 class GatewayConfig(BaseModel):
     server: ServerConfig = ServerConfig()
     auth: AuthConfig = AuthConfig()
     models: ModelsConfig = ModelsConfig()
     rate_limit: RateLimitConfig = RateLimitConfig()
+    concurrency: ConcurrencyConfig = ConcurrencyConfig()
     logging: LoggingConfig = LoggingConfig()
     database: DatabaseConfig = DatabaseConfig()
 

@@ -183,6 +183,15 @@ body {
   opacity: 0.9;
 }
 
+#send-btn.generating {
+  background: var(--vscode-errorForeground);
+}
+
+#message-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Loading indicator */
 .loading-dots::after {
   content: '...';

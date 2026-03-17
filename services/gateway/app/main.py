@@ -8,6 +8,7 @@ import structlog
 from fastapi import FastAPI, Request
 
 from .auth import AuthStore
+from .concurrency import ConcurrencyLimiter
 from .config import GatewayConfig
 from .metrics import ACTIVE_REQUESTS, REQUEST_COUNT
 from .rate_limiter import RateLimitHeaderMiddleware, SlidingWindowLimiter
@@ -45,6 +46,10 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
         app.state.auth_store = AuthStore(config)
         app.state.model_router = ModelRouter(config.models)
         app.state.rate_limiter = SlidingWindowLimiter()
+        app.state.concurrency_limiter = ConcurrencyLimiter(
+            max_per_user=config.concurrency.max_per_user,
+            max_global=config.concurrency.max_global,
+        )
         app.state.http_client = httpx.AsyncClient(
             timeout=httpx.Timeout(connect=5.0, read=None, write=5.0, pool=5.0),
             limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),

@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-16T11:35:51.056Z",
+  "lastUpdated": "2026-03-17T04:37:38.573Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -15,8 +15,34 @@
     "api-key-auth",
     "conversation-logging"
   ],
-  "primaryFeature": "workspace-integration",
+  "primaryFeature": "concurrent-access-control",
   "features": {
+    "concurrent-access-control": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/concurrent-access-control.plan.md",
+      "designPath": "docs/pdca/02-design/features/concurrent-access-control.design.md",
+      "analysisPath": "docs/pdca/03-analysis/concurrent-access-control.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/concurrent-access-control.report.md",
+      "startedAt": "2026-03-17T02:00:00.000Z",
+      "completedAt": "2026-03-17T05:00:00.000Z",
+      "description": "동시 접속 제어 — UI Lock, 요청 가드, Gateway Concurrency Limiter"
+    },
+    "vscode-ux-improvement": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/vscode-ux-improvement.plan.md",
+      "designPath": "docs/pdca/02-design/features/vscode-ux-improvement.design.md",
+      "analysisPath": "docs/pdca/03-analysis/vscode-ux-improvement.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/vscode-ux-improvement.report.md",
+      "startedAt": "2026-03-16T14:00:00.000Z",
+      "completedAt": "2026-03-17T00:00:00.000Z",
+      "description": "VS Code Extension 사용성 개선 — Activity Bar 아이콘 사라짐 + MCP 연결 진단 불가 해결"
+    },
     "api-gateway": {
       "phase": "completed",
       "status": "report_generated",
@@ -109,9 +135,9 @@
       "lastStabilizedAt": "2026-03-13T17:40:00.000Z",
       "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5)",
       "phaseNumber": 3,
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/apps/vscode-extension/src/mcp/client.ts",
+      "lastFile": "/Users/sungjoonyi/Desktop/myaicoder/apps/vscode-extension/src/chat/panel.ts",
       "timestamps": {
-        "lastUpdated": "2026-03-16T11:35:47.136Z"
+        "lastUpdated": "2026-03-17T04:36:19.291Z"
       }
     },
     "gateway": {
@@ -123,9 +149,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-13T16:59:29.510Z",
-        "lastUpdated": "2026-03-15T16:02:00.446Z"
+        "lastUpdated": "2026-03-17T04:37:38.573Z"
       },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/gateway/app/routes/internal.py"
+      "lastFile": "/Users/sungjoonyi/Desktop/myaicoder/services/gateway/app/main.py"
     },
     "scripts": {
       "phase": "do",
@@ -319,7 +345,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-16T11:35:51.056Z"
+    "lastActivity": "2026-03-17T04:37:38.573Z"
   },
   "history": [
     {
@@ -1992,6 +2018,162 @@
     {
       "timestamp": "2026-03-16T11:35:51.056Z",
       "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:24:46.707Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:36:53.182Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:37:14.929Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:13.288Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:26.664Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:44.005Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:50.299Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:41:46.011Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:41:54.327Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:00.361Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:06.873Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:15.240Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:20.779Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:35:30.371Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:35:37.111Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:35:59.151Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:04.642Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:19.291Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:43.399Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:49.524Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:54.648Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:05.486Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:11.615Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:27.293Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:33.369Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:38.573Z",
+      "feature": "gateway",
       "phase": "do",
       "action": "updated"
     }

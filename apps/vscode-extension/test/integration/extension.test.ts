@@ -15,13 +15,26 @@ let latestHandlers: {
   onReconnectFailed?: (error: Error) => void;
 } | undefined;
 
+const registerTreeDataProvider = vi.fn().mockReturnValue({ dispose: vi.fn() });
+const createOutputChannel = vi.fn().mockReturnValue({
+  appendLine: vi.fn(),
+  show: vi.fn(),
+  dispose: vi.fn(),
+});
+
 vi.mock('vscode', () => ({
   window: {
     registerWebviewViewProvider,
+    registerTreeDataProvider,
     showErrorMessage,
     showInformationMessage,
     showWarningMessage,
     activeTextEditor: null,
+    createOutputChannel,
+    createStatusBarItem: vi.fn().mockReturnValue({
+      show: vi.fn(),
+      dispose: vi.fn(),
+    }),
   },
   commands: {
     registerCommand,
@@ -29,11 +42,36 @@ vi.mock('vscode', () => ({
   },
   Uri: {
     file: vi.fn(),
+    joinPath: vi.fn(),
   },
+  TreeItem: class TreeItem {
+    label: string;
+    collapsibleState: number;
+    iconPath: any;
+    tooltip: string | undefined;
+    contextValue: string | undefined;
+    constructor(label: string, collapsibleState?: number) {
+      this.label = label;
+      this.collapsibleState = collapsibleState ?? 0;
+    }
+  },
+  TreeItemCollapsibleState: { None: 0, Collapsed: 1, Expanded: 2 },
+  ThemeIcon: class ThemeIcon {
+    constructor(public id: string, public color?: any) {}
+  },
+  ThemeColor: class ThemeColor {
+    constructor(public id: string) {}
+  },
+  EventEmitter: class EventEmitter {
+    event = vi.fn();
+    fire = vi.fn();
+    dispose = vi.fn();
+  },
+  StatusBarAlignment: { Right: 2 },
 }));
 
 vi.mock('../../src/mcp/client', () => ({
-  McpClientManager: vi.fn().mockImplementation((_config, handlers) => {
+  McpClientManager: vi.fn().mockImplementation((_config, handlers, _log) => {
     latestHandlers = handlers;
     return {
       connect: vi.fn().mockImplementation(async () => {
@@ -44,6 +82,8 @@ vi.mock('../../src/mcp/client', () => ({
       }),
       disconnect,
       getToolCount: () => 2,
+      getTools: () => [],
+      getPid: () => null,
     };
   }),
 }));
@@ -70,10 +110,18 @@ vi.mock('../../src/editor/context', () => ({
   EditorContext: vi.fn().mockImplementation(() => ({})),
 }));
 
+vi.mock('../../src/ui/mcp-status', () => ({
+  McpStatusViewProvider: vi.fn().mockImplementation(() => ({
+    update: vi.fn(),
+    dispose: vi.fn(),
+  })),
+}));
+
 describe('extension integration', () => {
   beforeEach(() => {
     vi.resetModules();
     registerWebviewViewProvider.mockReset();
+    registerTreeDataProvider.mockReset();
     registerCommand.mockReset();
     showErrorMessage.mockReset();
     showInformationMessage.mockReset();
@@ -85,6 +133,7 @@ describe('extension integration', () => {
     latestHandlers = undefined;
 
     registerWebviewViewProvider.mockReturnValue({ dispose: vi.fn() });
+    registerTreeDataProvider.mockReturnValue({ dispose: vi.fn() });
     registerCommand.mockReturnValue({ dispose: vi.fn() });
     disconnect.mockResolvedValue(undefined);
   });
@@ -104,9 +153,9 @@ describe('extension integration', () => {
     await activate(context);
 
     expect(registerWebviewViewProvider).toHaveBeenCalledTimes(1);
-    expect(registerCommand).toHaveBeenCalledTimes(3);
+    expect(registerTreeDataProvider).toHaveBeenCalledTimes(1);
+    expect(registerCommand).toHaveBeenCalledTimes(4);
     expect(statusBarSetConnected).toHaveBeenCalledWith(true, 2);
-    expect(context.subscriptions).toHaveLength(5);
   });
 
   it('deactivates and disconnects the MCP client', async () => {

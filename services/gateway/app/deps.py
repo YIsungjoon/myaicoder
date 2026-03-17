@@ -6,6 +6,7 @@ from fastapi import HTTPException, Request
 from starlette.status import HTTP_403_FORBIDDEN
 
 from .auth import AuthStore
+from .concurrency import ConcurrencyLimiter
 from .config import RateLimitConfig
 from .models import User
 from .rate_limiter import SlidingWindowLimiter, resolve_limits
@@ -88,3 +89,22 @@ async def check_rate_limit(request: Request) -> None:
         "X-RateLimit-Remaining": str(remaining_m),
         "X-RateLimit-Reset": str(reset_m),
     }
+
+
+async def check_concurrency(request: Request) -> None:
+    """Check concurrency limit. Raises 503 if exceeded (non-blocking)."""
+    limiter: ConcurrencyLimiter | None = getattr(
+        request.app.state, "concurrency_limiter", None
+    )
+    if limiter is None:
+        return
+
+    user: User = request.state.user
+    acquired = await limiter.try_acquire(user.user_id)
+    if not acquired:
+        raise HTTPException(
+            status_code=503,
+            detail="Server busy. Please retry in a few seconds.",
+            headers={"Retry-After": "5"},
+        )
+    request.state.concurrency_acquired = True
