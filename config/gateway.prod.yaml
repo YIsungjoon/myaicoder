@@ -26,6 +26,10 @@ models:
       upstream: "http://llama-coder:8080/v1"
       description: "Qwen 3 Coder 30B (Coding)"
 
+concurrency:
+  max_per_user: 1
+  max_global: 4
+
 rate_limit:
   enabled: true
   roles:
