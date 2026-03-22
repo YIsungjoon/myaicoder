@@ -8,11 +8,11 @@ import structlog
 from fastapi import FastAPI, Request
 
 from .auth import AuthStore
-from .concurrency import ConcurrencyLimiter
 from .config import GatewayConfig
-from .metrics import ACTIVE_REQUESTS, REQUEST_COUNT
-from .rate_limiter import RateLimitHeaderMiddleware, SlidingWindowLimiter
-from .router import ModelRouter
+from .infra.metrics import ACTIVE_REQUESTS, REQUEST_COUNT
+from .middleware.concurrency import ConcurrencyLimiter
+from .middleware.rate_limiter import RateLimitHeaderMiddleware, SlidingWindowLimiter
+from .proxy.router import ModelRouter
 from .routes.health import router as health_router
 from .routes.internal import router as internal_router
 from .routes.metrics import router as metrics_router
@@ -57,7 +57,7 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
 
         # DB init (conversation logging)
         if config.database.enabled and config.database.url:
-            from .db import init_db
+            from .infra.db import init_db
 
             await init_db(config.database.url)
 
@@ -66,7 +66,7 @@ def create_app(config: GatewayConfig | None = None) -> FastAPI:
         # Shutdown: close HTTP client + DB
         await app.state.http_client.aclose()
         if config.database.enabled:
-            from .db import close_db
+            from .infra.db import close_db
 
             await close_db()
 

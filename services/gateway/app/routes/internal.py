@@ -61,7 +61,7 @@ async def list_conversations_api(
     if not expected or x_internal_token != expected:
         raise HTTPException(status_code=403, detail="Invalid internal token")
 
-    from ..db import list_conversations
+    from ..infra.db import list_conversations
 
     items = await list_conversations(
         user_id=user_id, model=model, limit=limit, offset=offset,

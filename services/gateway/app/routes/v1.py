@@ -6,9 +6,9 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import Response, StreamingResponse
 
-from ..deps import check_concurrency, check_rate_limit, get_current_user
+from ..middleware.deps import check_concurrency, check_rate_limit, get_current_user
 from ..models import User
-from ..proxy import forward_request, stream_upstream
+from ..proxy.forward import forward_request, stream_upstream
 
 router = APIRouter(
     prefix="/v1",
