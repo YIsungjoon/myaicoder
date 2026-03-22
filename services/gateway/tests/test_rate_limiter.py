@@ -19,8 +19,8 @@ from app.config import (
     UserOverrideConfig,
 )
 from app.main import create_app
-from app.rate_limiter import SlidingWindowLimiter, resolve_limits
-from app.router import ModelRouter
+from app.middleware.rate_limiter import SlidingWindowLimiter, resolve_limits
+from app.proxy.router import ModelRouter
 
 # ── SlidingWindowLimiter Unit Tests ──
 

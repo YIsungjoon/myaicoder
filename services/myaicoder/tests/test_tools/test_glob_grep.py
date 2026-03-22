@@ -2,8 +2,8 @@
 
 import pytest
 
-from myaicoder.tools.glob_tool import GlobTool
-from myaicoder.tools.grep_tool import GrepTool
+from myaicoder.tools.search.glob_tool import GlobTool
+from myaicoder.tools.search.grep_tool import GrepTool
 
 
 @pytest.fixture
