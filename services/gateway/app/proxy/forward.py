@@ -10,7 +10,7 @@ import structlog
 
 from ..infra.logging import log_usage, mask_api_key
 from ..infra.metrics import ERROR_COUNT, REQUEST_LATENCY, TOKENS_TOTAL, TTFT
-from ..models import User
+from ..config.models import User
 from ..proxy.router import ModelRouter
 
 logger = structlog.get_logger("gateway.proxy")

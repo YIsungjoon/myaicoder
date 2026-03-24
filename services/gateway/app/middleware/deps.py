@@ -5,10 +5,10 @@ import time
 from fastapi import HTTPException, Request
 from starlette.status import HTTP_403_FORBIDDEN
 
-from ..auth import AuthStore
+from ..auth.store import AuthStore
 from ..middleware.concurrency import ConcurrencyLimiter
-from ..config import RateLimitConfig
-from ..models import User
+from ..config.settings import RateLimitConfig
+from ..config.models import User
 from ..middleware.rate_limiter import SlidingWindowLimiter, resolve_limits
 
 

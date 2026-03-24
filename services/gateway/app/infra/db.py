@@ -5,10 +5,12 @@ from __future__ import annotations
 import asyncio
 import json
 import uuid
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
 import structlog
 from sqlalchemy import (
+    JSON,
     Boolean,
     Column,
     DateTime,
@@ -18,23 +20,24 @@ from sqlalchemy import (
     Table,
     Text,
 )
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
+from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, create_async_engine
 
 logger = structlog.get_logger("gateway.db")
 
 metadata = MetaData()
 
+# Use variants for database compatibility (PostgreSQL JSONB vs others JSON)
 conversations = Table(
     "conversations",
     metadata,
-    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
+    Column("id", String(36), primary_key=True, default=lambda: str(uuid.uuid4())),
     Column("user_id", String(100), nullable=False, index=True),
     Column("user_name", String(100)),
     Column("model", String(100), index=True),
-    Column("messages", JSONB, nullable=False),
+    Column("messages", JSON().with_variant(JSONB, "postgresql"), nullable=False),
     Column("response_content", Text),
-    Column("response_raw", JSONB),
+    Column("response_raw", JSON().with_variant(JSONB, "postgresql")),
     Column("prompt_tokens", Integer, default=0),
     Column("completion_tokens", Integer, default=0),
     Column("total_tokens", Integer, default=0),
@@ -54,12 +57,43 @@ conversations = Table(
 _engine: AsyncEngine | None = None
 
 
+@asynccontextmanager
+async def get_db_conn():
+    """
+    DB 연결 및 트랜잭션 원자성을 보장하는 컨텍스트 매니저.
+    예외 발생 시 자동으로 롤백을 수행함 (engine.begin()의 기본 동작).
+    """
+    if _engine is None:
+        raise RuntimeError("Database engine not initialized. Call init_db() first.")
+
+    async with _engine.begin() as conn:
+        try:
+            yield conn
+        except Exception as e:
+            # engine.begin()은 내부적으로 예외 발생 시 롤백함
+            logger.error("database_transaction_failed", error=str(e))
+            raise
+
+
 async def init_db(database_url: str) -> None:
     """Create async engine and ensure tables exist."""
     global _engine
-    _engine = create_async_engine(database_url, pool_size=5, max_overflow=5)
+    
+    # SQLite 인메모리 테스트 시 풀 설정 제외
+    engine_kwargs = {}
+    if not database_url.startswith("sqlite"):
+        engine_kwargs = {
+            "pool_size": 10,
+            "max_overflow": 20,
+            "pool_pre_ping": True,
+        }
 
-    async with _engine.begin() as conn:
+    _engine = create_async_engine(
+        database_url,
+        **engine_kwargs
+    )
+
+    async with get_db_conn() as conn:
         await conn.run_sync(metadata.create_all)
 
     logger.info("database_initialized", url=database_url.split("@")[-1])
@@ -88,15 +122,12 @@ async def save_conversation(
     is_stream: bool,
     client_ip: str,
 ) -> None:
-    """Save conversation to DB. Fire-and-forget safe."""
-    if _engine is None:
-        return
-
+    """Save conversation to DB. Single transaction ensures atomicity."""
     try:
-        async with _engine.begin() as conn:
+        async with get_db_conn() as conn:
             await conn.execute(
                 conversations.insert().values(
-                    id=uuid.uuid4(),
+                    id=str(uuid.uuid4()),
                     user_id=user_id,
                     user_name=user_name,
                     model=model or "unknown",
@@ -172,9 +203,6 @@ async def list_conversations(
     offset: int = 0,
 ) -> list[dict]:
     """Query conversations with filters."""
-    if _engine is None:
-        return []
-
     query = conversations.select().order_by(conversations.c.created_at.desc())
     if user_id:
         query = query.where(conversations.c.user_id == user_id)
@@ -183,7 +211,7 @@ async def list_conversations(
     query = query.limit(limit).offset(offset)
 
     try:
-        async with _engine.connect() as conn:
+        async with get_db_conn() as conn:
             result = await conn.execute(query)
             rows = result.mappings().all()
             return [

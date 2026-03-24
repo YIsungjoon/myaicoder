@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 
 from ..config import GatewayConfig
-from ..models import User
+from ..config.models import User
 
 
 class AuthStore:
