@@ -1,7 +1,5 @@
-"""Search tools — bash, glob, grep."""
+from .bash import BashTool
+from .glob_tool import GlobTool
+from .grep_tool import GrepTool
 
-from myaicoder.tools.search.bash import BashTool
-from myaicoder.tools.search.glob_tool import GlobTool
-from myaicoder.tools.search.grep_tool import GrepTool
-
-__all__ = ["BashTool", "GlobTool", "GrepTool"]
+TOOLS = [BashTool, GlobTool, GrepTool]
