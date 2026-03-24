@@ -3,7 +3,7 @@
 import pytest
 
 from myaicoder.core.engine import MiddlewareEngine
-from myaicoder.llm.base import LLMProvider, LLMResponse, Message, ToolCall, Usage
+from myaicoder.llm.base import LLMProvider, LLMResponse, ToolCall
 from myaicoder.tools.base import Tool, ToolResult
 from myaicoder.tools.registry import ToolRegistry
 

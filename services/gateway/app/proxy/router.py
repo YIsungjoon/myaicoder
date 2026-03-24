@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import structlog
 
-from ..config.settings import ModelsConfig
 from ..config.models import ModelRoute
+from ..config.settings import ModelsConfig
 
 logger = structlog.get_logger("gateway.router")
 

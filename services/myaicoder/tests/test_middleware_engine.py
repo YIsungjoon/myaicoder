@@ -5,7 +5,7 @@ import pytest
 from myaicoder.core.engine import AgentEngine, MiddlewareEngine
 from myaicoder.core.middleware.base import AgentMiddleware, ContextPayload
 from myaicoder.core.middleware.stack import MiddlewareStack
-from myaicoder.llm.base import LLMProvider, LLMResponse, Message, ToolCall, Usage
+from myaicoder.llm.base import LLMProvider, LLMResponse, ToolCall
 from myaicoder.tools.base import Tool, ToolResult
 from myaicoder.tools.registry import ToolRegistry
 

@@ -6,7 +6,6 @@ from contextlib import asynccontextmanager
 import httpx
 import structlog
 from fastapi import FastAPI, Request
-from starlette.middleware.base import BaseHTTPMiddleware
 
 from .auth.store import AuthStore
 from .config import config as gateway_config
@@ -38,7 +37,7 @@ def configure_structlog() -> None:
 
 def create_app(config=None) -> FastAPI:
     """App factory. Accepts optional config for testing, otherwise uses singleton."""
-    
+
     app_config = config if config else gateway_config
 
     @asynccontextmanager

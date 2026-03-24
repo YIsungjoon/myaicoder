@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from myaicoder.core.middleware.base import AgentMiddleware, ContextPayload
+from myaicoder.core.middleware.base import AgentMiddleware
 from myaicoder.tools.base import ToolResult
 
 

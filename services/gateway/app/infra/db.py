@@ -20,8 +20,8 @@ from sqlalchemy import (
     Table,
     Text,
 )
-from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
-from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, create_async_engine
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 logger = structlog.get_logger("gateway.db")
 
@@ -78,7 +78,7 @@ async def get_db_conn():
 async def init_db(database_url: str) -> None:
     """Create async engine and ensure tables exist."""
     global _engine
-    
+
     # SQLite 인메모리 테스트 시 풀 설정 제외
     engine_kwargs = {}
     if not database_url.startswith("sqlite"):

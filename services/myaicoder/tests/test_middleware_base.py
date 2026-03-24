@@ -4,7 +4,6 @@ import pytest
 
 from myaicoder.core.middleware.base import AgentMiddleware, ContextPayload
 from myaicoder.llm.base import Message
-from myaicoder.tools.base import ToolResult
 
 
 class DummyMiddleware(AgentMiddleware):

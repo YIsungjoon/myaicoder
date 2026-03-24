@@ -2,7 +2,6 @@
 
 import json
 import pytest
-from pathlib import Path
 
 from myaicoder.core.memory.loader import AgentsmdLoader
 from myaicoder.core.memory.store import MemoryStore

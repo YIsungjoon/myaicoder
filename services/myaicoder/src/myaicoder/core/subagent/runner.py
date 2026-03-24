@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from myaicoder.core.context import ContextManager
-from myaicoder.core.subagent.base import SubAgent
 from myaicoder.core.subagent.registry import SubAgentRegistry
 from myaicoder.llm.base import LLMProvider
 from myaicoder.tools.registry import ToolRegistry
