@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from app.config import ModelsConfig, RouteConfig
-from app.router import ModelRouter
+from app.proxy.router import ModelRouter
 
 
 class TestModelRouter:

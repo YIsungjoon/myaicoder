@@ -2,7 +2,7 @@
 
 import pytest
 
-from myaicoder.tools.edit import EditTool
+from myaicoder.tools.filesystem.edit import EditTool
 
 
 @pytest.fixture

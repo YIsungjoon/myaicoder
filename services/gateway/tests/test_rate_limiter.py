@@ -19,8 +19,8 @@ from app.config import (
     UserOverrideConfig,
 )
 from app.main import create_app
-from app.rate_limiter import SlidingWindowLimiter, resolve_limits
-from app.router import ModelRouter
+from app.middleware.rate_limiter import SlidingWindowLimiter, resolve_limits
+from app.proxy.router import ModelRouter
 
 # ── SlidingWindowLimiter Unit Tests ──
 
@@ -28,14 +28,14 @@ from app.router import ModelRouter
 class TestSlidingWindowBasic:
     def test_allows_under_limit(self):
         limiter = SlidingWindowLimiter()
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             allowed, remaining, reset = limiter.check_and_increment("u1", 5, 60)
         assert allowed is True
         assert remaining == 4
 
     def test_blocks_at_limit(self):
         limiter = SlidingWindowLimiter()
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             for _ in range(5):
                 limiter.check_and_increment("u1", 5, 60)
             allowed, remaining, _ = limiter.check_and_increment("u1", 5, 60)
@@ -44,7 +44,7 @@ class TestSlidingWindowBasic:
 
     def test_different_users_independent(self):
         limiter = SlidingWindowLimiter()
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             for _ in range(5):
                 limiter.check_and_increment("u1", 5, 60)
             # u1 is at limit, u2 should be fine
@@ -54,7 +54,7 @@ class TestSlidingWindowBasic:
     def test_reset_at_is_next_window_boundary(self):
         limiter = SlidingWindowLimiter()
         # t=1000, window=60 → current_window=16, next=17*60=1020
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             _, _, reset = limiter.check_and_increment("u1", 10, 60)
         assert reset == 1020
 
@@ -64,24 +64,24 @@ class TestSlidingWindowTransition:
         """Previous window count contributes to weighted average."""
         limiter = SlidingWindowLimiter()
         # Window 1: use 4 of 5
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             for _ in range(4):
                 limiter.check_and_increment("u1", 5, 60)
 
         # Window 2 at 10% progress: weighted = 0 + 4 * 0.9 = 3.6
-        with patch("app.rate_limiter.time.time", return_value=1066.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1066.0):
             allowed, remaining, _ = limiter.check_and_increment("u1", 5, 60)
         assert allowed is True  # 3.6 < 5, so allowed
 
     def test_old_window_resets_prev(self):
         """Windows more than 1 apart don't carry over."""
         limiter = SlidingWindowLimiter()
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             for _ in range(5):
                 limiter.check_and_increment("u1", 5, 60)
 
         # Skip 2 full windows → prev should be 0
-        with patch("app.rate_limiter.time.time", return_value=1200.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1200.0):
             allowed, remaining, _ = limiter.check_and_increment("u1", 5, 60)
         assert allowed is True
         assert remaining == 4
@@ -90,14 +90,14 @@ class TestSlidingWindowTransition:
 class TestEviction:
     def test_expired_counters_removed(self):
         limiter = SlidingWindowLimiter(eviction_interval=0)  # evict every call
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             limiter.check_and_increment("u1", 10, 60)
             limiter.check_and_increment("u2", 10, 60)
 
         assert len(limiter._counters) == 2
 
         # Jump 3 windows ahead → both should be evicted
-        with patch("app.rate_limiter.time.time", return_value=1200.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1200.0):
             limiter.check_and_increment("u3", 10, 60)
 
         # u1 and u2 should be evicted, only u3 remains
@@ -106,11 +106,11 @@ class TestEviction:
 
     def test_recent_counters_preserved(self):
         limiter = SlidingWindowLimiter(eviction_interval=0)
-        with patch("app.rate_limiter.time.time", return_value=1000.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1000.0):
             limiter.check_and_increment("u1", 10, 60)
 
         # Only 1 window ahead → prev is still needed
-        with patch("app.rate_limiter.time.time", return_value=1060.0):
+        with patch("app.middleware.rate_limiter.time.time", return_value=1060.0):
             limiter.check_and_increment("u2", 10, 60)
 
         # u1 is in prev window, should NOT be evicted

@@ -8,10 +8,10 @@ import anyio
 import httpx
 import structlog
 
-from .logging import log_usage, mask_api_key
-from .metrics import ERROR_COUNT, REQUEST_LATENCY, TOKENS_TOTAL, TTFT
-from .models import User
-from .router import ModelRouter
+from ..config.models import User
+from ..infra.logging import log_usage, mask_api_key
+from ..infra.metrics import ERROR_COUNT, REQUEST_LATENCY, TOKENS_TOTAL, TTFT
+from ..proxy.router import ModelRouter
 
 logger = structlog.get_logger("gateway.proxy")
 
@@ -34,7 +34,7 @@ def _save_chat_completion(
 ) -> None:
     """Parse request/response and schedule DB save."""
     try:
-        from .db import save_conversation_bg
+        from ..infra.db import save_conversation_bg
 
         request_data = json.loads(body)
         messages = request_data.get("messages", [])
@@ -208,8 +208,6 @@ async def stream_upstream(
     accumulated_content: list[str] = []
     stream_tokens: tuple[int, int] | None = None
 
-    from .db import extract_stream_content, extract_stream_usage
-
     try:
         async with http_client.stream(
             method="POST", url=url, content=body, headers=clean
@@ -222,6 +220,8 @@ async def stream_upstream(
                     chunk, prompt_tokens, completion_tokens
                 )
                 # Conversation logging: extract content + usage from SSE
+                from ..infra.db import extract_stream_content, extract_stream_usage
+
                 content = extract_stream_content(chunk)
                 if content:
                     accumulated_content.append(content)

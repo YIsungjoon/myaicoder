@@ -15,9 +15,9 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-from .config import RateLimitConfig
+from ..config import RateLimitConfig
 
-# ── Sliding Window Counter Algorithm ──
+# -- Sliding Window Counter Algorithm --
 
 
 @dataclass
@@ -48,7 +48,7 @@ class SlidingWindowLimiter:
     ) -> tuple[bool, int, int]:
         """Check rate limit and increment counter atomically.
 
-        IMPORTANT: This entire method is synchronous — no await anywhere.
+        IMPORTANT: This entire method is synchronous -- no await anywhere.
         This guarantees no context switch between read and increment.
 
         Returns:
@@ -79,7 +79,7 @@ class SlidingWindowLimiter:
             counter.window_key = current_window
             counter.count = 0
 
-        # Weighted estimate (synchronous — no await!)
+        # Weighted estimate (synchronous -- no await!)
         weighted = counter.count + counter.prev_count * (1.0 - window_progress)
 
         reset_at = int((current_window + 1) * window_seconds)
@@ -87,7 +87,7 @@ class SlidingWindowLimiter:
         if weighted >= limit:
             return (False, 0, reset_at)
 
-        # Allowed — increment
+        # Allowed -- increment
         counter.count += 1
         remaining = max(0, limit - int(weighted) - 1)
         return (True, remaining, reset_at)
@@ -104,7 +104,7 @@ class SlidingWindowLimiter:
             del self._counters[key]
 
 
-# ── Helper ──
+# -- Helper --
 
 
 def resolve_limits(
@@ -122,7 +122,7 @@ def resolve_limits(
     return (30, 500)
 
 
-# ── Response Header Middleware ──
+# -- Response Header Middleware --
 
 
 class RateLimitHeaderMiddleware(BaseHTTPMiddleware):

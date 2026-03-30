@@ -15,8 +15,8 @@ from app.config import (
     UserConfig,
 )
 from app.main import create_app
-from app.rate_limiter import SlidingWindowLimiter
-from app.router import ModelRouter
+from app.middleware.rate_limiter import SlidingWindowLimiter
+from app.proxy.router import ModelRouter
 
 TEST_API_KEY = "test-secret-key-12345"
 TEST_API_KEY_HASH = AuthStore.hash_key(TEST_API_KEY)

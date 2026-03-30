@@ -2,7 +2,7 @@
 
 import pytest
 
-from myaicoder.tools.build_runner import BuildRunnerTool, _extract_summary, _parse_errors
+from myaicoder.tools.external.build_runner import BuildRunnerTool, _extract_summary, _parse_errors
 
 
 @pytest.fixture

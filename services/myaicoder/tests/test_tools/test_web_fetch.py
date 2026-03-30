@@ -2,7 +2,7 @@
 
 import pytest
 
-from myaicoder.tools.web_fetch import WebFetchTool, _html_to_text
+from myaicoder.tools.external.web_fetch import WebFetchTool, _html_to_text
 
 
 class TestHtmlToText:

@@ -5,11 +5,11 @@ import time
 from fastapi import HTTPException, Request
 from starlette.status import HTTP_403_FORBIDDEN
 
-from .auth import AuthStore
-from .concurrency import ConcurrencyLimiter
-from .config import RateLimitConfig
-from .models import User
-from .rate_limiter import SlidingWindowLimiter, resolve_limits
+from ..auth.store import AuthStore
+from ..config.models import User
+from ..config.settings import RateLimitConfig
+from ..middleware.concurrency import ConcurrencyLimiter
+from ..middleware.rate_limiter import SlidingWindowLimiter, resolve_limits
 
 
 def get_auth_store(request: Request) -> AuthStore:

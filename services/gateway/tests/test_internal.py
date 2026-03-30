@@ -14,8 +14,8 @@ from app.config import (
     UserConfig,
 )
 from app.main import create_app
-from app.rate_limiter import SlidingWindowLimiter
-from app.router import ModelRouter
+from app.middleware.rate_limiter import SlidingWindowLimiter
+from app.proxy.router import ModelRouter
 
 TEST_INTERNAL_TOKEN = "test-internal-secret-xyz"
 TEST_API_KEY = "internal-test-api-key"

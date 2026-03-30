@@ -2,7 +2,7 @@
 
 import pytest
 
-from myaicoder.tools.bash import BashTool
+from myaicoder.tools.search.bash import BashTool
 
 
 @pytest.fixture

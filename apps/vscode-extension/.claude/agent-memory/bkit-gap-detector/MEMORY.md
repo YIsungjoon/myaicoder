@@ -1,1 +1,2 @@
 - [project_vscode_ext_analysis.md](project_vscode_ext_analysis.md) - Gap analysis results (2026-03-13, 93% match) for vscode-extension feature
+- [project_vscode_ux_improvement.md](project_vscode_ux_improvement.md) - Gap analysis results (2026-03-16, 100% match) for vscode-ux-improvement feature

@@ -2,7 +2,7 @@
 
 import pytest
 
-from myaicoder.tools.list_dir import ListDirTool
+from myaicoder.tools.filesystem.list_dir import ListDirTool
 
 
 @pytest.fixture
@@ -80,7 +80,7 @@ class TestListDir:
     @pytest.mark.asyncio
     async def test_max_items_limit(self, tool, tmp_path):
         """T6: 500 items limit enforced."""
-        from myaicoder.tools.list_dir import MAX_ITEMS
+        from myaicoder.tools.filesystem.list_dir import MAX_ITEMS
 
         # Create many files
         for i in range(MAX_ITEMS + 50):

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from prometheus_client import Counter, Gauge, Histogram
 
-# ── Request metrics (middleware) ──
+# -- Request metrics (middleware) --
 REQUEST_COUNT = Counter(
     "gateway_requests_total",
     "Total HTTP requests",
@@ -14,7 +14,7 @@ ACTIVE_REQUESTS = Gauge(
     "Currently active requests",
 )
 
-# ── Streaming metrics (proxy.py finally block) ──
+# -- Streaming metrics (proxy.py finally block) --
 REQUEST_LATENCY = Histogram(
     "gateway_request_latency_seconds",
     "Total request duration (stream completion included)",
@@ -33,7 +33,7 @@ TOKENS_TOTAL = Counter(
     ["model", "type"],
 )
 
-# ── Error metrics ──
+# -- Error metrics --
 ERROR_COUNT = Counter(
     "gateway_errors_total",
     "Total errors by type",
