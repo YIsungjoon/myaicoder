@@ -13,7 +13,9 @@
 | 기능 | 보고서 | 날짜 | 상태 | 일치도 | 비고 |
 |------|--------|------|------|--------|------|
 | **Gateway Code Review** | [gateway-code-review.report.md](features/gateway-code-review.report.md) | 2026-03-17 | ✅ 완료 | **98%** | 7개 버그 수정, 프로덕션 준비 완료 |
-| Conversation Logging | [conversation-logging.report.md](features/conversation-logging.report.md) | 2026-03-15 | ✅ 완료 | 96% | 세션 로그 기록 시스템 |
+| Conversation Logging | [conversation-logging.report.md](features/conversation-logging.report.md) | 2026-03-16 | ✅ 완료 | **100%** | 서버 측 대화 저장 (PostgreSQL + SSE 파싱) |
+| API Key Authentication | [api-key-auth.report.md](features/api-key-auth.report.md) | 2026-03-16 | ✅ 완료 | **100%** | API Key 인증 (SHA-256 해시) |
+| DGX Migration | [dgx-migration.report.md](features/dgx-migration.report.md) | 2026-03-15 | ✅ 완료 | **100%** | DGX Spark 128GB 이주 (Docker Compose) |
 | Concurrent Access Control | [concurrent-access-control.report.md](features/concurrent-access-control.report.md) | 2026-03-12 | ✅ 완료 | 94% | 동시 접속 제어 |
 | VS Code UX Improvement | [vscode-ux-improvement.report.md](features/vscode-ux-improvement.report.md) | 2026-03-10 | ✅ 완료 | 92% | UI/UX 개선 |
 
@@ -21,8 +23,6 @@
 
 | 기능 | 보고서 | 날짜 | 상태 | 일치도 | 비고 |
 |------|--------|------|------|--------|------|
-| DGX Migration | [dgx-migration.report.md](features/dgx-migration.report.md) | 2026-02-28 | ✅ 완료 | 91% | 모델 마이그레이션 |
-| API Key Authentication | [api-key-auth.report.md](features/api-key-auth.report.md) | 2026-02-21 | ✅ 완료 | 95% | 인증 시스템 |
 | VS Code Extension | [vscode-extension.report.md](features/vscode-extension.report.md) | 2026-02-15 | ✅ 완료 | 89% | 확장 프로그램 개발 |
 
 ---
@@ -32,14 +32,14 @@
 ### 완료 현황
 - **총 기능**: 7개
 - **완료율**: 100% (7/7)
-- **평균 일치도**: 93.7%
-- **최신 업데이트**: 2026-03-17
+- **평균 일치도**: 96.1%
+- **최신 업데이트**: 2026-04-17
 
 ### 품질 지표
 | 지표 | 값 |
 |------|-----|
-| 평균 설계 일치도 | **93.7%** |
-| 90% 이상 달성 | **7/7** (100%) |
+| 평균 설계 일치도 | **96.1%** |
+| 90% 이상 달성 | **6/7** (86%) |
 | Critical 이슈 평균 | **2.4건/기능** |
 | 테스트 통과율 | **98%** |
 

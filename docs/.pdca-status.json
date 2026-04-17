@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-17T04:37:38.573Z",
+  "lastUpdated": "2026-04-17T00:00:00.000Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -11,9 +11,12 @@
     "gateway",
     "scripts",
     "installer",
-    "dgx-migration",
-    "api-key-auth",
-    "conversation-logging"
+    "agents",
+    "handlers",
+    "prefetch",
+    "core",
+    "routes",
+    "generator"
   ],
   "primaryFeature": "concurrent-access-control",
   "features": {
@@ -284,46 +287,121 @@
       "lastFile": "/home/buttumaklevit/Desktop/myaicoder/installer/install.bat"
     },
     "dgx-migration": {
-      "phase": "act",
-      "phaseNumber": 5,
-      "matchRate": null,
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
       "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-15T13:39:43.022Z",
-        "lastUpdated": "2026-03-15T13:39:43.022Z"
-      },
-      "previousPhase": "check",
-      "autoAdvanced": true
+      "planPath": "docs/pdca/01-plan/features/dgx-migration.plan.md",
+      "designPath": "docs/pdca/02-design/features/dgx-migration.design.md",
+      "analysisPath": "docs/pdca/03-analysis/dgx-migration.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/dgx-migration.report.md",
+      "startedAt": "2026-03-15T13:39:43.022Z",
+      "completedAt": "2026-03-15T15:00:00.000Z",
+      "description": "DGX Spark 128GB 이주 — Docker Compose 3모델 동시 서빙 + Gateway 프록시 + 모니터링 통합"
     },
     "api-key-auth": {
-      "phase": "act",
-      "phaseNumber": 5,
-      "matchRate": null,
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
       "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-15T15:11:42.550Z",
-        "lastUpdated": "2026-03-15T15:11:42.550Z"
-      },
-      "previousPhase": "check",
-      "autoAdvanced": true
+      "planPath": "docs/pdca/01-plan/features/api-key-auth.plan.md",
+      "designPath": "docs/pdca/02-design/features/api-key-auth.design.md",
+      "analysisPath": "docs/pdca/03-analysis/api-key-auth.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/api-key-auth.report.md",
+      "startedAt": "2026-03-15T15:11:42.550Z",
+      "completedAt": "2026-03-16T00:00:00.000Z",
+      "description": "API Key 인증 — SHA-256 해시 검증 + CLI/환경변수 로딩 경로 통합"
     },
     "conversation-logging": {
-      "phase": "act",
-      "phaseNumber": 5,
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/conversation-logging.plan.md",
+      "designPath": "docs/pdca/02-design/features/conversation-logging.design.md",
+      "analysisPath": "docs/pdca/03-analysis/conversation-logging.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/conversation-logging.report.md",
+      "startedAt": "2026-03-15T16:06:46.231Z",
+      "completedAt": "2026-03-16T00:00:00.000Z",
+      "description": "서버 측 대화 저장 — PostgreSQL + SSE 파싱, 100% 설계 일치(49/49)"
+    },
+    "agents": {
+      "phase": "do",
+      "phaseNumber": 3,
       "matchRate": null,
       "iterationCount": 0,
       "requirements": [],
       "documents": {},
       "timestamps": {
-        "started": "2026-03-15T16:06:46.231Z",
-        "lastUpdated": "2026-03-15T16:06:46.231Z"
+        "started": "2026-04-01T07:08:00.070Z",
+        "lastUpdated": "2026-04-01T08:56:04.557Z"
       },
-      "previousPhase": "check",
-      "autoAdvanced": true
+      "lastFile": "/home/laon/Desktop/contech-chatbot/src/agents/tool_registry.py"
+    },
+    "handlers": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-01T07:13:23.109Z",
+        "lastUpdated": "2026-04-01T08:52:30.535Z"
+      },
+      "lastFile": "/home/laon/Desktop/contech-chatbot/src/tools/handlers/file_handler.py"
+    },
+    "prefetch": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-01T07:54:44.196Z",
+        "lastUpdated": "2026-04-01T08:50:00.371Z"
+      },
+      "lastFile": "/home/laon/Desktop/contech-chatbot/src/agents/prefetch/law_fetcher.py"
+    },
+    "core": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-01T08:07:33.134Z",
+        "lastUpdated": "2026-04-01T08:42:57.507Z"
+      },
+      "lastFile": "/home/laon/Desktop/contech-chatbot/src/core/tool_errors.py"
+    },
+    "routes": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-01T08:50:21.071Z",
+        "lastUpdated": "2026-04-01T08:50:21.071Z"
+      },
+      "lastFile": "/home/laon/Desktop/contech-chatbot/src/api/routes/chat.py"
+    },
+    "generator": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-01T08:50:31.014Z",
+        "lastUpdated": "2026-04-01T08:50:49.971Z"
+      },
+      "lastFile": "/home/laon/Desktop/contech-chatbot/src/rag/generator/stream_engine.py"
     }
   },
   "pipeline": {
@@ -345,7 +423,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-17T04:37:38.573Z"
+    "lastActivity": "2026-04-01T08:56:04.557Z"
   },
   "history": [
     {
@@ -2174,6 +2252,576 @@
     {
       "timestamp": "2026-03-17T04:37:38.573Z",
       "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:08:00.070Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:10.487Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:26.450Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:49.524Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:59.881Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:05.828Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:09.931Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:13.668Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:17.394Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:22.839Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:46.078Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:13:14.484Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:13:23.109Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:04.597Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:09.698Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:15.953Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:19.662Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:24.692Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:30.539Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:34.923Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:39.985Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:43.583Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:51.903Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:26.943Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:33.798Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:44.196Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:51.016Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:10.240Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:18.628Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:29.395Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:38.160Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:52.093Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:56:09.971Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:56:47.304Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:09.766Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:21.044Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:30.675Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:43.148Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:51.710Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:58:00.450Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:07:33.134Z",
+      "feature": "core",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:14:28.057Z",
+      "feature": "core",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:14:47.353Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:14:55.567Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:15:04.706Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:15:24.379Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:42:57.507Z",
+      "feature": "core",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:31.309Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:43.737Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:50.475Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:59.923Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:12.031Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:19.248Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:23.931Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:30.088Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:36.066Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:42.374Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:51.130Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:55.927Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:01.314Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:07.156Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:12.337Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:20.855Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:29.495Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:37.727Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:45.312Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:53.393Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:46:00.347Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:46:06.570Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:18.318Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:24.017Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:28.582Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:33.511Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:38.768Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:43.287Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:50.143Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:55.300Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:00.371Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:21.071Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:31.014Z",
+      "feature": "generator",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:46.273Z",
+      "feature": "generator",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:49.971Z",
+      "feature": "generator",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:51:31.735Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:51:52.264Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:51:56.567Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:01.186Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:06.673Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:13.974Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:20.423Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:30.535Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:53:32.971Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:53:41.864Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:54:14.467Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:54:56.738Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:56:04.557Z",
+      "feature": "agents",
       "phase": "do",
       "action": "updated"
     }
