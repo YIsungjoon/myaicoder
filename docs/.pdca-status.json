@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-17T00:00:00.000Z",
+  "lastUpdated": "2026-04-17T22:22:49.542Z",
   "activeFeatures": [
     "ai-coder-cli",
     "api-gateway",
@@ -10,13 +10,7 @@
     "vscode-extension",
     "gateway",
     "scripts",
-    "installer",
-    "agents",
-    "handlers",
-    "prefetch",
-    "core",
-    "routes",
-    "generator"
+    "installer"
   ],
   "primaryFeature": "concurrent-access-control",
   "features": {
@@ -324,84 +318,6 @@
       "startedAt": "2026-03-15T16:06:46.231Z",
       "completedAt": "2026-03-16T00:00:00.000Z",
       "description": "서버 측 대화 저장 — PostgreSQL + SSE 파싱, 100% 설계 일치(49/49)"
-    },
-    "agents": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-04-01T07:08:00.070Z",
-        "lastUpdated": "2026-04-01T08:56:04.557Z"
-      },
-      "lastFile": "/home/laon/Desktop/contech-chatbot/src/agents/tool_registry.py"
-    },
-    "handlers": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-04-01T07:13:23.109Z",
-        "lastUpdated": "2026-04-01T08:52:30.535Z"
-      },
-      "lastFile": "/home/laon/Desktop/contech-chatbot/src/tools/handlers/file_handler.py"
-    },
-    "prefetch": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-04-01T07:54:44.196Z",
-        "lastUpdated": "2026-04-01T08:50:00.371Z"
-      },
-      "lastFile": "/home/laon/Desktop/contech-chatbot/src/agents/prefetch/law_fetcher.py"
-    },
-    "core": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-04-01T08:07:33.134Z",
-        "lastUpdated": "2026-04-01T08:42:57.507Z"
-      },
-      "lastFile": "/home/laon/Desktop/contech-chatbot/src/core/tool_errors.py"
-    },
-    "routes": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-04-01T08:50:21.071Z",
-        "lastUpdated": "2026-04-01T08:50:21.071Z"
-      },
-      "lastFile": "/home/laon/Desktop/contech-chatbot/src/api/routes/chat.py"
-    },
-    "generator": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-04-01T08:50:31.014Z",
-        "lastUpdated": "2026-04-01T08:50:49.971Z"
-      },
-      "lastFile": "/home/laon/Desktop/contech-chatbot/src/rag/generator/stream_engine.py"
     }
   },
   "pipeline": {
@@ -423,7 +339,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-04-01T08:56:04.557Z"
+    "lastActivity": "2026-04-17T22:22:49.542Z"
   },
   "history": [
     {
@@ -2822,6 +2738,36 @@
     {
       "timestamp": "2026-04-01T08:56:04.557Z",
       "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T08:27:24.559Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T08:27:30.007Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T08:27:33.377Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T22:22:41.720Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T22:22:49.542Z",
+      "feature": "handlers",
       "phase": "do",
       "action": "updated"
     }
