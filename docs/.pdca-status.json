@@ -1,17 +1,7 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-17T22:22:49.542Z",
-  "activeFeatures": [
-    "ai-coder-cli",
-    "api-gateway",
-    "integration-and-ci",
-    "mcp-server",
-    "myaicoder",
-    "vscode-extension",
-    "gateway",
-    "scripts",
-    "installer"
-  ],
+  "lastUpdated": "2026-04-18T00:00:00.000Z",
+  "activeFeatures": [],
   "primaryFeature": "concurrent-access-control",
   "features": {
     "concurrent-access-control": {
@@ -80,25 +70,18 @@
       "description": "MCP Server - 내장 도구를 MCP 프로토콜로 노출 (Phase 4)"
     },
     "myaicoder": {
-      "phase": "do",
-      "phaseNumber": 3,
+      "phase": "completed",
+      "status": "report_generated",
       "matchRate": 99,
       "iterationCount": 1,
-      "requirements": [],
-      "status": "report_generated",
-      "documents": {
-        "planPath": "docs/pdca/01-plan/features/myaicoder.plan.md",
-        "designPath": "docs/pdca/02-design/features/myaicoder.design.md",
-        "analysisPath": "docs/pdca/03-analysis/myaicoder.analysis.md",
-        "actPath": "docs/pdca/05-act/features/myaicoder.act.md",
-        "reportPath": "docs/pdca/06-report/features/myaicoder.report.md"
-      },
-      "timestamps": {
-        "started": "2026-03-13T06:33:18.360Z",
-        "lastUpdated": "2026-03-16T11:35:51.056Z",
-        "completedAt": "2026-03-13T09:25:00.000Z"
-      },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/services/myaicoder/src/myaicoder/llm/vllm_provider.py"
+      "planPath": "docs/pdca/01-plan/features/myaicoder.plan.md",
+      "designPath": "docs/pdca/02-design/features/myaicoder.design.md",
+      "analysisPath": "docs/pdca/03-analysis/myaicoder.analysis.md",
+      "actPath": "docs/pdca/05-act/features/myaicoder.act.md",
+      "reportPath": "docs/pdca/06-report/features/myaicoder.report.md",
+      "startedAt": "2026-03-13T06:33:18.360Z",
+      "completedAt": "2026-03-13T09:25:00.000Z",
+      "description": "myAiCoder 서비스 — CLI, LLM 프로바이더(vLLM/llama.cpp), 코드 어시스턴트 핵심"
     },
     "integration-and-ci": {
       "phase": "completed",
@@ -115,7 +98,7 @@
       "description": "Monorepo quality baseline - integration tests and CI pipeline"
     },
     "vscode-extension": {
-      "phase": "do",
+      "phase": "completed",
       "status": "archived",
       "matchRate": 99,
       "iterationCount": 1,
@@ -129,39 +112,7 @@
       "startedAt": "2026-03-13T15:00:00.000Z",
       "completedAt": "2026-03-13T17:30:00.000Z",
       "archivedAt": "2026-03-13T17:25:00.000Z",
-      "lastStabilizedAt": "2026-03-13T17:40:00.000Z",
-      "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5)",
-      "phaseNumber": 3,
-      "lastFile": "/Users/sungjoonyi/Desktop/myaicoder/apps/vscode-extension/src/chat/panel.ts",
-      "timestamps": {
-        "lastUpdated": "2026-03-17T04:36:19.291Z"
-      }
-    },
-    "gateway": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-13T16:59:29.510Z",
-        "lastUpdated": "2026-03-17T04:37:38.573Z"
-      },
-      "lastFile": "/Users/sungjoonyi/Desktop/myaicoder/services/gateway/app/main.py"
-    },
-    "scripts": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-14T03:54:05.752Z",
-        "lastUpdated": "2026-03-15T13:57:57.311Z"
-      },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/scripts/download-models.sh"
+      "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5, stabilization 1회 반복 완료)"
     },
     "conversation-persistence": {
       "phase": "completed",
@@ -266,19 +217,6 @@
       "startedAt": "2026-03-14T11:00:00.000Z",
       "completedAt": "2026-03-14T12:00:00.000Z",
       "description": "고급 MCP 도구 확장 - BuildRunner, WebFetch, ListDir, Bash/Grep 개선 (Track B-1)"
-    },
-    "installer": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-14T15:18:46.174Z",
-        "lastUpdated": "2026-03-15T15:31:00.628Z"
-      },
-      "lastFile": "/home/buttumaklevit/Desktop/myaicoder/installer/install.bat"
     },
     "dgx-migration": {
       "phase": "completed",
