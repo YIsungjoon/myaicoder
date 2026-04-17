@@ -39,7 +39,8 @@ gateway/app/
     ├── __init__.py
     ├── v1.py                  ← 코딩 어시스턴트 핵심 API
     ├── internal.py            ← 내부 상태 및 설정 관리
-    └── health.py              ← 헬스체크 및 메트릭 엔드포인트
+    ├── health.py              ← 헬스체크 엔드포인트
+    └── metrics.py             ← Prometheus 메트릭 엔드포인트 (infra/metrics.py와 분리)
 ```
 
 ---

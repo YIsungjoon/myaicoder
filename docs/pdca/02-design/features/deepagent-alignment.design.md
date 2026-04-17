@@ -209,7 +209,10 @@ class FilesystemMiddleware(AgentMiddleware):
         tool = self._registry.get(tool_name)
         if tool is None:
             return None  # 이 middleware가 처리하지 않음
-        return await tool.execute(**arguments)
+        try:
+            return await tool.execute(**arguments)
+        except Exception as e:
+            return ToolResult(success=False, output="", error=str(e))
 ```
 
 ### 3.2 HITLMiddleware (승인 래핑)
@@ -281,14 +284,15 @@ class PlanningMiddleware(AgentMiddleware):
         self._todos = TodoList()
 
     async def before(self, payload: ContextPayload) -> ContextPayload:
-        payload = payload.with_tools([self._todos.to_openai_tool()])
+        payload = payload.with_tools([write_todos_tool_schema()])
         payload = payload.with_instruction(
             "You have a write_todos tool. Use it to plan complex tasks "
             "before execution. Break work into steps and track progress."
         )
         if self._todos.items:
+            done, total = self._todos.progress
             payload = payload.with_instruction(
-                f"Current plan:\n{self._todos.format()}"
+                f"Current plan ({done}/{total} done):\n{self._todos.format()}"
             )
         return payload
 
@@ -296,7 +300,11 @@ class PlanningMiddleware(AgentMiddleware):
         if tool_name != "write_todos":
             return None
         self._todos.update(arguments.get("todos", []))
-        return ToolResult(success=True, output=self._todos.format())
+        done, total = self._todos.progress
+        return ToolResult(
+            success=True,
+            output=f"Plan updated ({done}/{total} done):\n{self._todos.format()}",
+        )
 
     @property
     def todos(self) -> TodoList:
@@ -425,6 +433,7 @@ class SubAgent:
     system_prompt: str = ""
     tools_override: list[str] | None = None  # None = 부모 상속
     max_iterations: int = 15
+    keywords: list[str] = field(default_factory=list)  # 키워드 매칭용
 ```
 
 ### 4.2 SubAgentRegistry
