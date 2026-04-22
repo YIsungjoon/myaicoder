@@ -34,20 +34,25 @@ jobs:
           path: apps/vscode-extension/myaicoder-*.vsix
 
   build-binary:
-    name: Build binary (${{ matrix.arch }})
+    name: Build ${{ matrix.os-label }} binary
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
         include:
           - runner: windows-latest
-            arch: windows-x64
+            os-label: Windows
             binary-name: myaicoder.exe
+            setup-dir: myaicoder-windows-setup
+            install-script: install.bat
+            install-name: "설치하기.bat"
+            zip-name: myaicoder-windows-setup.zip
           - runner: macos-latest
-            arch: macos-arm64
+            os-label: macOS
             binary-name: myaicoder
-          - runner: macos-13
-            arch: macos-x64
-            binary-name: myaicoder
+            setup-dir: myaicoder-macos-setup
+            install-script: install.command
+            install-name: "설치하기.command"
+            zip-name: myaicoder-macos-setup.zip
 
     defaults:
       run:
@@ -78,6 +83,13 @@ jobs:
             --workpath /tmp/pyinstaller-build \
             -y
 
+      - name: Ad-hoc codesign (macOS only)
+        if: matrix.os-label == 'macOS'
+        run: |
+          codesign --force --deep --sign - dist/myaicoder
+          echo "Codesign info:"
+          codesign -dv dist/myaicoder 2>&1
+
       - name: Verify binary
         run: |
           ls -lh dist/${{ matrix.binary-name }}
@@ -85,56 +97,24 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.arch }}
+          name: binary-${{ matrix.os-label }}
           path: dist/${{ matrix.binary-name }}
-
-  build-macos-universal:
-    name: Build macOS Universal binary
-    needs: [build-binary]
-    runs-on: macos-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: binary-macos-arm64
-          path: dist/arm64/
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: binary-macos-x64
-          path: dist/x64/
-
-      - name: Combine into Universal binary with lipo
-        run: |
-          chmod +x dist/arm64/myaicoder dist/x64/myaicoder
-          lipo -create \
-            dist/arm64/myaicoder \
-            dist/x64/myaicoder \
-            -output dist/myaicoder
-          lipo -info dist/myaicoder
-          ls -lh dist/myaicoder
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: binary-macos-universal
-          path: dist/myaicoder
 
   package:
     name: Package ${{ matrix.os-label }}
-    needs: [build-extension, build-macos-universal, build-binary]
+    needs: [build-extension, build-binary]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
           - os-label: Windows
             binary-name: myaicoder.exe
-            binary-artifact: binary-windows-x64
             setup-dir: myaicoder-windows-setup
             install-script: install.bat
             install-name: "설치하기.bat"
             zip-name: myaicoder-windows-setup.zip
           - os-label: macOS
             binary-name: myaicoder
-            binary-artifact: binary-macos-universal
             setup-dir: myaicoder-macos-setup
             install-script: install.command
             install-name: "설치하기.command"
@@ -148,7 +128,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.binary-artifact }}
+          name: binary-${{ matrix.os-label }}
           path: dist/
 
       - uses: actions/download-artifact@v4
