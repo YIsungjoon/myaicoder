@@ -63,6 +63,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewViewProvider(
       'myaicoder.chatPanel',
       chatProvider,
+      { webviewOptions: { retainContextWhenHidden: true } },
     ),
   );
 

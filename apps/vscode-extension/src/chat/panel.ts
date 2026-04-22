@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
 import * as path from 'path';
 import { McpClientManager } from '../mcp/client';
 import { EditorContext } from '../editor/context';
@@ -271,25 +272,31 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
     this.webviewView?.webview.postMessage(message);
   }
 
-  private getHtml(webview: vscode.Webview): string {
+  private getHtml(_webview: vscode.Webview): string {
     const nonce = getNonce();
-    const styleUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.extensionUri, 'webview', 'style.css'),
-    );
-    const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.extensionUri, 'dist', 'webview.js'),
-    );
+    const extPath = this.extensionUri.fsPath;
+
+    let cssContent = '';
+    let jsContent = '';
+    try {
+      cssContent = fs.readFileSync(
+        path.join(extPath, 'webview', 'style.css'), 'utf-8',
+      );
+      jsContent = fs.readFileSync(
+        path.join(extPath, 'dist', 'webview.js'), 'utf-8',
+      ).replace(/<\/script>/gi, '<\\/script>');
+    } catch {
+      // Files missing — UI degrades gracefully; JS-less textarea still renders
+    }
 
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'none';
-             style-src ${webview.cspSource} 'nonce-${nonce}';
-             script-src 'nonce-${nonce}' ${webview.cspSource};">
+    content="default-src 'none'; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="${styleUri}" rel="stylesheet">
+  <style nonce="${nonce}">${cssContent}</style>
   <title>myAiCoder Chat</title>
 </head>
 <body>
@@ -302,7 +309,7 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       <button id="send-btn" title="Send (Enter)">Send</button>
     </div>
   </div>
-  <script nonce="${nonce}" src="${scriptUri}"></script>
+  <script nonce="${nonce}">${jsContent}</script>
 </body>
 </html>`;
   }
