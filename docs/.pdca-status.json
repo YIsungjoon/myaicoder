@@ -1,7 +1,9 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-22T01:56:10.000Z",
-  "activeFeatures": [],
+  "lastUpdated": "2026-04-22T02:02:44.751Z",
+  "activeFeatures": [
+    "vscode-extension"
+  ],
   "primaryFeature": "concurrent-access-control",
   "features": {
     "concurrent-access-control": {
@@ -98,7 +100,7 @@
       "description": "Monorepo quality baseline - integration tests and CI pipeline"
     },
     "vscode-extension": {
-      "phase": "completed",
+      "phase": "do",
       "status": "archived",
       "matchRate": 99,
       "iterationCount": 1,
@@ -112,7 +114,12 @@
       "startedAt": "2026-03-13T15:00:00.000Z",
       "completedAt": "2026-03-13T17:30:00.000Z",
       "archivedAt": "2026-03-13T17:25:00.000Z",
-      "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5, stabilization 1회 반복 완료)"
+      "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5, stabilization 1회 반복 완료)",
+      "phaseNumber": 3,
+      "lastFile": "/home/laon/Desktop/myAiCoder/apps/vscode-extension/src/mcp/client.ts",
+      "timestamps": {
+        "lastUpdated": "2026-04-22T02:02:44.751Z"
+      }
     },
     "conversation-persistence": {
       "phase": "completed",
@@ -267,6 +274,17 @@
       "archivedTo": "docs/pdca/07-archive/features/core-security-hardening.archive.md",
       "reportPath": "docs/pdca/06-report/features/core-security-hardening.report.md",
       "description": "Core Service + VSCode Extension 보안 취약점 9/10 수정 (93% Match Rate)"
+    },
+    "vscode-extension-stabilization": {
+      "phase": "archived",
+      "matchRate": 99,
+      "iterationCount": 2,
+      "startedAt": "2026-03-13T00:00:00.000Z",
+      "completedAt": "2026-04-22T00:00:00.000Z",
+      "archivedAt": "2026-04-22T02:30:00.000Z",
+      "archivedTo": "docs/pdca/07-archive/features/vscode-extension-stabilization.archive.md",
+      "reportPath": "docs/pdca/06-report/features/vscode-extension-stabilization.report.md",
+      "description": "VS Code Extension Phase 5.1 안정화 — 6건 backlog 전부 해소 (99% Match Rate)"
     }
   },
   "pipeline": {
@@ -288,7 +306,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-04-17T22:22:49.542Z"
+    "lastActivity": "2026-04-22T02:02:44.751Z"
   },
   "history": [
     {
@@ -2725,6 +2743,12 @@
       "feature": "core-security-hardening",
       "phase": "archived",
       "action": "archived"
+    },
+    {
+      "timestamp": "2026-04-22T02:02:44.751Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
     }
   ]
 }
