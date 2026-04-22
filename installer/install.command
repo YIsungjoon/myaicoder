@@ -18,9 +18,11 @@ fi
 
 SERVER_URL=$(python3 -c "import json; print(json.load(open('$CONFIG'))['server_url'])")
 INSTALL_DIR_NAME=$(python3 -c "import json; print(json.load(open('$CONFIG'))['install_dir_name'])")
-MODEL_NAME=$(python3 -c "import json; print(json.load(open('$CONFIG'))['model_name'])")
-VSIX_FILE=$(python3 -c "import json; print(json.load(open('$CONFIG'))['extension_file'])")
+MODEL_NAME=$(python3 -c "import json; print(json.load(open('$CONFIG')).get('model_name', ''))")
 API_KEY=$(python3 -c "import json; print(json.load(open('$CONFIG')).get('api_key', ''))")
+
+# VSIX 파일 동적 탐지 (버전에 무관하게 동작)
+VSIX_FILE=$(ls "$SCRIPT_DIR"/myaicoder-*.vsix 2>/dev/null | head -1)
 
 INSTALL_DIR="$HOME/$INSTALL_DIR_NAME"
 
@@ -58,13 +60,14 @@ elif [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
     CODE_CMD="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 fi
 
-if [ -n "$CODE_CMD" ]; then
-    "$CODE_CMD" --install-extension "$SCRIPT_DIR/$VSIX_FILE" --force 2>/dev/null
-    echo "      → Extension 설치 완료"
+if [ -n "$CODE_CMD" ] && [ -n "$VSIX_FILE" ]; then
+    "$CODE_CMD" --install-extension "$VSIX_FILE" --force 2>/dev/null
+    echo "      → Extension 설치 완료: $(basename "$VSIX_FILE")"
+elif [ -z "$VSIX_FILE" ]; then
+    echo "      [경고] VSIX 파일을 찾을 수 없습니다."
 else
     echo "      [경고] VS Code를 찾을 수 없습니다."
     echo "      VS Code 설치 후 수동으로 .vsix를 설치해주세요."
-    echo "      (Extensions 탭 > ... > Install from VSIX)"
 fi
 
 # ── 5. VS Code settings.json 주입 ──
@@ -74,7 +77,7 @@ SETTINGS_FILE="$SETTINGS_DIR/settings.json"
 
 mkdir -p "$SETTINGS_DIR"
 
-python3 -c "
+python3 - <<PYEOF
 import json, os
 
 settings_file = os.path.expanduser('$SETTINGS_FILE')
@@ -87,14 +90,21 @@ if os.path.exists(settings_file):
             settings = {}
 
 settings['myaicoder.llmUrl'] = '$SERVER_URL'
-settings['myaicoder.modelName'] = '$MODEL_NAME'
-if '$API_KEY':
-    settings['myaicoder.apiKey'] = '$API_KEY'
 settings['myaicoder.executablePath'] = os.path.expanduser('$INSTALL_DIR/myaicoder')
+
+model_name = '$MODEL_NAME'
+if model_name:
+    settings['myaicoder.modelName'] = model_name
+elif 'myaicoder.modelName' in settings:
+    del settings['myaicoder.modelName']
+
+api_key = '$API_KEY'
+if api_key:
+    settings['myaicoder.apiKey'] = api_key
 
 with open(settings_file, 'w') as f:
     json.dump(settings, f, indent=4, ensure_ascii=False)
-"
+PYEOF
 echo "      → 서버 URL: $SERVER_URL"
 
 echo ""

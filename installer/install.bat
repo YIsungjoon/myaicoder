@@ -31,8 +31,15 @@ if not exist "%CONFIG%" (
 for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).server_url"') do set "SERVER_URL=%%i"
 for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).install_dir_name"') do set "INSTALL_DIR_NAME=%%i"
 for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).model_name"') do set "MODEL_NAME=%%i"
-for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).extension_file"') do set "VSIX_FILE=%%i"
 for /f "delims=" %%i in ('powershell -Command "(Get-Content '%CONFIG%' | ConvertFrom-Json).api_key"') do set "API_KEY=%%i"
+
+:: VSIX 파일 동적 탐지
+set "VSIX_FILE="
+for /f "delims=" %%f in ('dir /b "%SCRIPT_DIR%myaicoder-*.vsix" 2^>nul') do (
+    set "VSIX_FILE=%%f"
+    goto :vsix_found
+)
+:vsix_found
 
 set "INSTALL_DIR=%USERPROFILE%\%INSTALL_DIR_NAME%"
 
@@ -56,14 +63,19 @@ if errorlevel 1 (
 
 :: ── 4. VS Code Extension 설치 ──
 echo [3/4] VS Code Extension 설치 중...
+if "%VSIX_FILE%"=="" (
+    echo       [경고] VSIX 파일을 찾을 수 없습니다.
+    goto :skip_ext
+)
 where code >nul 2>&1
 if errorlevel 1 (
     echo       [경고] VS Code가 설치되어 있지 않거나 PATH에 없습니다.
     echo       VS Code 설치 후 수동으로 .vsix를 설치해주세요.
 ) else (
     code --install-extension "%SCRIPT_DIR%%VSIX_FILE%" --force 2>nul
-    echo       -^> Extension 설치 완료
+    echo       -^> Extension 설치 완료: %VSIX_FILE%
 )
+:skip_ext
 
 :: ── 5. VS Code settings.json 주입 ──
 echo [4/4] VS Code 설정 중...
@@ -76,13 +88,16 @@ if exist "%SETTINGS_FILE%" (
     powershell -Command ^
         "$s = Get-Content '%SETTINGS_FILE%' -Raw | ConvertFrom-Json; ^
          $s | Add-Member -NotePropertyName 'myaicoder.llmUrl' -NotePropertyValue '%SERVER_URL%' -Force; ^
-         $s | Add-Member -NotePropertyName 'myaicoder.modelName' -NotePropertyValue '%MODEL_NAME%' -Force; ^
-         $s | Add-Member -NotePropertyName 'myaicoder.apiKey' -NotePropertyValue '%API_KEY%' -Force; ^
          $s | Add-Member -NotePropertyName 'myaicoder.executablePath' -NotePropertyValue '%INSTALL_DIR%\myaicoder.exe' -Force; ^
+         if ('%MODEL_NAME%' -ne '') { $s | Add-Member -NotePropertyName 'myaicoder.modelName' -NotePropertyValue '%MODEL_NAME%' -Force }; ^
+         if ('%API_KEY%' -ne '') { $s | Add-Member -NotePropertyName 'myaicoder.apiKey' -NotePropertyValue '%API_KEY%' -Force }; ^
          $s | ConvertTo-Json -Depth 10 | Set-Content '%SETTINGS_FILE%' -Encoding UTF8"
 ) else (
     powershell -Command ^
-        "@{ 'myaicoder.llmUrl'='%SERVER_URL%'; 'myaicoder.modelName'='%MODEL_NAME%'; 'myaicoder.apiKey'='%API_KEY%'; 'myaicoder.executablePath'='%INSTALL_DIR%\myaicoder.exe' } | ConvertTo-Json | Set-Content '%SETTINGS_FILE%' -Encoding UTF8"
+        "$settings = @{ 'myaicoder.llmUrl'='%SERVER_URL%'; 'myaicoder.executablePath'='%INSTALL_DIR%\myaicoder.exe' }; ^
+         if ('%MODEL_NAME%' -ne '') { $settings['myaicoder.modelName'] = '%MODEL_NAME%' }; ^
+         if ('%API_KEY%' -ne '') { $settings['myaicoder.apiKey'] = '%API_KEY%' }; ^
+         $settings | ConvertTo-Json | Set-Content '%SETTINGS_FILE%' -Encoding UTF8"
 )
 echo       -^> 서버 URL: %SERVER_URL%
 
