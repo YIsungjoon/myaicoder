@@ -2,7 +2,7 @@
   "name": "myaicoder",
   "displayName": "myAiCoder",
   "description": "AI coding assistant powered by local LLM via MCP",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "publisher": "myaicoder",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -61,7 +61,7 @@
     "viewsWelcome": [
       {
         "view": "myaicoder.mcpStatus",
-        "contents": "MCP 서버에 연결되지 않았습니다.\n\n[$(debug-disconnect) Connect](command:myaicoder.reconnect)\n\n[$(info) Show Diagnostics](command:myaicoder.showMcpDiagnostics)",
+        "contents": "MCP 서버에 연결되지 않았습니다.\n\n[$(server) Configure LLM Server](command:myaicoder.configureLlmServer)\n\n[$(debug-disconnect) Connect](command:myaicoder.reconnect)\n\n[$(info) Show Diagnostics](command:myaicoder.showMcpDiagnostics)",
         "when": "!myaicoder.connected"
       }
     ],
@@ -81,6 +81,10 @@
       {
         "command": "myaicoder.showMcpDiagnostics",
         "title": "myAiCoder: Show MCP Diagnostics"
+      },
+      {
+        "command": "myaicoder.configureLlmServer",
+        "title": "myAiCoder: Configure LLM Server"
       }
     ],
     "configuration": {

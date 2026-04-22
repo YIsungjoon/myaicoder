@@ -133,6 +133,24 @@ export async function activate(context: vscode.ExtensionContext) {
         statusBar.setConnected(false);
       }
     }),
+    vscode.commands.registerCommand('myaicoder.configureLlmServer', async () => {
+      const current = config.getLlmUrl() ?? '';
+      const input = await vscode.window.showInputBox({
+        title: 'myAiCoder: LLM Server URL',
+        prompt: 'Enter LLM server URL (e.g. http://192.168.1.100:8080)',
+        value: current,
+        placeHolder: 'http://localhost:8080',
+        validateInput: (v) => {
+          if (!v) return null; // empty = use server default
+          try { new URL(v); return null; } catch { return 'Invalid URL'; }
+        },
+      });
+      if (input === undefined) return; // cancelled
+      const cfg = vscode.workspace.getConfiguration('myaicoder');
+      await cfg.update('llmUrl', input, vscode.ConfigurationTarget.Global);
+      await mcpClient.reconnect();
+      vscode.window.showInformationMessage(`myAiCoder: LLM server set to ${input || '(server default)'}`);
+    }),
     vscode.commands.registerCommand('myaicoder.sendSelection', () => {
       const editor = vscode.window.activeTextEditor;
       if (editor) {
