@@ -32,16 +32,16 @@ describe('ConfigManager', () => {
     });
   });
 
-  it('should return default model name when not configured', async () => {
+  it('should return undefined model name when not configured', async () => {
     const vscode = await import('vscode');
-    const mockGet = vi.fn().mockImplementation((_key: string, defaultValue?: unknown) => defaultValue);
+    const mockGet = vi.fn().mockReturnValue(undefined);
     vi.mocked(vscode.workspace.getConfiguration).mockReturnValue({
       get: mockGet,
     } as any);
 
     const { ConfigManager } = await import('../../src/config');
     const config = new ConfigManager();
-    expect(config.getModelName()).toBe('qwen3.5-27b');
+    expect(config.getModelName()).toBeUndefined();
   });
 
   it('should return configured model name', async () => {
@@ -59,16 +59,16 @@ describe('ConfigManager', () => {
     expect(config.getModelName()).toBe('custom-model');
   });
 
-  it('should return default LLM URL', async () => {
+  it('should return undefined LLM URL when not configured', async () => {
     const vscode = await import('vscode');
-    const mockGet = vi.fn().mockImplementation((_key: string, defaultValue?: unknown) => defaultValue);
+    const mockGet = vi.fn().mockReturnValue(undefined);
     vi.mocked(vscode.workspace.getConfiguration).mockReturnValue({
       get: mockGet,
     } as any);
 
     const { ConfigManager } = await import('../../src/config');
     const config = new ConfigManager();
-    expect(config.getLlmUrl()).toBe('http://localhost:8080');
+    expect(config.getLlmUrl()).toBeUndefined();
   });
 
   it('should resolve executable path from configured setting', async () => {

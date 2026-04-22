@@ -62,12 +62,12 @@ export class ConfigManager {
     );
   }
 
-  getModelName(): string {
-    return this.get<string>('modelName', 'qwen3.5-27b');
+  getModelName(): string | undefined {
+    return this.get<string>('modelName');
   }
 
-  getLlmUrl(): string {
-    return this.get<string>('llmUrl', 'http://localhost:8080');
+  getLlmUrl(): string | undefined {
+    return this.get<string>('llmUrl');
   }
 
   getApiKey(): string {

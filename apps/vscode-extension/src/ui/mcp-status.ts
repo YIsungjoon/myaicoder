@@ -58,13 +58,13 @@ export class McpStatusViewProvider
         ),
       ),
       new StatusItem(
-        `LLM: ${llmUrl}`,
+        `LLM: ${llmUrl ?? '(server default)'}`,
         vscode.TreeItemCollapsibleState.None,
         'llm-url',
         new vscode.ThemeIcon('globe'),
       ),
       new StatusItem(
-        `Model: ${model}`,
+        `Model: ${model ?? '(server default)'}`,
         vscode.TreeItemCollapsibleState.None,
         'model',
         new vscode.ThemeIcon('hubot'),

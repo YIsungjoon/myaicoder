@@ -115,8 +115,8 @@ export async function activate(context: vscode.ExtensionContext) {
       outputChannel.appendLine(`Status:     ${connected ? 'Connected' : 'Disconnected'}`);
       outputChannel.appendLine(`Server PID: ${pid ?? 'N/A'}`);
       outputChannel.appendLine(`Executable: ${execPath}`);
-      outputChannel.appendLine(`LLM URL:    ${config.getLlmUrl()}`);
-      outputChannel.appendLine(`Model:      ${config.getModelName()}`);
+      outputChannel.appendLine(`LLM URL:    ${config.getLlmUrl() ?? '(server default)'}`);
+      outputChannel.appendLine(`Model:      ${config.getModelName() ?? '(server default)'}`);
       outputChannel.appendLine(`API Key:    ${config.getApiKey() ? 'Set' : 'Not set'}`);
       outputChannel.appendLine(`Workspace:  ${config.getWorkspaceFolder() ?? 'None'}`);
       outputChannel.appendLine(`Tools (${tools.length}):`);

@@ -30,10 +30,12 @@ export function buildServeArgs(options: {
     args.push('--agentic');
   }
   if (options.llmUrl) {
-    args.push('--llm-url', options.llmUrl);
+    // Pass via env var (same pattern as apiKey) so the Python process's
+    // _apply_env_overrides picks them up with final precedence
+    env['MYAICODER_LLM_URL'] = options.llmUrl;
   }
   if (options.modelName) {
-    args.push('--model-name', String(options.modelName));
+    env['MYAICODER_LLM_MODEL'] = options.modelName;
   }
   if (options.workingDir) {
     args.push('--working-dir', options.workingDir);

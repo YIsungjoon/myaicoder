@@ -16,8 +16,8 @@ export class StatusBarManager implements vscode.Disposable {
   }
 
   setConnected(connected: boolean, toolCount?: number): void {
-    const model = this.config.getModelName();
     if (connected) {
+      const model = this.config.getModelName() ?? 'connected';
       this.statusItem.text = `$(check) myAiCoder: ${model} (${toolCount ?? '?'} tools)`;
       this.statusItem.tooltip = 'Connected — Click to reconnect';
       this.statusItem.backgroundColor = undefined;
@@ -32,7 +32,7 @@ export class StatusBarManager implements vscode.Disposable {
 
   updateTokenCount(tokens: number): void {
     this.tokenCount += tokens;
-    const model = this.config.getModelName();
+    const model = this.config.getModelName() ?? 'connected';
     this.statusItem.text = `$(check) myAiCoder: ${model} | ${this.formatTokens(this.tokenCount)}`;
   }
 
