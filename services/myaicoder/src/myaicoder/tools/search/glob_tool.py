@@ -1,6 +1,5 @@
 """Glob tool — find files by pattern."""
 
-from pathlib import Path
 
 from myaicoder.tools.base import Tool, ToolResult
 

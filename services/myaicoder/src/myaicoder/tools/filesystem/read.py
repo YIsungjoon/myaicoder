@@ -1,6 +1,5 @@
 """Read tool — read file contents."""
 
-from pathlib import Path
 
 from myaicoder.tools.base import Tool, ToolResult
 

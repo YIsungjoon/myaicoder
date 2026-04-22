@@ -1,6 +1,5 @@
 """Edit tool — exact string replacement in files."""
 
-from pathlib import Path
 
 from myaicoder.tools.base import Tool, ToolResult
 

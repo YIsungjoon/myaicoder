@@ -1,7 +1,6 @@
 """Grep tool — search file contents by regex pattern."""
 
 import re
-from pathlib import Path
 
 from myaicoder.tools.base import Tool, ToolResult
 
