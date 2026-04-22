@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-22T02:02:44.751Z",
+  "lastUpdated": "2026-04-22T03:58:46.678635Z",
   "activeFeatures": [
     "vscode-extension"
   ],
@@ -116,9 +116,9 @@
       "archivedAt": "2026-03-13T17:25:00.000Z",
       "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5, stabilization 1회 반복 완료)",
       "phaseNumber": 3,
-      "lastFile": "/home/laon/Desktop/myAiCoder/apps/vscode-extension/src/mcp/client.ts",
+      "lastFile": "/home/laon/Desktop/myAiCoder/apps/vscode-extension/test/unit/process.test.ts",
       "timestamps": {
-        "lastUpdated": "2026-04-22T02:02:44.751Z"
+        "lastUpdated": "2026-04-22T02:38:09.632Z"
       }
     },
     "conversation-persistence": {
@@ -285,6 +285,14 @@
       "archivedTo": "docs/pdca/07-archive/features/vscode-extension-stabilization.archive.md",
       "reportPath": "docs/pdca/06-report/features/vscode-extension-stabilization.report.md",
       "description": "VS Code Extension Phase 5.1 안정화 — 6건 backlog 전부 해소 (99% Match Rate)"
+    },
+    "vscode-extension-root-fix": {
+      "phase": "archived",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "startedAt": "2026-04-22T00:00:00.000Z",
+      "archivedAt": "2026-04-22T03:58:46.678635Z",
+      "archivedTo": "docs/pdca/07-archive/features/vscode-extension-root-fix.archive.md"
     }
   },
   "pipeline": {
@@ -306,7 +314,7 @@
   "session": {
     "startedAt": "2026-03-13T04:00:21.057Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-04-22T02:02:44.751Z"
+    "lastActivity": "2026-04-22T02:38:09.632Z"
   },
   "history": [
     {
@@ -2746,6 +2754,54 @@
     },
     {
       "timestamp": "2026-04-22T02:02:44.751Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:28.235Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:32.424Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:40.461Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:48.864Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:52.167Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:58.008Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:38:02.299Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:38:09.632Z",
       "feature": "vscode-extension",
       "phase": "do",
       "action": "updated"
