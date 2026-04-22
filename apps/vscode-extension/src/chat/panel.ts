@@ -277,7 +277,7 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       vscode.Uri.joinPath(this.extensionUri, 'webview', 'style.css'),
     );
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.extensionUri, 'webview', 'main.js'),
+      vscode.Uri.joinPath(this.extensionUri, 'dist', 'webview.js'),
     );
 
     return `<!DOCTYPE html>

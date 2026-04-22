@@ -1,59 +1,77 @@
 // @ts-check
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+
 (function () {
   /** @type {any} */
   const vscode = acquireVsCodeApi();
 
-  const messageList = document.getElementById('message-list');
-  const messageInput = document.getElementById('message-input');
-  const sendBtn = document.getElementById('send-btn');
+  const messageList = /** @type {HTMLElement} */ (document.getElementById('message-list'));
+  const messageInput = /** @type {HTMLTextAreaElement} */ (document.getElementById('message-input'));
+  const sendBtn = /** @type {HTMLButtonElement} */ (document.getElementById('send-btn'));
 
   /**
-   * Basic markdown rendering.
-   * Handles code blocks, inline code, bold, italic, and line breaks.
+   * @param {string} str
+   * @returns {string}
+   */
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Custom renderer for code blocks — adds Apply button and preserves "lang:filepath" format.
+  marked.use({
+    renderer: {
+      /**
+       * @param {string} code
+       * @param {string | undefined} infostring
+       * @returns {string}
+       */
+      code(code, infostring) {
+        const info = infostring || '';
+        const colonIdx = info.indexOf(':');
+        const langLabel = escapeHtml(colonIdx >= 0 ? info.slice(0, colonIdx) || 'text' : info || 'text');
+        const filePath = colonIdx >= 0 ? info.slice(colonIdx + 1).trim() : '';
+        const safeFilePath = escapeHtml(filePath);
+
+        const blockId = 'code-' + Math.random().toString(36).substr(2, 9);
+        const applyBtn = filePath
+          ? `<button class="apply-btn" data-block-id="${blockId}" data-file="${safeFilePath}">Apply to ${safeFilePath}</button>`
+          : `<button class="apply-btn" data-block-id="${blockId}">Apply to Editor</button>`;
+
+        return (
+          `<div class="code-block-wrapper">` +
+          `<div class="code-block-header"><span class="code-lang">${langLabel}</span>${applyBtn}</div>` +
+          `<pre><code id="${blockId}" class="language-${langLabel}">${escapeHtml(code)}</code></pre>` +
+          `</div>`
+        );
+      },
+    },
+  });
+
+  const PURIFY_CONFIG = /** @type {import('dompurify').Config} */ ({
+    ADD_ATTR: ['data-block-id', 'data-file'],
+    ALLOWED_TAGS: [
+      'div', 'span', 'p', 'br', 'strong', 'em', 'code', 'pre', 'button',
+      'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'blockquote', 'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'hr', 'del', 'ins',
+    ],
+    ALLOWED_ATTR: ['class', 'id', 'href', 'data-block-id', 'data-file'],
+  });
+
+  /**
+   * Render markdown to sanitized HTML.
    * @param {string} text
    * @returns {string}
    */
   function renderMarkdown(text) {
-    // Escape HTML first
-    let html = text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-
-    // Code blocks with [Apply] button (```lang:filepath\ncode\n```)
-    // EC-B: Tolerant regex for missing language
-    html = html.replace(/```([a-zA-Z0-9_+\-]*)(?::([^\n]+))?\n([\s\S]*?)```/g, (_, lang, filePath, code) => {
-      const blockId = 'code-' + Math.random().toString(36).substr(2, 9);
-      const langLabel = lang || 'text';
-      const fp = filePath ? filePath.trim() : '';
-      const applyBtn = fp
-        ? `<button class="apply-btn" data-block-id="${blockId}" data-file="${escapeHtml(fp)}">Apply to ${escapeHtml(fp)}</button>`
-        : `<button class="apply-btn" data-block-id="${blockId}">Apply to Editor</button>`;
-      return `<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang">${langLabel}</span>${applyBtn}</div><pre><code id="${blockId}" class="language-${langLabel}">${code}</code></pre></div>`;
-    });
-
-    // Inline code
-    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    // Bold
-    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-    // Italic
-    html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-
-    // Line breaks (outside of pre blocks)
-    html = html.replace(/\n/g, '<br>');
-
-    // Fix: remove <br> inside <pre> blocks
-    html = html.replace(/<pre>([\s\S]*?)<\/pre>/g, (match) => {
-      return match.replace(/<br>/g, '\n');
-    });
-
-    return html;
+    const rawHtml = /** @type {string} */ (marked.parse(text));
+    return DOMPurify.sanitize(rawHtml, PURIFY_CONFIG);
   }
 
   /**
-   * Add a message to the chat.
    * @param {{ role: string; content: string; isError?: boolean; toolResults?: any[] }} message
    */
   function addMessage(message) {
@@ -76,7 +94,6 @@
   }
 
   /**
-   * Create a collapsible tool result card.
    * @param {{ toolName: string; duration: number; result: string }} toolResult
    * @returns {HTMLElement}
    */
@@ -103,17 +120,6 @@
   }
 
   /**
-   * @param {string} text
-   * @returns {string}
-   */
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  /**
-   * Show or hide loading indicator.
    * @param {boolean} loading
    */
   function setLoading(loading) {
@@ -171,7 +177,6 @@
     }
   });
 
-  // Extension -> Webview messages
   window.addEventListener('message', (event) => {
     const message = event.data;
     switch (message.type) {
@@ -200,14 +205,13 @@
     }
   });
 
-  // Apply button click handler (event delegation)
   messageList.addEventListener('click', (e) => {
-    const btn = e.target.closest('.apply-btn');
+    const btn = /** @type {HTMLElement} */ (e.target)?.closest?.('.apply-btn');
     if (!btn) return;
 
-    const blockId = btn.dataset.blockId;
-    const filePath = btn.dataset.file || null;
-    const codeEl = document.getElementById(blockId);
+    const blockId = /** @type {HTMLElement} */ (btn).dataset.blockId;
+    const filePath = /** @type {HTMLElement} */ (btn).dataset.file || null;
+    const codeEl = blockId ? document.getElementById(blockId) : null;
     if (!codeEl) return;
 
     vscode.postMessage({
