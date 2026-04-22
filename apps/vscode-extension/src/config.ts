@@ -68,11 +68,11 @@ export class ConfigManager {
   }
 
   getModelName(): string | undefined {
-    return this.detectedModelName ?? this.get<string>('modelName');
+    return this.detectedModelName ?? (this.get<string>('modelName') || undefined);
   }
 
   getLlmUrl(): string | undefined {
-    return this.get<string>('llmUrl');
+    return this.get<string>('llmUrl') || undefined;
   }
 
   getApiKey(): string {

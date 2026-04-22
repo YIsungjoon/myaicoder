@@ -2,7 +2,7 @@
   "name": "myaicoder",
   "displayName": "myAiCoder",
   "description": "AI coding assistant powered by local LLM via MCP",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "publisher": "myaicoder",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -93,13 +93,13 @@
         },
         "myaicoder.llmUrl": {
           "type": "string",
-          "default": "http://localhost:8080",
-          "description": "LLM server URL"
+          "default": "",
+          "description": "LLM server URL (empty = use server's .env / MYAICODER_LLM_URL)"
         },
         "myaicoder.modelName": {
           "type": "string",
-          "default": "qwen3.5-27b",
-          "description": "Model name to display in status bar"
+          "default": "",
+          "description": "Model name override (empty = auto-detect from server)"
         },
         "myaicoder.apiKey": {
           "type": "string",
