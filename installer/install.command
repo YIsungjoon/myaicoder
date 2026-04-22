@@ -32,6 +32,7 @@ mkdir -p "$INSTALL_DIR"
 cp "$SCRIPT_DIR/myaicoder" "$INSTALL_DIR/myaicoder"
 chmod +x "$INSTALL_DIR/myaicoder"
 xattr -cr "$INSTALL_DIR/myaicoder" 2>/dev/null || true
+codesign --force --deep --sign - "$INSTALL_DIR/myaicoder" 2>/dev/null || true
 echo "      → $INSTALL_DIR/myaicoder"
 
 # ── 3. PATH 추가 ──
