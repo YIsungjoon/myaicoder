@@ -66,16 +66,15 @@ export async function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  // 4. Connect MCP client (spawns myaicoder serve — done after UI is ready)
-  try {
-    await mcpClient.connect();
-  } catch (error) {
+  // 4. Connect in background — do NOT await so activate() returns immediately
+  // and VS Code can call resolveWebviewView() to render the chat panel.
+  mcpClient.connect().catch((error) => {
     const msg = error instanceof Error ? error.message : String(error);
     vscode.window.showErrorMessage(`myAiCoder: ${msg}`);
     statusBar.setConnected(false);
     mcpStatusProvider.update(null);
     outputChannel.appendLine(`[${timestamp()}] Connection failed: ${msg}`);
-  }
+  });
 
   // 5. Register commands
   context.subscriptions.push(

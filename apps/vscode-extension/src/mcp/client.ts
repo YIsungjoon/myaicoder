@@ -76,7 +76,7 @@ export class McpClientManager {
     };
 
     this.client = new Client(
-      { name: 'myaicoder-vscode', version: '1.0.4' },
+      { name: 'myaicoder-vscode', version: '1.0.5' },
     );
 
     await this.client.connect(this.transport);
