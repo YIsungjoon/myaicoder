@@ -32,11 +32,30 @@ Tool usage priority (when approved by user):
 
 Project-specific instructions can be placed in MYAICODER.md at the workspace root."""
 
-    def __init__(self, working_dir: str | None = None):
+    AGENTIC_BASE_PROMPT = """You are myAiCoder agent executing a complex multi-step task autonomously.
+Use all available tools as needed to complete the task — no permission required.
+Always respond in Korean. Write code and comments in English.
+
+Rules:
+- Proceed step by step using tools. Do NOT ask for user confirmation before each tool call.
+- After completing all steps, summarize what was done concisely.
+- Read files before editing them. Create parent directories as needed.
+- If a tool returns an error, attempt a reasonable fix and retry once.
+
+Tool usage:
+- Read files: read_file
+- Create/write files: write_file (auto-creates parent directories)
+- Modify files: edit_file
+- Search: glob_search, grep_search
+- List directory: list_dir
+- System commands: run_command (git, npm, pip, etc.)"""
+
+    def __init__(self, working_dir: str | None = None, base_prompt: str | None = None):
         self.working_dir = Path(working_dir or Path.cwd())
+        self._base_prompt = base_prompt or self.BASE_PROMPT
 
     def build_system_prompt(self) -> str:
-        parts = [self.BASE_PROMPT]
+        parts = [self._base_prompt]
 
         claude_md = self._load_claude_md()
         if claude_md:

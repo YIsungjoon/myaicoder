@@ -49,9 +49,9 @@ _TRANSFORMERS = {
 class LLMConfig:
     provider: str = "vllm"
     base_url: str = "http://localhost:8080/v1"
-    model: str = "qwen3.5-9b"
+    model: str = ""          # empty = omit from request; server uses its loaded model
     temperature: float = 0.0
-    max_tokens: int = 8192
+    max_tokens: int = 4096   # safe default; raise via config if server has larger -c
     api_key: str = ""
 
 

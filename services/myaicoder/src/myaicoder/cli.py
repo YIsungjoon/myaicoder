@@ -485,14 +485,21 @@ def serve(transport, port, allow_bash, working_dir, max_concurrent, agentic, llm
 
         config = AppConfig.load()
         base_url = llm_url or config.llm.base_url
-        model = model_name or config.llm.model
         resolved_api_key = api_key or config.llm.api_key
         llm_provider = VLLMProvider(
             base_url=base_url,
-            model=model,
+            model=model_name or config.llm.model,
             api_key=resolved_api_key,
             max_tokens=config.llm.max_tokens,
         )
+        # Auto-detect model name and n_ctx from server unless explicitly set
+        if not model_name and not config.llm.model:
+            llm_provider.auto_configure()
+            click.echo(
+                f"LLM auto-configured: model={llm_provider.model!r}"
+                f"  max_tokens={llm_provider.max_tokens}",
+                err=True,
+            )
 
     server = MCPServer(
         tool_registry=registry,
@@ -570,7 +577,7 @@ def model_list():
     mgr, config = _build_model_manager()
 
     models = mgr.list_models()
-    env_info = "DGX Spark, 128GB" if config.is_prod() else "Desktop"
+    env_info = "prod" if config.is_prod() else "dev"
     click.echo(f"  ENV: {config.environment} ({env_info})\n")
 
     if config.is_prod():
