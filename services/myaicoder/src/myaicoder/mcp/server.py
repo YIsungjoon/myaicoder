@@ -175,8 +175,8 @@ class MCPServer:
         )
 
         # Budget: half of LLM context window (the other half is for output).
-        # llm_provider.max_tokens is already set to n_ctx * 0.5 by auto_configure.
-        input_budget = max(4096, llm_provider.max_tokens)
+        # llm_provider.max_tokens is set to n_ctx * 0.5 by auto_configure.
+        input_budget = max(4096, getattr(llm_provider, "max_tokens", 4096))
 
         # MiddlewareEngine gives the agent write_todos (PlanningMiddleware)
         # for Claude Code-style task visibility — shows plan before execution,
