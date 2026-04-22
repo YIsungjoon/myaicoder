@@ -166,7 +166,7 @@ class MCPServer:
     def _register_agentic_task(self, llm_provider) -> None:
         """Register agentic_task special tool for Agentic Execution mode."""
         from myaicoder.core.context import ContextManager
-        from myaicoder.core.engine import AgentEngine
+        from myaicoder.core.engine import MiddlewareEngine
 
         # Agentic context: autonomous prompt + working_dir from serve --working-dir
         context = ContextManager(
@@ -178,7 +178,10 @@ class MCPServer:
         # llm_provider.max_tokens is already set to n_ctx * 0.5 by auto_configure.
         input_budget = max(4096, llm_provider.max_tokens)
 
-        engine = AgentEngine(
+        # MiddlewareEngine gives the agent write_todos (PlanningMiddleware)
+        # for Claude Code-style task visibility — shows plan before execution,
+        # marks items in_progress / done as work proceeds.
+        engine = MiddlewareEngine(
             llm=llm_provider,
             context_manager=context,
             tool_registry=self.registry,
