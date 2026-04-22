@@ -15,7 +15,7 @@ vi.mock('child_process', () => ({
 vi.mock('vscode', () => ({
   workspace: {
     getConfiguration: vi.fn().mockReturnValue({
-      get: vi.fn(),
+      get: vi.fn().mockImplementation((_key: string, defaultValue?: unknown) => defaultValue),
     }),
     workspaceFolders: [{ uri: { fsPath: '/test/workspace' } }],
   },
@@ -34,7 +34,7 @@ describe('ConfigManager', () => {
 
   it('should return default model name when not configured', async () => {
     const vscode = await import('vscode');
-    const mockGet = vi.fn().mockReturnValue(undefined);
+    const mockGet = vi.fn().mockImplementation((_key: string, defaultValue?: unknown) => defaultValue);
     vi.mocked(vscode.workspace.getConfiguration).mockReturnValue({
       get: mockGet,
     } as any);
@@ -46,9 +46,9 @@ describe('ConfigManager', () => {
 
   it('should return configured model name', async () => {
     const vscode = await import('vscode');
-    const mockGet = vi.fn().mockImplementation((key: string) => {
+    const mockGet = vi.fn().mockImplementation((key: string, defaultValue?: unknown) => {
       if (key === 'modelName') return 'custom-model';
-      return undefined;
+      return defaultValue;
     });
     vi.mocked(vscode.workspace.getConfiguration).mockReturnValue({
       get: mockGet,
@@ -61,7 +61,7 @@ describe('ConfigManager', () => {
 
   it('should return default LLM URL', async () => {
     const vscode = await import('vscode');
-    const mockGet = vi.fn().mockReturnValue(undefined);
+    const mockGet = vi.fn().mockImplementation((_key: string, defaultValue?: unknown) => defaultValue);
     vi.mocked(vscode.workspace.getConfiguration).mockReturnValue({
       get: mockGet,
     } as any);
@@ -73,9 +73,9 @@ describe('ConfigManager', () => {
 
   it('should resolve executable path from configured setting', async () => {
     const vscode = await import('vscode');
-    const mockGet = vi.fn().mockImplementation((key: string) => {
+    const mockGet = vi.fn().mockImplementation((key: string, defaultValue?: unknown) => {
       if (key === 'executablePath') return '/custom/bin/myaicoder';
-      return undefined;
+      return defaultValue;
     });
     vi.mocked(vscode.workspace.getConfiguration).mockReturnValue({
       get: mockGet,

@@ -6,10 +6,13 @@ import * as fs from 'fs';
 export class ConfigManager {
   private readonly SECTION = 'myaicoder';
 
-  get<T>(key: string): T {
-    return vscode.workspace
-      .getConfiguration(this.SECTION)
-      .get<T>(key) as T;
+  get<T>(key: string, defaultValue: T): T;
+  get<T>(key: string): T | undefined;
+  get<T>(key: string, defaultValue?: T): T | undefined {
+    const cfg = vscode.workspace.getConfiguration(this.SECTION);
+    return defaultValue !== undefined
+      ? cfg.get<T>(key, defaultValue)
+      : cfg.get<T>(key);
   }
 
   /**
@@ -60,15 +63,15 @@ export class ConfigManager {
   }
 
   getModelName(): string {
-    return this.get<string>('modelName') || 'qwen3.5-27b';
+    return this.get<string>('modelName', 'qwen3.5-27b');
   }
 
   getLlmUrl(): string {
-    return this.get<string>('llmUrl') || 'http://localhost:8080';
+    return this.get<string>('llmUrl', 'http://localhost:8080');
   }
 
   getApiKey(): string {
-    return this.get<string>('apiKey') || '';
+    return this.get<string>('apiKey', '');
   }
 
   getWorkspaceFolder(): string | null {
