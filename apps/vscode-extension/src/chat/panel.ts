@@ -282,11 +282,12 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       cssContent = fs.readFileSync(
         path.join(extPath, 'webview', 'style.css'), 'utf-8',
       );
+      // Load the plain IIFE from webview/main.js — no bundler dependency, no ES module issues
       jsContent = fs.readFileSync(
-        path.join(extPath, 'dist', 'webview.js'), 'utf-8',
+        path.join(extPath, 'webview', 'main.js'), 'utf-8',
       ).replace(/<\/script>/gi, '<\\/script>');
     } catch {
-      // Files missing — UI degrades gracefully; JS-less textarea still renders
+      // Files missing — textarea still renders without CSS/JS
     }
 
     return `<!DOCTYPE html>

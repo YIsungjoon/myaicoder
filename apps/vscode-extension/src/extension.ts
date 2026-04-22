@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import * as http from 'http';
+import * as https from 'https';
 import { McpClientManager } from './mcp/client';
 import { ChatPanelProvider } from './chat/panel';
 import { ConfigManager } from './config';
@@ -10,6 +12,32 @@ let mcpClient: McpClientManager;
 
 function timestamp(): string {
   return new Date().toISOString().slice(11, 19);
+}
+
+/** Fetch the first model ID from the OpenAI-compatible /v1/models endpoint. */
+function fetchModelFromServer(llmUrl: string): Promise<string | undefined> {
+  return new Promise((resolve) => {
+    try {
+      const url = new URL('/v1/models', llmUrl.replace(/\/+$/, ''));
+      const transport = url.protocol === 'https:' ? https : http;
+      const req = transport.get(url.toString(), (res) => {
+        let raw = '';
+        res.on('data', (c: Buffer) => { raw += c.toString(); });
+        res.on('end', () => {
+          try {
+            const json = JSON.parse(raw) as { data?: Array<{ id: string }> };
+            resolve(json.data?.[0]?.id ?? undefined);
+          } catch {
+            resolve(undefined);
+          }
+        });
+      });
+      req.on('error', () => resolve(undefined));
+      req.setTimeout(3000, () => { req.destroy(); resolve(undefined); });
+    } catch {
+      resolve(undefined);
+    }
+  });
 }
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -35,6 +63,19 @@ export async function activate(context: vscode.ExtensionContext) {
       mcpStatusProvider.update(mcpClient);
       void vscode.commands.executeCommand('setContext', 'myaicoder.connected', true);
       outputChannel.appendLine(`[${timestamp()}] MCP connected — ${toolCount} tools available`);
+
+      // Auto-detect actual model name from server's /v1/models
+      const llmUrl = config.getLlmUrl();
+      if (llmUrl) {
+        fetchModelFromServer(llmUrl).then((detectedModel) => {
+          if (detectedModel) {
+            config.setDetectedModelName(detectedModel);
+            outputChannel.appendLine(`[${timestamp()}] Detected model: ${detectedModel}`);
+            statusBar.setConnected(true, toolCount);
+            mcpStatusProvider.update(mcpClient);
+          }
+        });
+      }
     },
     onDisconnected: () => {
       statusBar.setConnected(false);

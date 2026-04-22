@@ -5,6 +5,7 @@ import * as fs from 'fs';
 
 export class ConfigManager {
   private readonly SECTION = 'myaicoder';
+  private detectedModelName: string | undefined;
 
   get<T>(key: string, defaultValue: T): T;
   get<T>(key: string): T | undefined;
@@ -62,8 +63,12 @@ export class ConfigManager {
     );
   }
 
+  setDetectedModelName(name: string): void {
+    this.detectedModelName = name;
+  }
+
   getModelName(): string | undefined {
-    return this.get<string>('modelName');
+    return this.detectedModelName ?? this.get<string>('modelName');
   }
 
   getLlmUrl(): string | undefined {
