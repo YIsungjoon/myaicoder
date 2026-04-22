@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-18T00:00:00.000Z",
+  "lastUpdated": "2026-04-22T01:56:10.000Z",
   "activeFeatures": [],
   "primaryFeature": "concurrent-access-control",
   "features": {
@@ -256,6 +256,17 @@
       "startedAt": "2026-03-15T16:06:46.231Z",
       "completedAt": "2026-03-16T00:00:00.000Z",
       "description": "서버 측 대화 저장 — PostgreSQL + SSE 파싱, 100% 설계 일치(49/49)"
+    },
+    "core-security-hardening": {
+      "phase": "archived",
+      "matchRate": 93,
+      "iterationCount": 1,
+      "startedAt": "2026-03-17T00:00:00.000Z",
+      "completedAt": "2026-04-22T00:00:00.000Z",
+      "archivedAt": "2026-04-22T01:56:10.000Z",
+      "archivedTo": "docs/pdca/07-archive/features/core-security-hardening.archive.md",
+      "reportPath": "docs/pdca/06-report/features/core-security-hardening.report.md",
+      "description": "Core Service + VSCode Extension 보안 취약점 9/10 수정 (93% Match Rate)"
     }
   },
   "pipeline": {
@@ -2708,6 +2719,12 @@
       "feature": "handlers",
       "phase": "do",
       "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T01:56:10.000Z",
+      "feature": "core-security-hardening",
+      "phase": "archived",
+      "action": "archived"
     }
   ]
 }
