@@ -46,15 +46,17 @@ describe('buildServeArgs', () => {
     expect(env).toEqual({ MYAICODER_API_KEY: 'my-secret-key' });
   });
 
-  it('should pass llmUrl via env instead of args', () => {
+  it('should pass llmUrl via CLI args', () => {
     const { args, env } = buildServeArgs({ llmUrl: 'http://10.0.0.1:8080/v1' });
-    expect(args).not.toContain('--llm-url');
-    expect(env['MYAICODER_LLM_URL']).toBe('http://10.0.0.1:8080/v1');
+    expect(args).toContain('--llm-url');
+    expect(args).toContain('http://10.0.0.1:8080/v1');
+    expect(env['MYAICODER_LLM_URL']).toBeUndefined();
   });
 
-  it('should pass modelName via env instead of args', () => {
+  it('should pass modelName via CLI args', () => {
     const { args, env } = buildServeArgs({ modelName: 'Qwen3-27B' });
-    expect(args).not.toContain('--model-name');
-    expect(env['MYAICODER_LLM_MODEL']).toBe('Qwen3-27B');
+    expect(args).toContain('--model-name');
+    expect(args).toContain('Qwen3-27B');
+    expect(env['MYAICODER_LLM_MODEL']).toBeUndefined();
   });
 });
