@@ -27,7 +27,8 @@ export async function activate(context: vscode.ExtensionContext) {
   // 2. Set initial context key
   void vscode.commands.executeCommand('setContext', 'myaicoder.connected', false);
 
-  // 3. Connect MCP client (spawns myaicoder serve automatically)
+  // 3. Register chat panel early so the webview is never blank while MCP connects
+  const editorContext = new EditorContext();
   mcpClient = new McpClientManager(config, {
     onConnected: (toolCount) => {
       statusBar.setConnected(true, toolCount);
@@ -51,6 +52,21 @@ export async function activate(context: vscode.ExtensionContext) {
       );
     },
   }, outputChannel);
+
+  const chatProvider = new ChatPanelProvider(
+    context.extensionUri,
+    mcpClient,
+    editorContext,
+    statusBar,
+  );
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'myaicoder.chatPanel',
+      chatProvider,
+    ),
+  );
+
+  // 4. Connect MCP client (spawns myaicoder serve — done after UI is ready)
   try {
     await mcpClient.connect();
   } catch (error) {
@@ -60,22 +76,6 @@ export async function activate(context: vscode.ExtensionContext) {
     mcpStatusProvider.update(null);
     outputChannel.appendLine(`[${timestamp()}] Connection failed: ${msg}`);
   }
-
-  // 4. Register chat panel
-  const editorContext = new EditorContext();
-  const chatProvider = new ChatPanelProvider(
-    context.extensionUri,
-    mcpClient,
-    editorContext,
-    statusBar,
-  );
-
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider(
-      'myaicoder.chatPanel',
-      chatProvider,
-    ),
-  );
 
   // 5. Register commands
   context.subscriptions.push(
