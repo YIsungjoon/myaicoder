@@ -154,7 +154,7 @@ describe('extension integration', () => {
 
     expect(registerWebviewViewProvider).toHaveBeenCalledTimes(1);
     expect(registerTreeDataProvider).toHaveBeenCalledTimes(1);
-    expect(registerCommand).toHaveBeenCalledTimes(4);
+    expect(registerCommand).toHaveBeenCalledTimes(5);
     expect(statusBarSetConnected).toHaveBeenCalledWith(true, 2);
   });
 
