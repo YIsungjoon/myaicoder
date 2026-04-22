@@ -66,7 +66,10 @@ export class McpClientManager {
       args,
       cwd: cwd ?? undefined,
       stderr: 'pipe',
-      env: { ...process.env, ...env },
+      env: Object.fromEntries(
+        Object.entries({ ...process.env, ...env })
+          .filter((entry): entry is [string, string] => entry[1] !== undefined),
+      ),
     });
     this.transport.onclose = () => {
       void this.handleTransportClose();
