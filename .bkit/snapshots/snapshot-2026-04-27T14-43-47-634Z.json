@@ -1,0 +1,2819 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-04-27T14:25:35.671Z",
+  "activeFeatures": [
+    "vscode-extension"
+  ],
+  "primaryFeature": "concurrent-access-control",
+  "features": {
+    "concurrent-access-control": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/concurrent-access-control.plan.md",
+      "designPath": "docs/pdca/02-design/features/concurrent-access-control.design.md",
+      "analysisPath": "docs/pdca/03-analysis/concurrent-access-control.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/concurrent-access-control.report.md",
+      "startedAt": "2026-03-17T02:00:00.000Z",
+      "completedAt": "2026-03-17T05:00:00.000Z",
+      "description": "동시 접속 제어 — UI Lock, 요청 가드, Gateway Concurrency Limiter"
+    },
+    "vscode-ux-improvement": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/vscode-ux-improvement.plan.md",
+      "designPath": "docs/pdca/02-design/features/vscode-ux-improvement.design.md",
+      "analysisPath": "docs/pdca/03-analysis/vscode-ux-improvement.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/vscode-ux-improvement.report.md",
+      "startedAt": "2026-03-16T14:00:00.000Z",
+      "completedAt": "2026-03-17T00:00:00.000Z",
+      "description": "VS Code Extension 사용성 개선 — Activity Bar 아이콘 사라짐 + MCP 연결 진단 불가 해결"
+    },
+    "api-gateway": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/api-gateway.plan.md",
+      "designPath": "docs/pdca/02-design/features/api-gateway.design.md",
+      "analysisPath": "docs/pdca/03-analysis/api-gateway.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/api-gateway.report.md",
+      "startedAt": "2026-03-14T00:00:00.000Z",
+      "completedAt": "2026-03-14T00:30:00.000Z",
+      "description": "API Gateway - vLLM 프록시, 인증, 사용량 로깅, 모델 라우팅 (sungjunCode 통합)"
+    },
+    "ai-coder-cli": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 95,
+      "iterationCount": 1,
+      "planPath": "docs/pdca/01-plan/features/ai-coder-cli.plan.md",
+      "designPath": "docs/pdca/02-design/features/ai-coder-cli.design.md",
+      "analysisPath": "docs/pdca/03-analysis/ai-coder-cli.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/ai-coder-cli.report.md",
+      "startedAt": "2026-03-13T04:30:00.000Z",
+      "completedAt": "2026-03-13T10:00:00.000Z",
+      "description": "Claude Code 대안 AI 코딩 어시스턴트 (Qwen3.5-27B, MCP 호환)"
+    },
+    "mcp-server": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/mcp-server.plan.md",
+      "designPath": "docs/pdca/02-design/features/mcp-server.design.md",
+      "analysisPath": "docs/pdca/03-analysis/mcp-server.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/mcp-server.report.md",
+      "startedAt": "2026-03-13T10:30:00.000Z",
+      "completedAt": "2026-03-13T14:30:00.000Z",
+      "description": "MCP Server - 내장 도구를 MCP 프로토콜로 노출 (Phase 4)"
+    },
+    "myaicoder": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 99,
+      "iterationCount": 1,
+      "planPath": "docs/pdca/01-plan/features/myaicoder.plan.md",
+      "designPath": "docs/pdca/02-design/features/myaicoder.design.md",
+      "analysisPath": "docs/pdca/03-analysis/myaicoder.analysis.md",
+      "actPath": "docs/pdca/05-act/features/myaicoder.act.md",
+      "reportPath": "docs/pdca/06-report/features/myaicoder.report.md",
+      "startedAt": "2026-03-13T06:33:18.360Z",
+      "completedAt": "2026-03-13T09:25:00.000Z",
+      "description": "myAiCoder 서비스 — CLI, LLM 프로바이더(vLLM/llama.cpp), 코드 어시스턴트 핵심"
+    },
+    "integration-and-ci": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 97,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/integration-and-ci.plan.md",
+      "designPath": "docs/pdca/02-design/features/integration-and-ci.design.md",
+      "doPath": "docs/pdca/03-do/features/integration-and-ci.do.md",
+      "checkPath": "docs/pdca/04-check/features/integration-and-ci.check.md",
+      "reportPath": "docs/pdca/06-report/features/integration-and-ci.report.md",
+      "startedAt": "2026-03-13T09:35:00.000Z",
+      "completedAt": "2026-03-13T10:15:00.000Z",
+      "description": "Monorepo quality baseline - integration tests and CI pipeline"
+    },
+    "vscode-extension": {
+      "phase": "do",
+      "status": "archived",
+      "matchRate": 99,
+      "iterationCount": 1,
+      "planPath": "docs/pdca/01-plan/features/vscode-extension.plan.md",
+      "designPath": "docs/pdca/02-design/features/vscode-extension.design.md",
+      "analysisPath": "docs/pdca/03-analysis/vscode-extension.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/vscode-extension.report.md",
+      "checkPath": "docs/pdca/04-check/features/vscode-extension-stabilization.check.md",
+      "doPath": "docs/pdca/03-do/features/vscode-extension-stabilization.do.md",
+      "archivePath": "docs/pdca/07-archive/features/vscode-extension.archive.md",
+      "startedAt": "2026-03-13T15:00:00.000Z",
+      "completedAt": "2026-03-13T17:30:00.000Z",
+      "archivedAt": "2026-03-13T17:25:00.000Z",
+      "description": "VS Code Extension - myAiCoder를 VS Code에서 사용하는 확장 프로그램 (Phase 5, stabilization 1회 반복 완료)",
+      "phaseNumber": 3,
+      "lastFile": "/home/laon/Desktop/myAiCoder/apps/vscode-extension/test/unit/process.test.ts",
+      "timestamps": {
+        "lastUpdated": "2026-04-22T02:38:09.632Z"
+      }
+    },
+    "conversation-persistence": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/conversation-persistence.plan.md",
+      "designPath": "docs/pdca/02-design/features/conversation-persistence.design.md",
+      "analysisPath": "docs/pdca/03-analysis/conversation-persistence.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/conversation-persistence.report.md",
+      "startedAt": "2026-03-14T09:00:00.000Z",
+      "completedAt": "2026-03-14T10:00:00.000Z",
+      "description": "대화 세션 영속성 - CLI 종료 후 대화/요약/압축상태 유지 (Track A-1)"
+    },
+    "observability": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "analysisPath": "docs/pdca/03-analysis/observability.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/observability.report.md",
+      "completedAt": "2026-03-14T16:00:00.000Z",
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/observability.plan.md",
+      "designPath": "docs/pdca/02-design/features/observability.design.md",
+      "startedAt": "2026-03-14T15:00:00.000Z",
+      "description": "Gateway Observability - Prometheus 메트릭 + Grafana 대시보드 (Track C-1)"
+    },
+    "developer-onboarding": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/developer-onboarding.plan.md",
+      "designPath": "docs/pdca/02-design/features/developer-onboarding.design.md",
+      "analysisPath": "docs/pdca/03-analysis/developer-onboarding.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/developer-onboarding.report.md",
+      "startedAt": "2026-03-14T17:00:00.000Z",
+      "completedAt": "2026-03-14T18:00:00.000Z",
+      "description": "신규 개발자 온보딩 - getting-started 가이드 + config 포터블화 + 셋업 자동화"
+    },
+    "oneclick-installer": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/oneclick-installer.plan.md",
+      "designPath": "docs/pdca/02-design/features/oneclick-installer.design.md",
+      "analysisPath": "docs/pdca/03-analysis/oneclick-installer.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/oneclick-installer.report.md",
+      "startedAt": "2026-03-15T00:00:00.000Z",
+      "completedAt": "2026-03-15T01:00:00.000Z",
+      "description": "비개발자용 더블클릭 설치 패키지 - PyInstaller + install script + settings 자동 주입"
+    },
+    "windows-installer": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "analysisPath": "docs/pdca/03-analysis/windows-installer.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/windows-installer.report.md",
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/windows-installer.plan.md",
+      "designPath": "docs/pdca/02-design/features/windows-installer.design.md",
+      "startedAt": "2026-03-15T00:00:00.000Z",
+      "completedAt": "2026-03-15T02:00:00.000Z",
+      "description": "GitHub Actions Windows .exe 자동 빌드 + Release 배포 (oneclick-installer P1-R8)"
+    },
+    "workspace-integration": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "analysisPath": "docs/pdca/03-analysis/workspace-integration.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/workspace-integration.report.md",
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/workspace-integration.plan.md",
+      "designPath": "docs/pdca/02-design/features/workspace-integration.design.md",
+      "startedAt": "2026-03-15T07:00:00.000Z",
+      "completedAt": "2026-03-15T09:00:00.000Z",
+      "description": "V0.2 워크스페이스 통합 - Context Awareness + Workspace Tools + Apply & Diff"
+    },
+    "marketplace-deployment": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 91,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/marketplace-deployment.plan.md",
+      "designPath": "docs/pdca/02-design/features/marketplace-deployment.design.md",
+      "analysisPath": "docs/pdca/03-analysis/marketplace-deployment.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/marketplace-deployment.report.md",
+      "completedAt": "2026-03-14T14:00:00.000Z",
+      "startedAt": "2026-03-14T13:00:00.000Z",
+      "description": "VS Code Extension 마켓플레이스 공식 배포 (Track A-2)"
+    },
+    "advanced-mcp-tools": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/advanced-mcp-tools.plan.md",
+      "designPath": "docs/pdca/02-design/features/advanced-mcp-tools.design.md",
+      "analysisPath": "docs/pdca/03-analysis/advanced-mcp-tools.analysis.md",
+      "reportPath": "docs/pdca/06-report/features/advanced-mcp-tools.report.md",
+      "startedAt": "2026-03-14T11:00:00.000Z",
+      "completedAt": "2026-03-14T12:00:00.000Z",
+      "description": "고급 MCP 도구 확장 - BuildRunner, WebFetch, ListDir, Bash/Grep 개선 (Track B-1)"
+    },
+    "dgx-migration": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/dgx-migration.plan.md",
+      "designPath": "docs/pdca/02-design/features/dgx-migration.design.md",
+      "analysisPath": "docs/pdca/03-analysis/dgx-migration.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/dgx-migration.report.md",
+      "startedAt": "2026-03-15T13:39:43.022Z",
+      "completedAt": "2026-03-15T15:00:00.000Z",
+      "description": "DGX Spark 128GB 이주 — Docker Compose 3모델 동시 서빙 + Gateway 프록시 + 모니터링 통합"
+    },
+    "api-key-auth": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/api-key-auth.plan.md",
+      "designPath": "docs/pdca/02-design/features/api-key-auth.design.md",
+      "analysisPath": "docs/pdca/03-analysis/api-key-auth.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/api-key-auth.report.md",
+      "startedAt": "2026-03-15T15:11:42.550Z",
+      "completedAt": "2026-03-16T00:00:00.000Z",
+      "description": "API Key 인증 — SHA-256 해시 검증 + CLI/환경변수 로딩 경로 통합"
+    },
+    "conversation-logging": {
+      "phase": "completed",
+      "status": "report_generated",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "planPath": "docs/pdca/01-plan/features/conversation-logging.plan.md",
+      "designPath": "docs/pdca/02-design/features/conversation-logging.design.md",
+      "analysisPath": "docs/pdca/03-analysis/conversation-logging.analysis.md",
+      "reportPath": "docs/pdca/04-report/features/conversation-logging.report.md",
+      "startedAt": "2026-03-15T16:06:46.231Z",
+      "completedAt": "2026-03-16T00:00:00.000Z",
+      "description": "서버 측 대화 저장 — PostgreSQL + SSE 파싱, 100% 설계 일치(49/49)"
+    },
+    "core-security-hardening": {
+      "phase": "archived",
+      "matchRate": 93,
+      "iterationCount": 1,
+      "startedAt": "2026-03-17T00:00:00.000Z",
+      "completedAt": "2026-04-22T00:00:00.000Z",
+      "archivedAt": "2026-04-22T01:56:10.000Z",
+      "archivedTo": "docs/pdca/07-archive/features/core-security-hardening.archive.md",
+      "reportPath": "docs/pdca/06-report/features/core-security-hardening.report.md",
+      "description": "Core Service + VSCode Extension 보안 취약점 9/10 수정 (93% Match Rate)"
+    },
+    "vscode-extension-stabilization": {
+      "phase": "archived",
+      "matchRate": 99,
+      "iterationCount": 2,
+      "startedAt": "2026-03-13T00:00:00.000Z",
+      "completedAt": "2026-04-22T00:00:00.000Z",
+      "archivedAt": "2026-04-22T02:30:00.000Z",
+      "archivedTo": "docs/pdca/07-archive/features/vscode-extension-stabilization.archive.md",
+      "reportPath": "docs/pdca/06-report/features/vscode-extension-stabilization.report.md",
+      "description": "VS Code Extension Phase 5.1 안정화 — 6건 backlog 전부 해소 (99% Match Rate)"
+    },
+    "vscode-extension-root-fix": {
+      "phase": "archived",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "startedAt": "2026-04-22T00:00:00.000Z",
+      "archivedAt": "2026-04-22T03:58:46.678635Z",
+      "archivedTo": "docs/pdca/07-archive/features/vscode-extension-root-fix.archive.md"
+    }
+  },
+  "pipeline": {
+    "currentPhase": 2,
+    "level": "Enterprise",
+    "phaseHistory": [
+      {
+        "phase": 1,
+        "action": "plan_completed",
+        "timestamp": "2026-03-13T04:45:00.000Z"
+      },
+      {
+        "phase": 2,
+        "action": "design_completed",
+        "timestamp": "2026-03-13T05:00:00.000Z"
+      }
+    ]
+  },
+  "session": {
+    "startedAt": "2026-03-13T04:00:21.057Z",
+    "onboardingCompleted": true,
+    "lastActivity": "2026-04-27T14:25:35.670Z"
+  },
+  "history": [
+    {
+      "action": "plan_created",
+      "feature": "ai-coder-cli",
+      "timestamp": "2026-03-13T04:30:00.000Z"
+    },
+    {
+      "action": "design_created",
+      "feature": "ai-coder-cli",
+      "timestamp": "2026-03-13T05:00:00.000Z"
+    },
+    {
+      "action": "do_phase1_completed",
+      "feature": "ai-coder-cli",
+      "timestamp": "2026-03-13T06:00:00.000Z"
+    },
+    {
+      "action": "do_phase2_completed",
+      "feature": "ai-coder-cli",
+      "timestamp": "2026-03-13T07:30:00.000Z"
+    },
+    {
+      "action": "do_phase3_completed",
+      "feature": "ai-coder-cli",
+      "timestamp": "2026-03-13T08:30:00.000Z"
+    },
+    {
+      "action": "check_analyzed",
+      "feature": "ai-coder-cli",
+      "matchRate": 88,
+      "timestamp": "2026-03-13T09:00:00.000Z"
+    },
+    {
+      "timestamp": "2026-03-13T06:33:18.360Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T06:33:29.551Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T06:33:43.789Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T06:34:10.027Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T06:34:24.315Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T06:34:48.167Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T06:34:56.230Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T06:35:21.328Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "action": "act_iteration_1",
+      "feature": "ai-coder-cli",
+      "matchRate": 95,
+      "timestamp": "2026-03-13T09:30:00.000Z"
+    },
+    {
+      "action": "report_generated",
+      "feature": "ai-coder-cli",
+      "matchRate": 95,
+      "timestamp": "2026-03-13T10:00:00.000Z"
+    },
+    {
+      "action": "archived",
+      "feature": "vscode-extension",
+      "matchRate": 93,
+      "timestamp": "2026-03-13T17:25:00.000Z"
+    },
+    {
+      "action": "stabilization_completed",
+      "feature": "vscode-extension",
+      "matchRate": 99,
+      "timestamp": "2026-03-13T17:40:00.000Z"
+    },
+    {
+      "action": "plan_created",
+      "feature": "integration-and-ci",
+      "timestamp": "2026-03-13T09:35:00.000Z"
+    },
+    {
+      "action": "design_created",
+      "feature": "integration-and-ci",
+      "timestamp": "2026-03-13T09:40:00.000Z"
+    },
+    {
+      "action": "check_analyzed",
+      "feature": "integration-and-ci",
+      "matchRate": 97,
+      "timestamp": "2026-03-13T10:05:00.000Z"
+    },
+    {
+      "action": "report_generated",
+      "feature": "integration-and-ci",
+      "matchRate": 97,
+      "timestamp": "2026-03-13T10:15:00.000Z"
+    },
+    {
+      "action": "plan_created",
+      "feature": "mcp-server",
+      "timestamp": "2026-03-13T10:30:00.000Z"
+    },
+    {
+      "action": "plan_created",
+      "feature": "myaicoder",
+      "timestamp": "2026-03-13T08:24:00.000Z"
+    },
+    {
+      "action": "design_created",
+      "feature": "myaicoder",
+      "timestamp": "2026-03-13T08:25:00.000Z"
+    },
+    {
+      "action": "check_analyzed",
+      "feature": "myaicoder",
+      "matchRate": 96,
+      "timestamp": "2026-03-13T08:55:00.000Z"
+    },
+    {
+      "action": "act_iteration_1",
+      "feature": "myaicoder",
+      "matchRate": 99,
+      "timestamp": "2026-03-13T09:15:00.000Z"
+    },
+    {
+      "action": "report_generated",
+      "feature": "myaicoder",
+      "matchRate": 99,
+      "timestamp": "2026-03-13T09:25:00.000Z"
+    },
+    {
+      "action": "design_created",
+      "feature": "mcp-server",
+      "timestamp": "2026-03-13T11:30:00.000Z"
+    },
+    {
+      "timestamp": "2026-03-13T07:27:32.116Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:27:44.129Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:27:48.305Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:27:53.509Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:28:19.278Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:28:28.549Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:28:37.744Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:28:48.117Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:28:53.640Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:29:09.966Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:29:49.349Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:29:56.006Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:30:09.638Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:41:45.216Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:41:59.586Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:43:41.734Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "action": "plan_created",
+      "feature": "vscode-extension",
+      "timestamp": "2026-03-13T15:00:00.000Z"
+    },
+    {
+      "action": "design_created",
+      "feature": "vscode-extension",
+      "timestamp": "2026-03-13T15:30:00.000Z"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:00.822Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:12.379Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:18.583Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:28.009Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:46.832Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:24.306Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:40.439Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:44.762Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:51.102Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:08.244Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:17.981Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:26.041Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:36.278Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:09:21.247Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:09:29.941Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:09:43.028Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:09:59.490Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:10:19.068Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:10:28.784Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:10:32.628Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:29.510Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:30.008Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:30.954Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:32.188Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:42.279Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:46.722Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:51.669Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T16:59:56.594Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:00:10.452Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:00:13.534Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:00:21.180Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:00:30.830Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:00:38.052Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:00:51.500Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:00:56.380Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:01:01.039Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:01:03.571Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:01:08.981Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:01:12.740Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:01:51.979Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:02:16.384Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:02:37.179Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T17:02:47.858Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:11:11.355Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:11:31.236Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:11:45.160Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:12:23.160Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:12:58.703Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:13:22.085Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:13:42.782Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:14:00.605Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:14:15.122Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:14:35.989Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:07.502Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:22.179Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:26.536Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:15:44.155Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:23:12.234Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:23:20.049Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:23:32.278Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:47:48.625Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:47:59.449Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:48:11.487Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:48:16.801Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:48:40.550Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:49:03.239Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:49:08.511Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:49:13.635Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:49:19.874Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:49:25.162Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:49:31.847Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:50:08.493Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:50:14.401Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:51:03.927Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:51:33.838Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T01:51:39.469Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T02:26:45.648Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T02:26:52.358Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T02:27:01.602Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T02:27:10.787Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T02:27:15.696Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T02:27:21.684Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T02:27:45.821Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:53:12.150Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:53:21.489Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:53:28.223Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T03:54:05.752Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:22:42.420Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:22:54.083Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:23:17.983Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:23:39.325Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:23:52.843Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:24:17.606Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:24:24.303Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:24:34.856Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:22.351Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:42.395Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:49.548Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:25:55.236Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:26:40.911Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:30:05.992Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:30:18.625Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:30:38.963Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:10.592Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:28.861Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:38.274Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T06:34:45.001Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:48:20.346Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:48:37.028Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:48:49.609Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:48:59.109Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:49:50.676Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:50:02.640Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:50:16.648Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:50:23.635Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:50:33.333Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T07:50:49.526Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:23:38.626Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:23:50.008Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:24:00.934Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:24:05.368Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:24:10.959Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:25:37.762Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:26:22.071Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:26:48.145Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:27:03.894Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:27:20.763Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T09:29:02.077Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:00:05.017Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:00:33.130Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:01:14.956Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:01:40.366Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:02:21.050Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:02:34.619Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:02:57.997Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:03:12.392Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:03:29.508Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:03:45.652Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:04:30.900Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:04:41.670Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:04:45.372Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T10:05:52.396Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T11:38:53.278Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T11:39:45.183Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:09.459Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:16.648Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:32.121Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:42.519Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:46:50.245Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:03.494Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:14.117Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:24.993Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:35.793Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T13:47:45.863Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:41:50.653Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:42:00.427Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:42:08.264Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:42:43.499Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T14:43:28.871Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T15:18:46.174Z",
+      "feature": "installer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-14T16:05:18.783Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T03:41:06.270Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T05:58:42.794Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T05:59:16.517Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T06:30:57.910Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T06:31:06.185Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T06:31:14.454Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T06:32:22.807Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T06:33:03.810Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:49:37.635Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:49:56.514Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:50:16.003Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:50:37.754Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:50:54.201Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:51:11.188Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:51:40.716Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:51:49.312Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:52:07.896Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:52:23.035Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:52:34.366Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T07:53:00.959Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T10:01:21.910Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T10:01:30.746Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T10:01:50.375Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T10:04:12.535Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T10:04:27.015Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:00:35.998Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:06:30.355Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:08:36.072Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:33:53.900Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:48:06.228Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:48:38.671Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T11:48:50.032Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T12:18:08.729Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T12:19:02.607Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T12:19:12.622Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T12:19:18.988Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T12:55:14.464Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T13:32:52.761Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T13:33:05.691Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T13:39:43.022Z",
+      "feature": "dgx-migration",
+      "phase": "act",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T13:57:57.311Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:06.833Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:14.553Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:22.102Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:29.345Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:36.975Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:50.321Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:05:57.652Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:07.357Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:17.756Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:26.311Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:33.201Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:40.740Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:47.650Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:06:57.467Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:08:17.865Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:08:26.859Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:11:42.550Z",
+      "feature": "api-key-auth",
+      "phase": "act",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:18:10.506Z",
+      "feature": "installer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:18:18.242Z",
+      "feature": "installer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:18:25.963Z",
+      "feature": "installer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T15:31:00.628Z",
+      "feature": "installer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:00:20.059Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:00:49.694Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:00:59.168Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:01:15.890Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:01:26.360Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:01:40.126Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:01:50.304Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:02:00.446Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-15T16:06:46.231Z",
+      "feature": "conversation-logging",
+      "phase": "act",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T11:35:47.136Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T11:35:51.056Z",
+      "feature": "myaicoder",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:24:46.707Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:36:53.182Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:37:14.929Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:13.288Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:26.664Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:44.005Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:38:50.299Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:41:46.011Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:41:54.327Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:00.361Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:06.873Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:15.240Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T13:42:20.779Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:35:30.371Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:35:37.111Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:35:59.151Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:04.642Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:19.291Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:43.399Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:49.524Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:36:54.648Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:05.486Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:11.615Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:27.293Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:33.369Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-17T04:37:38.573Z",
+      "feature": "gateway",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:08:00.070Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:10.487Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:26.450Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:49.524Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:11:59.881Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:05.828Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:09.931Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:13.668Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:17.394Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:22.839Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:12:46.078Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:13:14.484Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:13:23.109Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:04.597Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:09.698Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:15.953Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:19.662Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:24.692Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:30.539Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:34.923Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:39.985Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:43.583Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:14:51.903Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:26.943Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:33.798Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:44.196Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:54:51.016Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:10.240Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:18.628Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:29.395Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:38.160Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:55:52.093Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:56:09.971Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:56:47.304Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:09.766Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:21.044Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:30.675Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:43.148Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:57:51.710Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T07:58:00.450Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:07:33.134Z",
+      "feature": "core",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:14:28.057Z",
+      "feature": "core",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:14:47.353Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:14:55.567Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:15:04.706Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:15:24.379Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:42:57.507Z",
+      "feature": "core",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:31.309Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:43.737Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:50.475Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:43:59.923Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:12.031Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:19.248Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:23.931Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:30.088Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:36.066Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:42.374Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:51.130Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:44:55.927Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:01.314Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:07.156Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:12.337Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:20.855Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:29.495Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:37.727Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:45.312Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:45:53.393Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:46:00.347Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:46:06.570Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:18.318Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:24.017Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:28.582Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:33.511Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:38.768Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:43.287Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:50.143Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:49:55.300Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:00.371Z",
+      "feature": "prefetch",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:21.071Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:31.014Z",
+      "feature": "generator",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:46.273Z",
+      "feature": "generator",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:50:49.971Z",
+      "feature": "generator",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:51:31.735Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:51:52.264Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:51:56.567Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:01.186Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:06.673Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:13.974Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:20.423Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:52:30.535Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:53:32.971Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:53:41.864Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:54:14.467Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:54:56.738Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T08:56:04.557Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T08:27:24.559Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T08:27:30.007Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T08:27:33.377Z",
+      "feature": "agents",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T22:22:41.720Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T22:22:49.542Z",
+      "feature": "handlers",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T01:56:10.000Z",
+      "feature": "core-security-hardening",
+      "phase": "archived",
+      "action": "archived"
+    },
+    {
+      "timestamp": "2026-04-22T02:02:44.751Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:28.235Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:32.424Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:40.461Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:48.864Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:52.167Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:37:58.008Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:38:02.299Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-22T02:38:09.632Z",
+      "feature": "vscode-extension",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-27T14:25:35.670Z",
+      "action": "session_end",
+      "feature": "concurrent-access-control",
+      "details": "Session ended"
+    }
+  ],
+  "_snapshotTimestamp": "2026-04-27T14:43:47.634Z",
+  "_reason": "pre-compress",
+  "_jitPartial": false
+}

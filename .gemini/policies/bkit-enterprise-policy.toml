@@ -1,0 +1,45 @@
+# bkit-gemini v2.0.4 - Enterprise Level Policy
+# Permissive policy with security audit for enterprise projects
+# Auto-generated for Gemini CLI v0.31.0+ Project-Level Policy Engine (Tier 3)
+# Generated: 2026-04-27
+
+# NOTE: Includes commandRegex rules for v0.35.0+ full-path command safety
+
+[[rule]]
+toolName = "write_file"
+decision = "allow"
+priority = 10
+
+[[rule]]
+toolName = "replace"
+decision = "allow"
+priority = 10
+
+[[rule]]
+toolName = "run_shell_command"
+decision = "allow"
+priority = 10
+
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "rm -rf /"
+decision = "deny"
+priority = 100
+
+[[rule]]
+toolName = "run_shell_command"
+commandRegex = "[^\"]*/rm -rf /"
+decision = "deny"
+priority = 100
+
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "git push --force"
+decision = "ask_user"
+priority = 50
+
+[[rule]]
+toolName = "run_shell_command"
+commandRegex = "[^\"]*/git push --force"
+decision = "ask_user"
+priority = 50
