@@ -189,12 +189,17 @@ class MCPServer:
             compression_threshold=0.8,
         )
 
-        async def agentic_task(prompt: str) -> str:
+        from mcp.server.fastmcp import Context
+
+        async def agentic_task(prompt: str, ctx: Context) -> str:
             """Execute a complex multi-step task using local LLM agent.
             Use for high-level instructions like BIM modifications or
             multi-tool workflows. The local LLM handles sub-task planning.
             Conversation history is preserved across calls."""
-            return await engine.chat(prompt)
+            async def progress_callback(msg: str):
+                await ctx.info(msg)
+
+            return await engine.chat(prompt, on_progress=progress_callback)
 
         self.mcp.add_tool(
             agentic_task,

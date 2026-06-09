@@ -1,5 +1,6 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { LoggingMessageNotificationSchema } from '@modelcontextprotocol/sdk/types.js';
 import { ConfigManager } from '../config';
 import { buildServeArgs } from './process';
 
@@ -28,6 +29,7 @@ export class McpClientManager {
   private transport: StdioClientTransport | null = null;
   private tools: ToolInfo[] = [];
   private disconnectRequested = false;
+  private logCallback?: (msg: string) => void;
 
   constructor(
     private config: ConfigManager,
@@ -38,6 +40,10 @@ export class McpClientManager {
     },
     private log?: LogChannel,
   ) {}
+
+  onLogMessage(callback: (msg: string) => void): void {
+    this.logCallback = callback;
+  }
 
   /**
    * Connect to myaicoder serve via StdioClientTransport.
@@ -80,6 +86,16 @@ export class McpClientManager {
     );
 
     await this.client.connect(this.transport);
+
+    // Listen to log notifications from FastMCP Context
+    this.client.setNotificationHandler(LoggingMessageNotificationSchema, (notification) => {
+      const params = notification.params as { level?: string; data?: any };
+      const data = params?.data;
+      const msg = typeof data === 'string' ? data : (data?.msg || '');
+      if (msg && this.logCallback) {
+        this.logCallback(msg);
+      }
+    });
 
     // Fetch available tools
     const result = await this.client.listTools();

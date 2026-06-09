@@ -6,7 +6,7 @@ Contains two engines (DS-03 Strangler Fig pattern):
 """
 
 from collections.abc import Callable
-from typing import AsyncIterator
+from typing import AsyncIterator, Any
 
 from myaicoder.core.context import ContextManager
 from myaicoder.core.conversation import ConversationManager
@@ -297,14 +297,23 @@ class MiddlewareEngine:
 
         return stack
 
-    async def chat(self, user_input: str) -> str:
+    async def chat(self, user_input: str, on_progress: Callable[[str], Any] | None = None) -> str:
         """Send user input and get response (with middleware pipeline)."""
+        import inspect
+        async def send_progress(msg: str):
+            if on_progress:
+                if inspect.iscoroutinefunction(on_progress):
+                    await on_progress(msg)
+                else:
+                    on_progress(msg)
+
         self.conversation.add_message(Message(role="user", content=user_input))
 
         base_prompt = self.context.build_system_prompt()
         collected_text: list[str] = []
 
-        for _ in range(self.MAX_TOOL_ITERATIONS):
+        for iteration in range(self.MAX_TOOL_ITERATIONS):
+            await send_progress(f"Thinking (step {iteration + 1})...")
             # 1. Build frozen ContextPayload
             payload = ContextPayload(
                 messages=tuple(self.conversation.history)
@@ -346,7 +355,13 @@ class MiddlewareEngine:
             )
 
             for tc in response.tool_calls:
+                await send_progress(f"Running tool '{tc.name}'...")
+                import time
+                start_time = time.time()
                 result = await self._execute_tool(tc.name, tc.arguments)
+                latency_ms = int((time.time() - start_time) * 1000)
+                await send_progress(f"Tool '{tc.name}' finished in {latency_ms}ms.")
+
                 content = (
                     result.output if result.success else f"Error: {result.error}"
                 )
