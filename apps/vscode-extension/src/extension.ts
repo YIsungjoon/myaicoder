@@ -100,6 +100,9 @@ export async function activate(context: vscode.ExtensionContext) {
     editorContext,
     statusBar,
   );
+  mcpClient.onLogMessage((msg) => {
+    chatProvider.handleProgressLog(msg);
+  });
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
       'myaicoder.chatPanel',

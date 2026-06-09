@@ -11,6 +11,7 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
   private messages: ChatMessage[] = [];
   private isProcessing = false;
   private cancelRequested = false;
+  private isWaitingForAnswer = false;
 
   constructor(
     private extensionUri: vscode.Uri,
@@ -44,7 +45,11 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       async (message: WebviewMessage) => {
         switch (message.type) {
           case 'sendMessage':
-            await this.handleUserMessage(message.text);
+            if (this.isWaitingForAnswer) {
+              await this.handleUserAnswer(message.text);
+            } else {
+              await this.handleUserMessage(message.text);
+            }
             break;
           case 'applyCode':
             await this.handleApplyCode(message.code, message.filePath);
@@ -142,6 +147,49 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
     } finally {
       this.isProcessing = false;
       this.cancelRequested = false;
+      this.postMessage({ type: 'setLoading', loading: false });
+    }
+  }
+
+  handleProgressLog(msg: string): void {
+    if (msg.startsWith('[ASK_USER]:')) {
+      const question = msg.substring('[ASK_USER]:'.length);
+      this.isWaitingForAnswer = true;
+      this.isProcessing = false; // Allow user interaction while waiting
+      this.postMessage({ type: 'setLoading', loading: false });
+
+      const askMsg: ChatMessage = {
+        role: 'assistant',
+        content: `**[질문]** ${question}`,
+        timestamp: Date.now(),
+      };
+      this.messages.push(askMsg);
+      this.postMessage({ type: 'addMessage', message: askMsg });
+    }
+  }
+
+  private async handleUserAnswer(text: string): Promise<void> {
+    this.isWaitingForAnswer = false;
+
+    const userMsg: ChatMessage = {
+      role: 'user',
+      content: text,
+      timestamp: Date.now(),
+    };
+    this.messages.push(userMsg);
+    this.postMessage({ type: 'addMessage', message: userMsg });
+
+    try {
+      this.postMessage({ type: 'setLoading', loading: true });
+      await this.mcpClient.callTool('submit_answer', { answer: text });
+    } catch (error) {
+      const errorMsg: ChatMessage = {
+        role: 'assistant',
+        content: `답변 전송 중 에러 발생: ${error instanceof Error ? error.message : String(error)}`,
+        timestamp: Date.now(),
+        isError: true,
+      };
+      this.postMessage({ type: 'addMessage', message: errorMsg });
       this.postMessage({ type: 'setLoading', loading: false });
     }
   }

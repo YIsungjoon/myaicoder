@@ -299,86 +299,91 @@ class MiddlewareEngine:
 
     async def chat(self, user_input: str, on_progress: Callable[[str], Any] | None = None) -> str:
         """Send user input and get response (with middleware pipeline)."""
-        import inspect
-        async def send_progress(msg: str):
-            if on_progress:
-                if inspect.iscoroutinefunction(on_progress):
-                    await on_progress(msg)
-                else:
-                    on_progress(msg)
+        from myaicoder.tools.external.ask_user import progress_ctx
+        token = progress_ctx.set(on_progress)
+        try:
+            import inspect
+            async def send_progress(msg: str):
+                if on_progress:
+                    if inspect.iscoroutinefunction(on_progress):
+                        await on_progress(msg)
+                    else:
+                        on_progress(msg)
 
-        self.conversation.add_message(Message(role="user", content=user_input))
+            self.conversation.add_message(Message(role="user", content=user_input))
 
-        base_prompt = self.context.build_system_prompt()
-        collected_text: list[str] = []
+            base_prompt = self.context.build_system_prompt()
+            collected_text: list[str] = []
 
-        for iteration in range(self.MAX_TOOL_ITERATIONS):
-            await send_progress(f"Thinking (step {iteration + 1})...")
-            # 1. Build frozen ContextPayload
-            payload = ContextPayload(
-                messages=tuple(self.conversation.history)
-            )
-
-            # 2. Run middleware before() hooks
-            payload = await self.stack.process_before(payload)
-
-            # 3. Merge system prompt with middleware instructions
-            system_prompt = self.stack.merge_system_prompt(base_prompt, payload)
-
-            # 4. Get messages (with auto-compression)
-            messages = self.conversation.get_messages(system_prompt)
-
-            # 5. Call LLM with merged tools
-            tools_list = list(payload.tools) if payload.tools else None
-            response = await self.llm.chat(
-                messages=messages,
-                tools=tools_list,
-            )
-
-            if response.content:
-                collected_text.append(response.content)
-
-            # 6. No tool calls → done
-            if not response.tool_calls:
-                self.conversation.add_message(
-                    Message(role="assistant", content=response.content or "")
+            for iteration in range(self.MAX_TOOL_ITERATIONS):
+                await send_progress(f"Thinking (step {iteration + 1})...")
+                # 1. Build frozen ContextPayload
+                payload = ContextPayload(
+                    messages=tuple(self.conversation.history)
                 )
-                break
 
-            # 7. Execute tool calls via middleware stack
-            self.conversation.add_message(
-                Message(
-                    role="assistant",
-                    content=response.content,
-                    tool_calls=response.tool_calls,
+                # 2. Run middleware before() hooks
+                payload = await self.stack.process_before(payload)
+
+                # 3. Merge system prompt with middleware instructions
+                system_prompt = self.stack.merge_system_prompt(base_prompt, payload)
+
+                # 4. Get messages (with auto-compression)
+                messages = self.conversation.get_messages(system_prompt)
+
+                # 5. Call LLM with merged tools
+                tools_list = list(payload.tools) if payload.tools else None
+                response = await self.llm.chat(
+                    messages=messages,
+                    tools=tools_list,
                 )
-            )
 
-            for tc in response.tool_calls:
-                await send_progress(f"Running tool '{tc.name}'...")
-                import time
-                start_time = time.time()
-                result = await self._execute_tool(tc.name, tc.arguments)
-                latency_ms = int((time.time() - start_time) * 1000)
-                await send_progress(f"Tool '{tc.name}' finished in {latency_ms}ms.")
+                if response.content:
+                    collected_text.append(response.content)
 
-                content = (
-                    result.output if result.success else f"Error: {result.error}"
-                )
-                content = self._truncate_tool_result(content)
+                # 6. No tool calls → done
+                if not response.tool_calls:
+                    self.conversation.add_message(
+                        Message(role="assistant", content=response.content or "")
+                    )
+                    break
+
+                # 7. Execute tool calls via middleware stack
                 self.conversation.add_message(
                     Message(
-                        role="tool", content=content, tool_call_id=tc.id
+                        role="assistant",
+                        content=response.content,
+                        tool_calls=response.tool_calls,
                     )
                 )
 
-        # 8. Run middleware after() hooks
-        after_payload = ContextPayload(
-            messages=tuple(self.conversation.history)
-        )
-        await self.stack.process_after(after_payload)
+                for tc in response.tool_calls:
+                    await send_progress(f"Running tool '{tc.name}'...")
+                    import time
+                    start_time = time.time()
+                    result = await self._execute_tool(tc.name, tc.arguments)
+                    latency_ms = int((time.time() - start_time) * 1000)
+                    await send_progress(f"Tool '{tc.name}' finished in {latency_ms}ms.")
 
-        return "\n".join(collected_text) if collected_text else ""
+                    content = (
+                        result.output if result.success else f"Error: {result.error}"
+                    )
+                    content = self._truncate_tool_result(content)
+                    self.conversation.add_message(
+                        Message(
+                            role="tool", content=content, tool_call_id=tc.id
+                        )
+                    )
+
+            # 8. Run middleware after() hooks
+            after_payload = ContextPayload(
+                messages=tuple(self.conversation.history)
+            )
+            await self.stack.process_after(after_payload)
+
+            return "\n".join(collected_text) if collected_text else ""
+        finally:
+            progress_ctx.reset(token)
 
     async def chat_stream(self, user_input: str) -> AsyncIterator[str]:
         """Send user input and stream the response."""
