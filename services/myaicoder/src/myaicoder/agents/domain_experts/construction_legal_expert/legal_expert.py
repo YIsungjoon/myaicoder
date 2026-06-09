@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict, Any
+
 from ....tools.law_search.law_tool import LawSearchTool
 
 class ConstructionLegalExpert:

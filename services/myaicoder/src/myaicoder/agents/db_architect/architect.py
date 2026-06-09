@@ -1,7 +1,7 @@
 import os
 import requests
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 class DBArchitect:
     def __init__(self, llm_url: str = "http://localhost:8080/v1/chat/completions"):
@@ -54,7 +54,7 @@ class DBArchitect:
             # JSON만 추출 (혹시 모를 마크다운 태그 제거)
             clean_json = llm_response.strip().replace("```json", "").replace("```", "")
             return json.loads(clean_json)
-        except:
+        except Exception:
             # 파싱 실패 시 기본값 (안전장치)
             return {
                 "engine": "Unknown",
