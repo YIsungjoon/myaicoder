@@ -22,14 +22,14 @@ class TestMCPServerCreation:
         server = MCPServer(tool_registry=registry, allow_bash=False)
         tools = server.mcp.list_tools()
         # list_tools is sync and returns tool list
-        assert len(asyncio.get_event_loop().run_until_complete(tools)) == 8
+        assert len(asyncio.get_event_loop().run_until_complete(tools)) == 10
 
     def test_tool_registration_count_with_bash(self):
         """9 tools registered when allow_bash=True."""
         registry = create_default_registry()
         server = MCPServer(tool_registry=registry, allow_bash=True)
         tools = asyncio.get_event_loop().run_until_complete(server.mcp.list_tools())
-        assert len(tools) == 9
+        assert len(tools) == 11
 
     def test_bash_excluded_by_default(self):
         """run_command not registered when allow_bash=False."""

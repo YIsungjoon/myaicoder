@@ -25,6 +25,7 @@ vi.mock('@modelcontextprotocol/sdk/client/index.js', () => ({
     connect: mockConnect,
     listTools: mockListTools,
     callTool: mockCallTool,
+    setNotificationHandler: vi.fn(),
     close: vi.fn(),
   })),
 }));

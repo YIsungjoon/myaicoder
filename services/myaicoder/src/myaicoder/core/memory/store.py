@@ -122,4 +122,4 @@ class MemoryStore:
             json.dumps(self._memories, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
-        tmp.rename(self._file)
+        tmp.replace(self._file)

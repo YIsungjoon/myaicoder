@@ -81,6 +81,7 @@ vi.mock('../../src/mcp/client', () => ({
         latestHandlers?.onConnected?.(2);
       }),
       disconnect,
+      onLogMessage: vi.fn(),
       getToolCount: () => 2,
       getTools: () => [],
       getPid: () => null,
@@ -92,6 +93,7 @@ vi.mock('../../src/chat/panel', () => ({
   ChatPanelProvider: vi.fn().mockImplementation(() => ({
     clearChat,
     sendContext,
+    handleProgressLog: vi.fn(),
   })),
 }));
 

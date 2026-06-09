@@ -6,7 +6,7 @@ from myaicoder.tools.registry import create_default_registry
 class TestToolRegistry:
     def test_create_default(self):
         registry = create_default_registry()
-        assert len(registry) == 9
+        assert len(registry) == 11
 
     def test_get_tool(self):
         registry = create_default_registry()
@@ -24,7 +24,7 @@ class TestToolRegistry:
     def test_to_openai_tools(self):
         registry = create_default_registry()
         tools = registry.to_openai_tools()
-        assert len(tools) == 9
+        assert len(tools) == 11
         for t in tools:
             assert t["type"] == "function"
             assert "name" in t["function"]
