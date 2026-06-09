@@ -1,6 +1,5 @@
 import os
-import re
-from typing import Dict, Any, List
+from typing import List
 
 class VectorExpert:
     def __init__(self, vector_db_type: str = "chroma"):

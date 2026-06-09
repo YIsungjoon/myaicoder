@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from ...tools.db_connector.adapter import SQLiteAdapter
 
 class SQLiteExpert:

@@ -1,6 +1,5 @@
 import os
-import re
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 class GraphExpert:
     def __init__(self, graph_db_type: str = "neo4j"):

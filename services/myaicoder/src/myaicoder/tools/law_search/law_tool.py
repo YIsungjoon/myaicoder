@@ -15,7 +15,7 @@ class LawSearchTool:
         self.oc = oc or os.getenv("LAW_API_OC", "test")
         try:
             self.timeout = int(os.getenv("LAW_API_TIMEOUT", "30"))
-        except:
+        except Exception:
             self.timeout = 30
 
     def _request_xml(self, url: str, params: dict) -> ET.Element:

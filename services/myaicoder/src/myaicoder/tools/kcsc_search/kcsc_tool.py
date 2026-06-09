@@ -1,7 +1,6 @@
 import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
-import re
 from typing import List, Dict, Any, Optional
 
 class KcscSearchTool:
@@ -58,7 +57,8 @@ class KcscSearchTool:
         basic = root.find(".//행정규칙기본정보") or root.find(".//기본정보")
         
         def get_node_text(node, tag: str, default: str = "") -> str:
-            if node is None: return default
+            if node is None:
+                return default
             found = node.find(tag)
             return (found.text or default).strip() if found is not None else default
 
