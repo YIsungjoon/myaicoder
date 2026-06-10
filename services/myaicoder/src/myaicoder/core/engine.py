@@ -340,6 +340,11 @@ class MiddlewareEngine:
 
                 if response.content:
                     collected_text.append(response.content)
+                    import re
+                    thought_match = re.search(r'(?i)thought:\s*(.*?)(?=\n(?:action|observation):|$)', response.content, re.DOTALL)
+                    if thought_match:
+                        thought_text = thought_match.group(1).strip()
+                        await send_progress(f"💡 Thought: {thought_text}")
 
                 # 6. No tool calls → done
                 if not response.tool_calls:
