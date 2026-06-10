@@ -7,7 +7,38 @@ myAiCoder는 로컬 LLM 기반 AI 코딩 어시스턴트입니다. VS Code에서
 | 모드 | 대상 | 셋업 시간 | 필요한 것 |
 |------|------|:---------:|----------|
 | **서버 모드** (권장) | 일반 개발자 | 3분 | Python, VS Code |
+| **LM Studio 모드** | 로컬 LLM 사용자 | 1분 | Python, VS Code, LM Studio |
 | **로컬 모드** | GPU 보유자/관리자 | 10분 | Python, VS Code, NVIDIA GPU, llama.cpp |
+
+---
+
+## LM Studio 연동 Quick Start (1분)
+
+LM Studio를 활용해 로컬에서 모델을 구동하여 연동하는 방법입니다.
+
+### 1. LM Studio 로컬 서버 구동
+* LM Studio에서 원하는 모델을 로드한 뒤 로컬 서버(Local Server)를 기동합니다. (기본 포트: `1234`)
+
+### 2. 저장소 클론 & CLI 설치
+```bash
+git clone <repo-url> myaicoder
+cd myaicoder
+pip install -e services/myaicoder/
+```
+
+### 3. VS Code Extension 설치
+배포된 `.vsix` 파일을 설치합니다:
+```bash
+code --install-extension myaicoder-1.0.3.vsix
+```
+
+### 4. VS Code 설정
+VS Code 설정 (`Ctrl+,`) > `myaicoder.llmUrl`을 검색하여 LM Studio 주소를 입력합니다:
+```
+http://127.0.0.1:1234
+```
+> [!NOTE]
+> Extension 내부에서 자동으로 `/v1` 접미사를 덧붙여 호출하므로, 설정 주소 끝의 `/v1`은 입력하지 않아야 합니다. (예: `http://127.0.0.1:1234`로 기입 시 최종 `http://127.0.0.1:1234/v1`로 통신합니다.)
 
 ---
 

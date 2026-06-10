@@ -9,6 +9,20 @@ VS Code에서 채팅하며 파일 읽기/쓰기, 코드 검색, 빌드, 웹 검�
 
 **[docs/getting-started.md](docs/getting-started.md)** — 서버 모드(3분) / 로컬 모드(10분) 셋업 가이드
 
+### Quick Start (LM Studio 연동 - 1분)
+
+LM Studio와 같이 로컬에서 OpenAI 호환 API 서버를 띄워 사용할 경우:
+
+1. **LM Studio 실행**: 로컬 서버를 기동합니다. (기본 포트: `1234`)
+2. **myaicoder CLI 설치**:
+   ```bash
+   pip install -e services/myaicoder/
+   ```
+3. **VS Code Extension 설치**: 배포된 `.vsix` 파일을 설치합니다.
+4. **VS Code 설정**: `myaicoder.llmUrl` 설정에 LM Studio 주소인 **`http://127.0.0.1:1234`**를 입력합니다.
+   > [!NOTE]
+   > Extension 내부에서 자동으로 `/v1` 접미사를 붙여 통신하므로, 설정 주소 끝에 `/v1`은 제외하고 입력하시면 됩니다.
+
 ### Quick Start (서버 모드)
 
 ```bash
