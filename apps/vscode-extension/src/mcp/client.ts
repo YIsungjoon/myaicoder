@@ -58,7 +58,11 @@ export class McpClientManager {
       allowBash: this.config.get<boolean>('allowBash'),
       maxConcurrent: this.config.get<number>('maxConcurrent'),
       enableAgentic: this.config.get<boolean>('enableAgentic'),
-      llmUrl: llmUrl ? `${llmUrl.replace(/\/+$/, '')}/v1` : undefined,
+      llmUrl: llmUrl
+        ? (llmUrl.replace(/\/+$/, '').endsWith('/v1')
+          ? llmUrl.replace(/\/+$/, '')
+          : `${llmUrl.replace(/\/+$/, '')}/v1`)
+        : undefined,
       modelName: this.config.getModelName(),
       workingDir: cwd ?? undefined,
       apiKey: apiKey || undefined,

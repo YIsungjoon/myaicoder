@@ -189,8 +189,14 @@ class VLLMProvider(LLMProvider):
             )
             if resp.status_code >= 400:
                 logger.error("LLM request failed [%s]: %s", resp.status_code, resp.text[:2000])
+                raise RuntimeError(f"LLM API Error (HTTP {resp.status_code}): {resp.text[:500]}")
             resp.raise_for_status()
             data = resp.json()
+
+        if "error" in data:
+            raise RuntimeError(f"LLM API returned error: {data['error']}")
+        if "choices" not in data:
+            raise RuntimeError(f"LLM API response missing 'choices' key. Keys received: {list(data.keys())}. Response text: {resp.text[:500]}")
 
         choice = data["choices"][0]["message"]
         choice["_usage"] = data.get("usage", {})
