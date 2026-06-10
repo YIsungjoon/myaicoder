@@ -87,6 +87,11 @@ export class McpClientManager {
 
     this.client = new Client(
       { name: 'myaicoder-vscode', version: '1.0.11' },
+      {
+        capabilities: {
+          logging: {},
+        },
+      },
     );
 
     await this.client.connect(this.transport);
@@ -96,6 +101,7 @@ export class McpClientManager {
       const params = notification.params as { level?: string; data?: any };
       const data = params?.data;
       const msg = typeof data === 'string' ? data : (data?.msg || '');
+      this.log?.appendLine(`[${ts()}] Received progress notification: msg=${msg}, full=${JSON.stringify(notification)}`);
       if (msg && this.logCallback) {
         this.logCallback(msg);
       }
