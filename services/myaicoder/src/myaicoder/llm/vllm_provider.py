@@ -150,6 +150,88 @@ class VLLMProvider(LLMProvider):
                     )
                 )
 
+        # ── Fallback Parsing for Hybrid-style tool calls (XML, Markdown JSON, ReAct) ──
+        if not parsed_tool_calls:
+            import re
+            import uuid
+            parsed_tool_calls = []
+
+            # 1. XML-style tool calls (<tool_call>...</tool_call>)
+            if "<tool_call>" in content:
+                tool_blocks = re.findall(r'<tool_call>(.*?)</tool_call>', content, re.DOTALL)
+                for block in tool_blocks:
+                    func_match = re.search(r'<function=(\w+)>', block)
+                    if func_match:
+                        func_name = func_match.group(1).strip()
+                        params = {}
+                        param_matches = re.finditer(r'<parameter=(\w+)>(.*?)</parameter>', block, re.DOTALL)
+                        for pm in param_matches:
+                            param_name = pm.group(1).strip()
+                            param_val = pm.group(2).strip()
+                            params[param_name] = param_val
+                        
+                        parsed_tool_calls.append(
+                            ToolCall(
+                                id=f"call_{uuid.uuid4().hex[:8]}",
+                                name=func_name,
+                                arguments=params,
+                            )
+                        )
+                # Clean XML tool calls from content to prevent leak to UI
+                content = re.sub(r'<tool_call>.*?</tool_call>', '', content, flags=re.DOTALL).strip()
+
+            # 2. Markdown JSON code blocks (```json ... ```)
+            if not parsed_tool_calls and "```json" in content:
+                json_blocks = re.findall(r'```json\s*(.*?)\s*```', content, re.DOTALL)
+                for block in json_blocks:
+                    try:
+                        data = json.loads(block.strip())
+                        items = data if isinstance(data, list) else [data]
+                        for item in items:
+                            name = item.get("name") or item.get("function")
+                            args = item.get("arguments") or item.get("parameters") or {}
+                            if name:
+                                if isinstance(args, str):
+                                    try:
+                                        args = json.loads(args)
+                                    except json.JSONDecodeError:
+                                        args = {"raw": args}
+                                parsed_tool_calls.append(
+                                    ToolCall(
+                                        id=f"call_{uuid.uuid4().hex[:8]}",
+                                        name=name,
+                                        arguments=args,
+                                    )
+                                )
+                    except json.JSONDecodeError:
+                        pass
+                if parsed_tool_calls:
+                    content = re.sub(r'```json\s*(.*?)\s*```', '', content, flags=re.DOTALL).strip()
+
+            # 3. ReAct style (Action: name \n Action Input: {args})
+            if not parsed_tool_calls and "action:" in content.lower():
+                action_matches = re.finditer(r'(?i)action:\s*(\w+)\s*\n\s*action\s*input:\s*(.*?)(?=\n\s*(?:thought|action|observation):|$)', content, re.DOTALL)
+                for match in action_matches:
+                    func_name = match.group(1).strip()
+                    arg_str = match.group(2).strip()
+                    params = {}
+                    try:
+                        params = json.loads(arg_str)
+                    except json.JSONDecodeError:
+                        pass
+                    parsed_tool_calls.append(
+                        ToolCall(
+                            id=f"call_{uuid.uuid4().hex[:8]}",
+                            name=func_name,
+                            arguments=params,
+                        )
+                    )
+                if parsed_tool_calls:
+                    content = re.sub(r'(?i)action:\s*\w+\s*\n\s*action\s*input:\s*.*?(?=\n\s*(?:thought|action|observation):|$)', '', content, flags=re.DOTALL).strip()
+
+            if not parsed_tool_calls:
+                parsed_tool_calls = None
+
         raw_usage = raw_response.get("_usage", {})
         usage = Usage(
             prompt_tokens=raw_usage.get("prompt_tokens", 0),
