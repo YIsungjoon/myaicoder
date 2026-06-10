@@ -165,6 +165,8 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       };
       this.messages.push(askMsg);
       this.postMessage({ type: 'addMessage', message: askMsg });
+    } else {
+      this.postMessage({ type: 'updateProgress', text: msg });
     }
   }
 

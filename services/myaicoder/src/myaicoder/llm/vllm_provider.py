@@ -106,7 +106,8 @@ class VLLMProvider(LLMProvider):
         tools: list[dict] | None = None,
         temperature: float = 0.0,
     ) -> LLMResponse:
-        openai_messages = [m.to_openai_dict() for m in messages]
+        flat_messages = self._flatten_messages(messages)
+        openai_messages = [m.to_openai_dict() for m in flat_messages]
 
         kwargs: dict = {
             "model": self.model,
@@ -229,6 +230,37 @@ class VLLMProvider(LLMProvider):
                 if parsed_tool_calls:
                     content = re.sub(r'(?i)action:\s*\w+\s*\n\s*action\s*input:\s*.*?(?=\n\s*(?:thought|action|observation):|$)', '', content, flags=re.DOTALL).strip()
 
+            # 4. Plain text Action style (ACTION: name(arguments))
+            if not parsed_tool_calls and "action:" in content.lower():
+                action_args_matches = re.finditer(r'(?i)action:\s*(\w+)\s*\(([\s\S]*?)\)(?=\n|$|\s*(?:thought|action|observation):)', content)
+                for match in action_args_matches:
+                    func_name = match.group(1).strip()
+                    arg_str = match.group(2).strip()
+                    params = {}
+                    if arg_str:
+                        try:
+                            params = json.loads(arg_str)
+                        except json.JSONDecodeError:
+                            params = {"raw": arg_str}
+                    parsed_tool_calls.append(
+                        ToolCall(
+                            id=f"call_{uuid.uuid4().hex[:8]}",
+                            name=func_name,
+                            arguments=params,
+                        )
+                    )
+                if parsed_tool_calls:
+                    content = re.sub(r'(?i)action:\s*\w+\s*\(([\s\S]*?)\)(?=\n|$|\s*(?:thought|action|observation):)', '', content, flags=re.DOTALL).strip()
+
+            if parsed_tool_calls:
+                # Post-parsing cleanup: remove any leftover XML/parameter tags or action headers
+                # to prevent leaking raw model outputs to the UI
+                content = re.sub(r'</?(?:tool_call|parameter|function|argument|func)[^>]*>', '', content)
+                content = re.sub(r'(?i)action:\s*\w+\s*\(.*?\)', '', content, flags=re.DOTALL)
+                content = re.sub(r'(?i)action:\s*\w+\s*\n\s*action\s*input:\s*.*?(?=\n|$)', '', content, flags=re.DOTALL)
+                content = re.sub(r'(?i)action:\s*\w+\s*\(.*', '', content)
+                content = content.strip()
+
             if not parsed_tool_calls:
                 parsed_tool_calls = None
 
@@ -290,7 +322,8 @@ class VLLMProvider(LLMProvider):
         tools: list[dict] | None = None,
         temperature: float = 0.0,
     ) -> AsyncIterator[str]:
-        openai_messages = [m.to_openai_dict() for m in messages]
+        flat_messages = self._flatten_messages(messages)
+        openai_messages = [m.to_openai_dict() for m in flat_messages]
 
         kwargs: dict = {
             "model": self.model,
@@ -315,3 +348,53 @@ class VLLMProvider(LLMProvider):
             return True
         except Exception:
             return False
+
+    def _flatten_messages(self, messages: list[Message]) -> list[Message]:
+        """Convert tool calls and tool responses to plain assistant/user texts.
+        This prevents local LLMs (Qwen/Llama) from losing track of instructions
+        and losing tool call context due to incomplete OpenAI compatibility in chat templates.
+        """
+        # Find the original user request to remind the agent in observations
+        original_request = ""
+        for m in reversed(messages):
+            if m.role == "user" and m.content and not m.content.startswith("[SYSTEM:"):
+                clean_content = m.content
+                if "User request:" in clean_content:
+                    clean_content = clean_content.split("User request:")[-1].strip()
+                original_request = clean_content
+                break
+
+        flattened = []
+        for m in messages:
+            if m.role == "assistant":
+                content_parts = []
+                if m.content:
+                    content_parts.append(m.content)
+                if m.tool_calls:
+                    for tc in m.tool_calls:
+                        args_str = json.dumps(tc.arguments, ensure_ascii=False) if isinstance(tc.arguments, dict) else str(tc.arguments)
+                        content_parts.append(f"ACTION: {tc.name}({args_str})")
+                
+                flattened.append(
+                    Message(
+                        role="assistant",
+                        content="\n\n".join(content_parts) if content_parts else "Thinking..."
+                    )
+                )
+            elif m.role == "tool":
+                # Prefix observation with a clear system instruction to prevent LLM from mistaking raw content as user messages
+                instr = (
+                    f"[SYSTEM: This is the raw output/observation of the previous tool call. "
+                    f"It is NOT a message from the user. Read and analyze the following content "
+                    f"to complete the user's request: '{original_request}']\n\n"
+                    f"OBSERVATION:\n{m.content or ''}"
+                )
+                flattened.append(
+                    Message(
+                        role="user",
+                        content=instr
+                    )
+                )
+            else:
+                flattened.append(m)
+        return flattened

@@ -89,7 +89,7 @@
     if (loading && !existing) {
       const div = document.createElement('div');
       div.className = 'message assistant loading-indicator';
-      div.innerHTML = '<span class="loading-dots">Thinking</span>';
+      div.innerHTML = '<span class="loading-dots">Thinking</span><div class="progress-detail">준비 중...</div>';
       messageList.appendChild(div);
       messageList.scrollTop = messageList.scrollHeight;
     } else if (!loading && existing) {
@@ -166,6 +166,18 @@
       case 'toolResult': {
         const lastMsg = messageList.querySelector('.message.assistant:last-child');
         if (lastMsg) lastMsg.appendChild(createToolResultCard(message.result));
+        break;
+      }
+      case 'updateProgress': {
+        const progressDetail = document.querySelector('.loading-indicator .progress-detail');
+        if (progressDetail) {
+          let progressText = message.text;
+          if (progressText.includes("Thinking")) progressText = "💡 " + progressText;
+          else if (progressText.includes("Running tool")) progressText = "🛠️ " + progressText;
+          else if (progressText.includes("finished")) progressText = "✅ " + progressText;
+          
+          progressDetail.textContent = progressText;
+        }
         break;
       }
     }

@@ -210,3 +210,19 @@ body {
   40% { content: '..'; }
   60%, 100% { content: '...'; }
 }
+
+.progress-detail {
+  margin-top: 6px;
+  font-size: 0.85em;
+  color: var(--vscode-descriptionForeground);
+  font-style: italic;
+  border-left: 2px solid var(--vscode-textLink-activeForeground);
+  padding-left: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
