@@ -29,4 +29,5 @@ export type ExtensionMessage =
   | { type: 'setLoading'; loading: boolean }
   | { type: 'clearChat' }
   | { type: 'setInput'; text: string }
-  | { type: 'toolResult'; result: ToolResultItem };
+  | { type: 'toolResult'; result: ToolResultItem }
+  | { type: 'updateProgress'; text: string };

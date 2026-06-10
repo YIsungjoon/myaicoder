@@ -90,7 +90,7 @@ export class McpClientManager {
       {
         capabilities: {
           logging: {},
-        },
+        } as any,
       },
     );
 
