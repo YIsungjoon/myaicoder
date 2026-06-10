@@ -114,6 +114,7 @@ class VLLMProvider(LLMProvider):
             "messages": openai_messages,
             "temperature": temperature,
             "max_tokens": self.max_tokens,
+            "stop": ["<|im_end|>", "<|endoftext|>", "Observation:", "OBSERVATION:", "[SYSTEM:"],
         }
         if tools:
             kwargs["tools"] = tools
@@ -331,6 +332,7 @@ class VLLMProvider(LLMProvider):
             "temperature": temperature,
             "max_tokens": self.max_tokens,
             "stream": True,
+            "stop": ["<|im_end|>", "<|endoftext|>", "Observation:", "OBSERVATION:", "[SYSTEM:"],
         }
         if tools:
             kwargs["tools"] = tools
