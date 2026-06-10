@@ -17,7 +17,7 @@ class TestMCPServerCreation:
         assert server.registry is registry
 
     def test_tool_registration_count_no_bash(self):
-        """5 tools registered when allow_bash=False (default)."""
+        """10 tools registered when allow_bash=False (default)."""
         registry = create_default_registry()
         server = MCPServer(tool_registry=registry, allow_bash=False)
         tools = server.mcp.list_tools()
@@ -25,7 +25,7 @@ class TestMCPServerCreation:
         assert len(asyncio.get_event_loop().run_until_complete(tools)) == 10
 
     def test_tool_registration_count_with_bash(self):
-        """9 tools registered when allow_bash=True."""
+        """11 tools registered when allow_bash=True."""
         registry = create_default_registry()
         server = MCPServer(tool_registry=registry, allow_bash=True)
         tools = asyncio.get_event_loop().run_until_complete(server.mcp.list_tools())
@@ -64,9 +64,9 @@ class TestToolNameMapping:
         assert "run_command" in tool_names
 
     def test_name_map_completeness(self):
-        """TOOL_NAME_MAP covers all 9 built-in tools."""
-        assert len(TOOL_NAME_MAP) == 9
-        expected = {"Read", "Write", "Edit", "Glob", "Grep", "Bash", "BuildRunner", "WebFetch", "ListDir"}
+        """TOOL_NAME_MAP covers all 11 built-in tools."""
+        assert len(TOOL_NAME_MAP) == 11
+        expected = {"Read", "Write", "Edit", "Glob", "Grep", "Bash", "BuildRunner", "WebFetch", "ListDir", "AskUser", "SubmitAnswer"}
         assert set(TOOL_NAME_MAP.keys()) == expected
 
 

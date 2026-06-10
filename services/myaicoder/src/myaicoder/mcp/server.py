@@ -29,6 +29,8 @@ TOOL_NAME_MAP = {
     "BuildRunner": "build_run",
     "WebFetch": "web_fetch",
     "ListDir": "list_dir",
+    "AskUser": "ask_user",
+    "SubmitAnswer": "submit_answer",
 }
 
 
