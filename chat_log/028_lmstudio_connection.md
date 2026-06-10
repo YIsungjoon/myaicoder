@@ -21,4 +21,7 @@ LM Studio API 서버가 정상적으로 켜져 있는지 확인하고, 필요 �
   API 호출 실패 시 단순히 `KeyError: 'choices'`로 비정상 종료되는 대신, LM Studio 등 LLM 서버가 반환한 구체적인 에러 메시지(HTTP 상태 코드 및 에러 바디)를 반환하도록 [vllm_provider.py](file:///C:/Users/leehm/project/mycode/myaicoder/services/myaicoder/src/myaicoder/llm/vllm_provider.py) 코드를 보완하였습니다.
 - **VS Code 설정 업데이트**:
   사용자의 `settings.json` 내 `myaicoder.llmUrl`을 `http://127.0.0.1:1234`로 변경하고, `myaicoder.executablePath`를 디버깅 가능한 가상환경의 실행 파일 경로로 갱신하여 연동을 완결시켰습니다.
+- **에이전트 시스템 프롬프트(AGENTIC_BASE_PROMPT) 보완**:
+  로컬 LLM의 추론 능력 및 지시 따르기 성능의 한계로 인해, 파일 분석 요청 시 도구(`read_file` 등)를 호출하지 않고 단순 텍스트로만 반문한 뒤 멈추는 문제를 방지하고자, [context.py](file:///C:/Users/leehm/project/mycode/myaicoder/services/myaicoder/src/myaicoder/core/context.py)의 `AGENTIC_BASE_PROMPT`를 수정하여 **답변 전 도구 호출 필수(MANDATORY)** 규칙을 강화했습니다.
+
 
